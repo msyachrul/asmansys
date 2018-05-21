@@ -24,7 +24,6 @@
                             <div class="card-title">
                                 <span style="font-size:24px">Integration</span>
                                 <div class="btn-group pull-right">
-                                    <button type="button" class="btn btn-secondary btn-add"><i class="fa fa-plus"></i></button>
                                     <!-- <a class="btn btn-secondary btn-edit" href="#"><i class="fa fa-edit"></i> Edit</a>
                                     &nbsp
                                     <a class="btn btn-secondary" href="#" onclick="removeItem();"><i class="fa fa-trash"></i> Remove</a>
@@ -55,15 +54,28 @@
                                                 <th width="40%">Certificate</th>
                                                 <th>Value</th>
                                                 <th width="20%">Attachment</th>
+                                                <th width="5%"><button type="button" class="btn btn-secondary btn-add"><i class="fa fa-plus"></i></button></th>
                                             </tr>
                                         </thead>
                                         <tbody class="add-certificate">
-                                            @foreach($integration as $key => $v)
+                                            @foreach($integration as $key => $val)
                                             <tr>
-                                                <td>{{ $v->name }}</td>
-                                                <td class="text-right">Rp {{ number_format($v->price) }}</td>
                                                 <td>
-                                                    <a href="{{ asset(Storage::url($v->attachment)) }}"><img src="{{ asset(Storage::url($v->attachment)) }}"></a>
+                                                    <select id="{{ $key }}" class="form-control certificateSelect" name="certificate_id[{{ $key }}]" disabled>
+                                                        @foreach($certificates as $key => $v)
+                                                         @if($v->id == $val->id)
+                                                         <option value="{{ $v->id }}" selected hidden>&nbsp{{$v->id." - ".$v->name}}</option>
+                                                         @else
+                                                         <option value="{{ $v->id }}" >&nbsp{{$v->id." - ".$v->name}}</option>
+                                                         @endif
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td class="text-right">
+                                                    <input type="number" class="form-control text-right" name="price[{{ $key }}]" value="{{ $val->price }}" readonly>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ asset(Storage::url($val->attachment)) }}"><img src="{{ asset(Storage::url($val->attachment)) }}"></a>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -104,10 +116,10 @@
             let i = $('tbody.add-certificate tr').length;
                 html += '<tr>';
                 html += '<td>';
-                html += '<select class="form-control certificateSelect" data-placeholder="Ceritificate Name" name="certificate_id['+i+']">';
+                html += '<select id="'+i+'" class="form-control certificateSelect" data-placeholder="Ceritificate Name" name="certificate_id['+i+']">';
                 html += '<option value=""></option>';
-                <?php foreach ($certificates as $key => $value) : ?>
-                    html += '<option value="{{$value->id}}">&nbsp{{$value->id." - ".$value->name}}</option>';
+                <?php foreach ($certificates as $key => $v) : ?>
+                    html += '<option value="{{$v->id}}">&nbsp{{$v->id." - ".$v->name}}</option>';
                 <?php endforeach; ?>
                 html += '</select>';
                 html += '</td>';
@@ -118,12 +130,11 @@
                 html += '<input type="file" class="form-control" name="attachment['+i+']">';
                 html += '</td>';                
                 html += '</tr>';
-            
+
             $('tbody.add-certificate').append(html);
             $('.certificateSelect').select2();
+            $('select#'+i).focus();
         });
-
-
 
     </script>
 @endsection

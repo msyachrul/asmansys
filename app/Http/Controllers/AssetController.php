@@ -141,7 +141,7 @@ class AssetController extends Controller
     public function integration(Asset $asset)
     {
         $value = Asset::join('users','assets.last_updated_by','users.id')->where('assets.id',$asset->id)->select('assets.id','assets.name','users.name as user')->first();
-        $integration = \App\Value::join('certificates','values.certificate_id','certificates.id')->where('values.asset_id',$asset->id)->select('certificates.name','values.price','values.attachment')->get();
+        $integration = \App\Value::join('certificates','values.certificate_id','certificates.id')->where('values.asset_id',$asset->id)->select('certificates.name','certificates.id','values.price','values.attachment')->get();
         $certificates = \App\Certificate::all();
 
         return view('admin.asset.document',compact('value','integration','certificates'));
