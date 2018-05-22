@@ -36,9 +36,12 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $i = 1;
+                                    @endphp
                                 	@foreach($data as $key => $value)
                                 	<tr>
-                                		<td>{{ $value->id }}</td>
+                                		<td>{{ $i++ }}</td>
                                 		<td>{{ $value->name }}</td>
                                 		<td>{{ $value->category }}</td>
                                         <td class="btn-group">

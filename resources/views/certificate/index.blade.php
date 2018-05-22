@@ -35,9 +35,12 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $i = 1;
+                                    @endphp
                                 	@foreach($data as $key => $value)
                                 	<tr>
-                                		<td>{{ $value->id }}</td>
+                                		<td>{{ $i++ }}</td>
                                 		<td>{{ $value->name }}</td>
                                         <td class="btn-group">
                                             <a class="btn btn-secondary btn-detail" href="{{ route('certificate.userShow',$value->id) }}">Detail</a>
