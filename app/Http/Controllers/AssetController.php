@@ -138,36 +138,6 @@ class AssetController extends Controller
         return view('asset.show',compact('value','category','region','picts','integration'));
     }
 
-    public function integration(Asset $asset)
-    {
-        $value = Asset::join('users','assets.last_updated_by','users.id')->where('assets.id',$asset->id)->select('assets.id','assets.name','users.name as user')->first();
-        $integration = \App\Value::join('certificates','values.certificate_id','certificates.id')->where('values.asset_id',$asset->id)->select('certificates.name','certificates.id','values.price','values.attachment')->get();
-        $certificates = \App\Certificate::all();
-
-        return view('admin.asset.document',compact('value','integration','certificates'));
-    }
-
-    public function integrationStore(Request $request, Asset $asset)
-    {
-
-        $this->validate($request, [
-            'price' => 'required',
-            'certificate_id' => 'required',
-            'attachment' => 'nullable',
-        ]);
-        for ($i=0; $i < count($request->certificate_id) ; $i++) { 
-            $data = new \App\Value;
-                $data->asset_id = $asset->id;
-                $data->certificate_id = $request->certificate_id[$i];
-                $data->price = $request->price[$i];
-                $data->attachment = $request->file('attachment')[$i]->store('public/images');
-                $data->last_updated_by = \Auth::user()->id;
-            $data->save();
-        }
-
-        return redirect()->route('asset.index');
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -245,11 +215,59 @@ class AssetController extends Controller
             foreach ($path as $key => $value) {
                 \Storage::delete($value->path);
             }
+
+        $path = \App\Value::where('asset_id',$asset->id)->get();
+            foreach ($path as $key => $value) {
+                \Storage::delete($value->attachment);
+            }
         // hapus path gambar di tabel
         \App\Picture::where('asset_id',$asset->id)->delete();
         // hapus data
         Asset::destroy($asset->id);
 
         return redirect()->route('asset.index');
+    }
+
+    public function integrationShow(Asset $asset)
+    {
+        $value = Asset::join('users','assets.last_updated_by','users.id')->where('assets.id',$asset->id)->select('assets.id','assets.name','users.name as user')->first();
+        $integration = \App\Value::join('certificates','values.certificate_id','certificates.id')->where('values.asset_id',$asset->id)->select('values.id','certificates.name','certificates.id as certificate_id','values.price','values.attachment')->get();
+        $certificates = \App\Certificate::all();
+
+        return view('admin.asset.document',compact('value','integration','certificates'));
+    }
+
+    public function integrationStore(Request $request, Asset $asset)
+    {
+        dd($request);
+
+        $this->validate($request, [
+                'certificate_id[]' => 'required',
+                'price[]' => 'required',
+            ], ['required' => "The fields can't be null"]);
+
+        for ($i=0; $i < count($request->certificate_id) ; $i++) { 
+
+            $data = new \App\Value;
+                $data->asset_id = $asset->id;
+                $data->certificate_id = $request->certificate_id[$i];
+                $data->price = $request->price[$i];
+                $data->attachment = !empty($request->file('attachment')) ? $request->file('attachment')[$i]->store('public/images') : '';
+                $data->last_updated_by = \Auth::user()->id;
+            $data->save();
+        }
+
+        return redirect()->route('asset.index');
+    }
+
+    public function integrationDestroy(Request $request)
+    {
+        $attachment = \App\Value::where('id',$request->id)->first()->attachment;
+
+        \Storage::delete($attachment);
+
+        \App\Value::find($request->id)->delete();
+
+        return response()->json('Success');
     }
 }

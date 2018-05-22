@@ -26,8 +26,9 @@ Route::get('/asset', function () {
 })->name('assets');
 
 Route::resource('/menu/asset','assetController');
-Route::get('/menu/asset/document/{asset}','assetController@integration')->name('asset.integration');
+Route::get('/menu/asset/document/{asset}','assetController@integrationShow')->name('asset.integrationShow');
 Route::post('/menu/asset/document/{asset}/store','assetController@integrationStore')->name('asset.integrationStore');
+Route::post('/menu/asset/document/delete','assetController@integrationDestroy')->name('asset.integrationDestroy');
 
 Route::resource('/menu/category','categoryController');
 

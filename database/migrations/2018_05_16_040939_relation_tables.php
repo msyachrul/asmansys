@@ -22,7 +22,7 @@ class RelationTables extends Migration
 
         Schema::table('values', function (Blueprint $table) {
             $table->unsignedInteger('asset_id');
-            $table->foreign('asset_id')->references('id')->on('assets')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('asset_id')->references('id')->on('assets')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedInteger('certificate_id');
             $table->foreign('certificate_id')->references('id')->on('certificates')->onUpdate('cascade')->onDelete('restrict');
         });

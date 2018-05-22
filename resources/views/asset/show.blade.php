@@ -89,7 +89,9 @@
                                                 <td>{{ $v->name }}</td>
                                                 <td class="text-right">Rp {{ number_format($v->price) }}</td>
                                                 <td>
+                                                    @if($v->attachment)
                                                     <a href="{{ asset(Storage::url($v->attachment)) }}"><img src="{{ asset(Storage::url($v->attachment)) }}"></a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
