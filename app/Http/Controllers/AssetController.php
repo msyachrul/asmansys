@@ -56,7 +56,7 @@ class AssetController extends Controller
             'description'  => 'required',
             'category_id' => 'required',
             'region_id' => 'required',
-            'picture[]' => 'nullable|max:5000',
+            'picture.*' => 'nullable|max:5000',
         ]);
 
         // upload gambar dan mengembalikan string lokasi gambar
@@ -239,25 +239,28 @@ class AssetController extends Controller
 
     public function integrationStore(Request $request, Asset $asset)
     {
-        dd($request);
-
         $this->validate($request, [
-                'certificate_id[]' => 'required',
-                'price[]' => 'required',
+                'certificate_id.*' => 'required',
+                'price.*' => 'required',
             ], ['required' => "The fields can't be null"]);
 
-        for ($i=0; $i < count($request->certificate_id) ; $i++) { 
+        foreach ($request->certificate_id as $key => $value) {
+            $path = '';
+
+            if (isset($request->file('attachment')[$key])) {
+                $path = $request->file('attachment')[$key]->store('public/images');
+            }
 
             $data = new \App\Value;
                 $data->asset_id = $asset->id;
-                $data->certificate_id = $request->certificate_id[$i];
-                $data->price = $request->price[$i];
-                $data->attachment = !empty($request->file('attachment')) ? $request->file('attachment')[$i]->store('public/images') : '';
+                $data->certificate_id = $request->certificate_id[$key];
+                $data->price = $request->price[$key];
+                $data->attachment = $path;
                 $data->last_updated_by = \Auth::user()->id;
-            $data->save();
+            $data->save();            
         }
 
-        return redirect()->route('asset.index');
+        return redirect()->back();
     }
 
     public function integrationDestroy(Request $request)

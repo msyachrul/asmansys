@@ -61,7 +61,7 @@
                                             @foreach($integration as $keys => $val)
                                             <tr>
                                                 <td>
-                                                    <select id="{{ $keys }}" class="form-control certificateSelect" name="certificate_id[{{ $keys }}]" disabled>
+                                                    <select  class="form-control certificateSelect" name="certificate_id[{{ $keys }}]" disabled>
                                                         @foreach($certificates as $key => $v)
                                                          @if($v->id == $val->certificate_id)
                                                          <option value="{{ $v->id }}" selected hidden>&nbsp{{$v->id." - ".$v->name}}</option>
@@ -72,7 +72,7 @@
                                                     </select>
                                                 </td>
                                                 <td class="text-right">
-                                                    <input type="number" class="form-control text-right" name="price[{{ $keys }}]" value="{{ $val->price }}" readonly>
+                                                    <input type="number" class="form-control text-right" name="price[{{ $keys }}]" value="{{ $val->price }}" disabled>
                                                 </td>
                                                 <td>
                                                     @if(!empty($val->attachment))
@@ -80,7 +80,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-secondary" onclick="removeCertificate({{$val->id}})"><i class="fa fa-minus"></i></button>
+                                                    <button type="button" class="btn btn-secondary btn-remove" value="{{ $val->id }}"><i class="fa fa-minus"></i></button>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -123,8 +123,15 @@
             $('.certificateSelect').select2();
         });
 
-        $(document).on('submit','form#form-certificate',function(){
-            $('select.certificateSelect').removeAttr('disabled');
+        $(document).on('click','.btn-remove',function() {
+            if ($(this).val()) {
+                removeCertificate($(this).val());    
+            }
+            else {
+                let i = $('tbody.add-certificate tr').length;
+                document.getElementById('table-certificate').deleteRow(i);
+            }
+            
         });
 
         function removeCertificate(id) {
@@ -139,8 +146,11 @@
                     url: "{{ route('asset.integrationDestroy')}}",
                     type: "post",
                     data: values,
-                    success: location.reload(),
+                    success: function() {
+                        alert('Certificate has been deleted');
+                        },
                 });
+                location.reload(true);
             }
         };
 
@@ -170,11 +180,6 @@
             $('tbody.add-certificate').append(html);
             $('.certificateSelect').select2();
             $('select#'+i).focus();
-        });
-
-        $(document).on('click','.btn-remove',function() {
-            let i = $('tbody.add-certificate tr').length;
-            document.getElementById('table-certificate').deleteRow(i);
         });
 
     </script>
