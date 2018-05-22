@@ -72,7 +72,7 @@
                         <a href="{{ route('region.index') }}"> <i class="menu-icon fa fa-map"></i>Regions Management</a>
                     </li>
                     <li>
-                        <a href="#"> <i class="menu-icon fa fa-user"></i> Users Management</a>
+                        <a href="{{ route('user.index') }}"> <i class="menu-icon fa fa-user"></i> Users Management</a>
                     </li>
                     
                 </ul>

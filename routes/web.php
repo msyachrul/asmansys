@@ -36,6 +36,8 @@ Route::resource('/menu/region','regionController');
 
 Route::resource('/menu/certificate','certificateController');
 
+Route::resource('/menu/user','userController');
+
 Route::get('/asset','assetController@userIndex')->name('asset.userIndex');
 
 Route::get('/asset/{asset}','assetController@userShow')->name('asset.userShow');
