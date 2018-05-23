@@ -101,7 +101,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('user.index');
+        return redirect()->back();
     }
 
     /**
@@ -115,5 +115,12 @@ class UserController extends Controller
         User::destroy($user->id);
         return redirect()->route('user.index');
 
+    }
+
+    public function profile()
+    {
+        $user = User::find(\Auth::user()->id);
+
+        return view('profile',compact('user'));
     }
 }

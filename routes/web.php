@@ -56,3 +56,5 @@ Route::get('/region','regionController@userIndex')->name('region.userIndex');
 Route::get('/region/{region}','regionController@userShow')->name('region.userShow');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/user/profile','userController@profile')->name('user.profile');

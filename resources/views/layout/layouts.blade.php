@@ -104,7 +104,7 @@
                             {{ Auth::user()->name }}
                         </a>
                         <div class="user-menu dropdown-menu">
-                                <a class="nav-link" href="#"><i class="fa fa-user"></i> My Profile</a>
+                                <a class="nav-link" href="{{ route('user.profile') }}"><i class="fa fa-user"></i> My Profile</a>
 
                                 <a class="nav-link" href="#" onclick="document.getElementById('logout-form').submit()"><i class="fa fa-power-off"></i> Logout</a>
 
