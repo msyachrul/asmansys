@@ -257,7 +257,11 @@ class AssetController extends Controller
                 $data->price = $request->price[$key];
                 $data->attachment = $path;
                 $data->last_updated_by = \Auth::user()->id;
-            $data->save();            
+            $data->save();
+
+            $asset = Asset::find($asset->id);
+                $asset->last_updated_by = \Auth::user()->id;
+            $asset->save();
         }
 
         return redirect()->back();
@@ -270,6 +274,10 @@ class AssetController extends Controller
         \Storage::delete($attachment);
 
         \App\Value::find($request->id)->delete();
+
+        $asset = Asset::find($request->asset_id);
+            $asset->last_updated_by = \Auth::user()->id;
+        $asset->save();
 
         return response()->json('Success');
     }

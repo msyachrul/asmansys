@@ -13,21 +13,20 @@
 
 Auth::routes();
 
-Route::get('/', function () {
-    return view('admin.dashboard');
-})->middleware('auth')->name('dashboard');
-
-Route::get('/home', function () {
-	return view('admin.home');
+Route::get('/', function() {
+	return redirect()->route('dashboard.index');
 });
 
-Route::get('/asset', function () {
-	return view('admin.asset');
-})->name('assets');
+Route::resource('/dashboard','dashboardController');
+
+// Admin
 
 Route::resource('/menu/asset','assetController');
+
 Route::get('/menu/asset/document/{asset}','assetController@integrationShow')->name('asset.integrationShow');
+
 Route::post('/menu/asset/document/{asset}/store','assetController@integrationStore')->name('asset.integrationStore');
+
 Route::post('/menu/asset/document/delete','assetController@integrationDestroy')->name('asset.integrationDestroy');
 
 Route::resource('/menu/category','categoryController');
@@ -37,6 +36,8 @@ Route::resource('/menu/region','regionController');
 Route::resource('/menu/certificate','certificateController');
 
 Route::resource('/menu/user','userController');
+
+// User
 
 Route::get('/asset','assetController@userIndex')->name('asset.userIndex');
 

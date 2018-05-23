@@ -31,7 +31,7 @@
                                   <tr>
                                     <th width="1%">No</th>
                                     <th>Region Name</th>
-                                    <th width="10%">Action</th>
+                                    <!-- <th width="10%">Action</th> -->
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -42,9 +42,9 @@
                                 	<tr>
                                 		<td>{{ $i++ }}</td>
                                 		<td>{{ $value->name }}</td>
-                                        <td class="btn-group">
+                                        <!-- <td class="btn-group">
                                             <a class="btn btn-secondary btn-detail" href="{{ route('region.userShow',$value->id) }}">Detail</a>
-                                		</td>
+                                		</td> -->
                                 	</tr>
                                 	@endforeach
                                 </tbody>

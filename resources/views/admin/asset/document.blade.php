@@ -39,6 +39,7 @@
                             <form id="form-certificate" action="{{ route('asset.integrationStore',$value->id) }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
+                                    <input type="hidden" id="asset_id" value="{{ $value->id }}">
                                     <label for="name"><b>Name</b></label>
                                     <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" autocomplete="off" autofocus="on" placeholder="Asset Name" value="{{ $value->name }}" disabled>
                                     @if ($errors->has('name'))
@@ -125,7 +126,7 @@
 
         $(document).on('click','.btn-remove',function() {
             if ($(this).val()) {
-                removeCertificate($(this).val());    
+                removeCertificate($(this).val(),$('input#asset_id').val());    
             }
             else {
                 let i = $('tbody.add-certificate tr').length;
@@ -134,13 +135,14 @@
             
         });
 
-        function removeCertificate(id) {
+        function removeCertificate(id,asset_id) {
             let x = confirm('Are you sure want to delete this certificate?');
 
             if (x==true) {
                 let values = {
                     '_token': '{{ csrf_token() }}',
                     'id' : id,
+                    'asset_id' : asset_id,
                 };
                 $.ajax({
                     url: "{{ route('asset.integrationDestroy')}}",

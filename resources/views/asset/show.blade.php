@@ -98,10 +98,10 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="form-group">
+<!--                                 <div class="form-group">
                                     <label><b>Last Updated By</b></label>
                                     <input type="text" class="form-control" value="{{ $value->user }}" disabled>
-                                </div>
+                                </div> -->
                                 <div class="form-group btn-process">
                                     <a href="{{ route('asset.userIndex') }}" class="btn btn-secondary form-control">Close</a>
                                 </div>
