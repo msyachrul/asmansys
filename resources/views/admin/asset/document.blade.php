@@ -27,7 +27,7 @@
                                     <!-- <a class="btn btn-secondary btn-edit" href="#"><i class="fa fa-edit"></i> Edit</a>
                                     &nbsp
                                     <a class="btn btn-secondary" href="#" onclick="removeItem();"><i class="fa fa-trash"></i> Remove</a>
-                                    <form id="remove-form" action="{{ route('asset.destroy',$value->id) }}" method="post" style="display: none">
+                                    <form id="remove-form" action="#" method="post" style="display: none">
                                         @csrf
                                         @method('DELETE')
                                     </form> -->
@@ -53,7 +53,7 @@
                                         <thead>
                                             <tr>
                                                 <th width="40%">Certificate</th>
-                                                <th>Value</th>
+                                                <th>Number</th>
                                                 <th width="20%">Attachment</th>
                                                 <th width="5%"><button type="button" class="btn btn-secondary btn-add"><i class="fa fa-plus"></i></button></th>
                                             </tr>
@@ -73,7 +73,7 @@
                                                     </select>
                                                 </td>
                                                 <td class="text-right">
-                                                    <input type="number" class="form-control text-right" name="price[{{ $keys }}]" value="{{ $val->price }}" disabled>
+                                                    <input type="text" class="form-control text-right" name="number[{{ $keys }}]" value="{{ $val->number }}" disabled>
                                                 </td>
                                                 <td>
                                                     @if(!empty($val->attachment))
@@ -169,7 +169,7 @@
                 html += '</select>';
                 html += '</td>';
                 html += '<td>';
-                html += '<input type="number" class="form-control" placeholder="Certificate Value" name="price['+i+']">';
+                html += '<input type="text" class="form-control" placeholder="Certificate Number" name="number['+i+']">';
                 html += '</td>';
                 html += '<td>';
                 html += '<input type="file" class="form-control" name="attachment['+i+']">';

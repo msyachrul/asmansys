@@ -130,7 +130,7 @@ class AssetController extends Controller
 
         $picts = \App\Picture::where('asset_id',$value->id)->get();
 
-        $integration = \App\Value::join('certificates','values.certificate_id','certificates.id')->where('values.asset_id',$asset->id)->select('certificates.name','values.price','values.attachment')->get();
+        $integration = \App\Value::join('certificates','values.certificate_id','certificates.id')->where('values.asset_id',$asset->id)->select('certificates.name','values.number','values.attachment')->get();
 
         $category = \App\Category::all();
         $region = \App\Region::all();
@@ -231,7 +231,7 @@ class AssetController extends Controller
     public function integrationShow(Asset $asset)
     {
         $value = Asset::join('users','assets.last_updated_by','users.id')->where('assets.id',$asset->id)->select('assets.id','assets.name','users.name as user')->first();
-        $integration = \App\Value::join('certificates','values.certificate_id','certificates.id')->where('values.asset_id',$asset->id)->select('values.id','certificates.name','certificates.id as certificate_id','values.price','values.attachment')->get();
+        $integration = \App\Value::join('certificates','values.certificate_id','certificates.id')->where('values.asset_id',$asset->id)->select('values.id','certificates.name','certificates.id as certificate_id','values.number','values.attachment')->get();
         $certificates = \App\Certificate::all();
 
         return view('admin.asset.document',compact('value','integration','certificates'));
@@ -241,7 +241,7 @@ class AssetController extends Controller
     {
         $this->validate($request, [
                 'certificate_id.*' => 'required',
-                'price.*' => 'required',
+                'number.*' => 'required',
             ], ['required' => "The fields can't be null"]);
 
         foreach ($request->certificate_id as $key => $value) {
@@ -254,9 +254,8 @@ class AssetController extends Controller
             $data = new \App\Value;
                 $data->asset_id = $asset->id;
                 $data->certificate_id = $request->certificate_id[$key];
-                $data->price = $request->price[$key];
+                $data->number = $request->number[$key];
                 $data->attachment = $path;
-                $data->last_updated_by = \Auth::user()->id;
             $data->save();
 
             $asset = Asset::find($asset->id);

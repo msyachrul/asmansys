@@ -87,7 +87,7 @@
                                             @foreach($integration as $key => $v)
                                             <tr>
                                                 <td>{{ $v->name }}</td>
-                                                <td class="text-right">Rp {{ number_format($v->price) }}</td>
+                                                <td class="text-right">{{ $v->number }}</td>
                                                 <td>
                                                     @if($v->attachment)
                                                     <a href="{{ asset(Storage::url($v->attachment)) }}"><img src="{{ asset(Storage::url($v->attachment)) }}"></a>

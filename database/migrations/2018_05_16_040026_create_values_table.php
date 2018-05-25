@@ -15,10 +15,9 @@ class CreateValuesTable extends Migration
     {
         Schema::create('values', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('price');
+            $table->string('number');
             $table->string('attachment');
             $table->timestamps();
-            $table->integer('last_updated_by');
         });
     }
 
