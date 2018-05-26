@@ -17,44 +17,44 @@ Route::get('/', function() {
 	return redirect()->route('dashboard.index');
 });
 
-Route::resource('/dashboard','dashboardController');
+Route::resource('/dashboard','DashboardController');
 
 // Admin
 
-Route::resource('/menu/asset','assetController');
+Route::resource('/menu/asset','AssetController');
 
-Route::get('/menu/asset/document/{asset}','assetController@integrationShow')->name('asset.integrationShow');
+Route::get('/menu/asset/document/{asset}','AssetController@integrationShow')->name('asset.integrationShow');
 
-Route::post('/menu/asset/document/{asset}/store','assetController@integrationStore')->name('asset.integrationStore');
+Route::post('/menu/asset/document/{asset}/store','AssetController@integrationStore')->name('asset.integrationStore');
 
-Route::post('/menu/asset/document/delete','assetController@integrationDestroy')->name('asset.integrationDestroy');
+Route::post('/menu/asset/document/delete','AssetController@integrationDestroy')->name('asset.integrationDestroy');
 
-Route::resource('/menu/category','categoryController');
+Route::resource('/menu/category','CategoryController');
 
-Route::resource('/menu/region','regionController');
+Route::resource('/menu/region','RegionController');
 
-Route::resource('/menu/certificate','certificateController');
+Route::resource('/menu/certificate','CertificateController');
 
-Route::resource('/menu/user','userController');
+Route::resource('/menu/user','UserController');
 
 // User
 
-Route::get('/asset','assetController@userIndex')->name('asset.userIndex');
+Route::get('/asset','AssetController@userIndex')->name('asset.userIndex');
 
-Route::get('/asset/{asset}','assetController@userShow')->name('asset.userShow');
+Route::get('/asset/{asset}','AssetController@userShow')->name('asset.userShow');
 
-Route::get('/certificate','certificateController@userIndex')->name('certificate.userIndex');
+Route::get('/certificate','CertificateController@userIndex')->name('certificate.userIndex');
 
-Route::get('/certificate/{certificate}','certificateController@userShow')->name('certificate.userShow');
+Route::get('/certificate/{certificate}','CertificateController@userShow')->name('certificate.userShow');
 
-Route::get('/category','categoryController@userIndex')->name('category.userIndex');
+Route::get('/category','CategoryController@userIndex')->name('category.userIndex');
 
-Route::get('/category/{category}','categoryController@userShow')->name('category.userShow');
+Route::get('/category/{category}','CategoryController@userShow')->name('category.userShow');
 
-Route::get('/region','regionController@userIndex')->name('region.userIndex');
+Route::get('/region','RegionController@userIndex')->name('region.userIndex');
 
-Route::get('/region/{region}','regionController@userShow')->name('region.userShow');
+Route::get('/region/{region}','RegionController@userShow')->name('region.userShow');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/user/profile','userController@profile')->name('user.profile');
+Route::get('/user/profile','UserController@profile')->name('user.profile');
