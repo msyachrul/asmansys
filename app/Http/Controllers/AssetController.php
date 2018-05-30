@@ -71,12 +71,13 @@ class AssetController extends Controller
             $data->last_updated_by = \Auth::user()->id;
         $data->save();
 
-        foreach ($request->file('picture') as $key => $value) {
-
-            $pict = new \App\Picture;
-                $pict->path = $value->store('public/images');
-                $pict->asset_id = $data->id;
-            $pict->save();
+        if ($request->file('picture')) {
+            foreach ($request->file('picture') as $key => $value) {
+                $pict = new \App\Picture;
+                    $pict->path = $value->store('public/images');
+                    $pict->asset_id = $data->id;
+                $pict->save();
+            }
         }
 
         return redirect()->route('asset.index');
