@@ -29,6 +29,8 @@ Route::post('/menu/asset/document/{asset}/store','AssetController@integrationSto
 
 Route::post('/menu/asset/document/delete','AssetController@integrationDestroy')->name('asset.integrationDestroy');
 
+Route::post('/menu/asset/document/attachment','AssetController@integrationAttachment')->name('asset.integrationAttachment');
+
 Route::resource('/menu/category','CategoryController');
 
 Route::resource('/menu/region','RegionController');

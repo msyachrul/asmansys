@@ -232,12 +232,22 @@ class AssetController extends Controller
     public function integrationShow(Asset $asset)
     {
         $value = Asset::join('users','assets.last_updated_by','users.id')->where('assets.id',$asset->id)->select('assets.id','assets.name','users.name as user')->first();
-        $integration = \App\Value::join('certificates','values.certificate_id','certificates.id')->where('values.asset_id',$asset->id)->select('values.id','certificates.name','certificates.id as certificate_id','values.number','values.attachment')->get();
+        $integration = \App\CertificateOnAsset::join('certificates','certificate_on_assets.certificate_id','certificates.id')->where('certificate_on_assets.asset_id',$asset->id)->select('certificate_on_assets.id','certificates.name','certificates.id as certificate_id','certificate_on_assets.number')->get();
+        $integrationAttachment = \App\CertificateOnAssetAttachment::join('certificate_on_assets','coa_id','certificate_on_assets.id')->where('certificate_on_assets.asset_id',$asset->id)->select('certificate_on_assets_attachment.link')->get();
+        
         $certificates = \App\Certificate::all();
 
         return view('admin.asset.document',compact('value','integration','certificates'));
     }
 
+    public function integrationAttachment(Request $request)
+    {
+        $data = \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->get();
+
+        return response()->json($data);
+    }
+
+    // BELUM BERES
     public function integrationStore(Request $request, Asset $asset)
     {
         $this->validate($request, [
@@ -246,18 +256,30 @@ class AssetController extends Controller
             ], ['required' => "The fields can't be null"]);
 
         foreach ($request->certificate_id as $key => $value) {
-            $path = '';
+            // if (isset($request->file('attachment')[$key])) {
+            //     $path = $request->file('attachment')[$key]->store('public/attachments');
+            // }
 
-            if (isset($request->file('attachment')[$key])) {
-                $path = $request->file('attachment')[$key]->store('public/images');
-            }
+            // $data = new \App\Value;
+            //     $data->asset_id = $asset->id;
+            //     $data->certificate_id = $request->certificate_id[$key];
+            //     $data->number = $request->number[$key];
+            //     $data->attachment = $path;
+            // $data->save();
 
-            $data = new \App\Value;
+            $data = new \App\CertificateOnAsset;
                 $data->asset_id = $asset->id;
                 $data->certificate_id = $request->certificate_id[$key];
                 $data->number = $request->number[$key];
-                $data->attachment = $path;
             $data->save();
+
+            foreach ($request->file('attachment')[$key] as $v) {
+                $attachment = new \App\CertificateOnAssetAttachment;
+                    $attachment->link = $v->store('public/attachments');
+                    $attachment->coa_id = $data->id;
+                $attachment->save();
+            }
+
 
             $asset = Asset::find($asset->id);
                 $asset->last_updated_by = \Auth::user()->id;
@@ -267,13 +289,10 @@ class AssetController extends Controller
         return redirect()->back();
     }
 
+    // BELUM BERES
     public function integrationDestroy(Request $request)
     {
-        $attachment = \App\Value::where('id',$request->id)->first()->attachment;
-
-        \Storage::delete($attachment);
-
-        \App\Value::find($request->id)->delete();
+        \App\CertificateOnAsset::find($request->id)->delete();
 
         $asset = Asset::find($request->asset_id);
             $asset->last_updated_by = \Auth::user()->id;

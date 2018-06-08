@@ -32,7 +32,6 @@
                                         @method('DELETE')
                                     </form> -->
                                 </div>
-                                
                             </div>
                         </div>
                         <div class="card-body">
@@ -54,7 +53,7 @@
                                             <tr>
                                                 <th width="40%">Certificate</th>
                                                 <th>Number</th>
-                                                <th width="20%">Attachment</th>
+                                                <th width="10%">Attachment</th>
                                                 <th width="5%"><button type="button" class="btn btn-secondary btn-add"><i class="fa fa-plus"></i></button></th>
                                             </tr>
                                         </thead>
@@ -75,10 +74,8 @@
                                                 <td class="text-right">
                                                     <input type="text" class="form-control text-right" name="number[{{ $keys }}]" value="{{ $val->number }}" disabled>
                                                 </td>
-                                                <td>
-                                                    @if(!empty($val->attachment))
-                                                    <a href="{{ asset(Storage::url($val->attachment)) }}"><img src="{{ asset(Storage::url($val->attachment)) }}"></a>
-                                                    @endif
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-link btn-show" style="color:grey" data-id="{{ $val->id }}">Show</button>
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-secondary btn-remove" value="{{ $val->id }}"><i class="fa fa-minus"></i></button>
@@ -110,18 +107,47 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="attachmentModalLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attachmentModalTittle">Attachment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
 @section('extraScript')
-    <script src="{{ asset('assets/js/lib/data-table/datatables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/select2/select2.min.js') }}"></script>
 
     <script type="text/javascript">
-        $(document).ready(function() {
+        ( function($) {
+            $(document).ready(function() {
             $('.certificateSelect').select2();
+        });
+
+        $(document).on('click','.btn-show',function () {
+            $('#attachmentModal').modal('show');
+            let req = {
+                '_token': '{{ csrf_token() }}',
+                'coa_id': $(this).data('id'),
+            };
+            $.ajax({
+                url: "{{ route('asset.integrationAttachment') }}",
+                type: "post",
+                data: req,
+            });
         });
 
         $(document).on('click','.btn-remove',function() {
@@ -152,7 +178,7 @@
                         alert('Certificate has been deleted');
                         },
                 });
-                location.reload(true);
+                // location.reload(true);
             }
         };
 
@@ -172,7 +198,7 @@
                 html += '<input type="text" class="form-control" placeholder="Certificate Number" name="number['+i+']">';
                 html += '</td>';
                 html += '<td>';
-                html += '<input type="file" class="form-control" name="attachment['+i+']">';
+                html += '<input type="file" class="form-control" name="attachment['+i+'][]" multiple>';
                 html += '</td>'; 
                 html += '<td>';
                 html += '<button type="button" class="form-control btn-remove"><i class="fa fa-minus"></i></button>';
@@ -183,6 +209,8 @@
             $('.certificateSelect').select2();
             $('select#'+i).focus();
         });
+    })(jQuery);
+        
 
     </script>
 @endsection
