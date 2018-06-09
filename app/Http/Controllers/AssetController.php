@@ -247,7 +247,6 @@ class AssetController extends Controller
         return response()->json($data);
     }
 
-    // BELUM BERES
     public function integrationStore(Request $request, Asset $asset)
     {
         $this->validate($request, [
@@ -256,16 +255,6 @@ class AssetController extends Controller
             ], ['required' => "The fields can't be null"]);
 
         foreach ($request->certificate_id as $key => $value) {
-            // if (isset($request->file('attachment')[$key])) {
-            //     $path = $request->file('attachment')[$key]->store('public/attachments');
-            // }
-
-            // $data = new \App\Value;
-            //     $data->asset_id = $asset->id;
-            //     $data->certificate_id = $request->certificate_id[$key];
-            //     $data->number = $request->number[$key];
-            //     $data->attachment = $path;
-            // $data->save();
 
             $data = new \App\CertificateOnAsset;
                 $data->asset_id = $asset->id;
@@ -275,11 +264,10 @@ class AssetController extends Controller
 
             foreach ($request->file('attachment')[$key] as $v) {
                 $attachment = new \App\CertificateOnAssetAttachment;
-                    $attachment->link = $v->store('public/attachments');
+                    $attachment->link = \Storage::url($v->store('public/attachments'));
                     $attachment->coa_id = $data->id;
                 $attachment->save();
             }
-
 
             $asset = Asset::find($asset->id);
                 $asset->last_updated_by = \Auth::user()->id;

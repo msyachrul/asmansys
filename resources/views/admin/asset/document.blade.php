@@ -111,7 +111,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="attachmentModalTittle">Attachment</h5>
+                    <h5 class="modal-title" id="attachmentModalTittle"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -147,6 +147,14 @@
                 url: "{{ route('asset.integrationAttachment') }}",
                 type: "post",
                 data: req,
+                success: function(response) {
+                    let html = "";
+                    for (var i = 0; i < response.length; i++) {
+
+                        html += "<img src='"+response[i].link+"' width='200px'/>'";
+                    }
+                    $('.modal-body').html(html);
+                }
             });
         });
 
