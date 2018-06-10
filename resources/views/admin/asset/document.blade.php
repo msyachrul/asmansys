@@ -117,7 +117,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    
+                    <div id="imageCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- Indicator -->
+                        <ol class="carousel-indicators">
+                        </ol>
+                          <!-- Wrapper for slides -->
+                        <div class="carousel-inner">                            
+                        </div>
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control-prev" href="#imageCarousel" data-slide="prev">
+                            <span class="fa fa-chevron-left"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control-next" href="#imageCarousel" data-slide="next">
+                            <span class="fa fa-chevron-right"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -148,12 +164,20 @@
                 type: "post",
                 data: req,
                 success: function(response) {
+                    let carousel = "";
                     let html = "";
                     for (var i = 0; i < response.length; i++) {
 
-                        html += "<img src='"+response[i].link+"' width='200px'/>'";
+                        carousel += "<li data-target='#imageCarousel' data-slide-to='"+i+"'></li>"
+
+                        html += "<div class='carousel-item'>";
+                        html += "<img src='../../.."+response[i].link+"'/>";
+                        html += "</div>";
                     }
-                    $('.modal-body').html(html);
+                    $('.carousel-indicators').html(carousel);
+                    $('.carousel-inner').html(html);
+                    $('.carousel-indicators').addClass('active');
+                    $('.carousel-item:first').addClass('active');
                 }
             });
         });

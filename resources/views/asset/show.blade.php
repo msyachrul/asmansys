@@ -79,7 +79,7 @@
                                         <thead>
                                             <tr>
                                                 <th width="50%">Certificate</th>
-                                                <th>Price</th>
+                                                <th>Number</th>
                                                 <th width="20%">Attachment</th>
                                             </tr>
                                         </thead>
@@ -87,12 +87,8 @@
                                             @foreach($integration as $key => $v)
                                             <tr>
                                                 <td>{{ $v->name }}</td>
-                                                <td class="text-right">{{ $v->number }}</td>
-                                                <td>
-                                                    @if($v->attachment)
-                                                    <a href="{{ asset(Storage::url($v->attachment)) }}"><img src="{{ asset(Storage::url($v->attachment)) }}"></a>
-                                                    @endif
-                                                </td>
+                                                <td>{{ $v->number }}</td>
+                                                <td class="text-center"><button type="button" class="btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">Show</button></td>
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -112,21 +108,82 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="attachmentModalLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attachmentModalTittle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="imageCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- Indicator -->
+                        <ol class="carousel-indicators">
+                        </ol>
+                          <!-- Wrapper for slides -->
+                        <div class="carousel-inner">                            
+                        </div>
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control-prev" href="#imageCarousel" data-slide="prev">
+                            <span class="fa fa-chevron-left"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control-next" href="#imageCarousel" data-slide="next">
+                            <span class="fa fa-chevron-right"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
 @section('extraScript')
-    <script src="{{ asset('assets/js/lib/data-table/datatables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/select2/select2.min.js') }}"></script>
 
     <script type="text/javascript">
+        ( function ($) {
+            $(document).ready(function() {
+                $('.categorySelect').select2();
+                $('.regionSelect').select2();
+            });
 
-        $(document).ready(function() {
-            $('.categorySelect').select2();
-            $('.regionSelect').select2();
-        });
+            $(document).on('click','.btn-show',function () {
+                $('#attachmentModal').modal('show');
+                let req = {
+                    '_token': '{{ csrf_token() }}',
+                    'coa_id': $(this).data('id'),
+                };
+                $.ajax({
+                    url: "{{ route('asset.integrationAttachment') }}",
+                    type: "post",
+                    data: req,
+                    success: function(response) {
+                        let carousel = "";
+                        let html = "";
+                        for (var i = 0; i < response.length; i++) {
+
+                            carousel += "<li data-target='#imageCarousel' data-slide-to='"+i+"'></li>"
+
+                            html += "<div class='carousel-item'>";
+                            html += "<img src='.."+response[i].link+"'/>";
+                            html += "</div>";
+                        }
+                        $('.carousel-indicators').html(carousel);
+                        $('.carousel-inner').html(html);
+                        $('.carousel-indicators').addClass('active');
+                        $('.carousel-item:first').addClass('active');
+                    }
+                });
+            });
+        })(jQuery);
 
     </script>
 @endsection
