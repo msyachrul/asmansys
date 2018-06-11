@@ -217,9 +217,11 @@ class AssetController extends Controller
                 \Storage::delete($value->path);
             }
 
-        $path = \App\Value::where('asset_id',$asset->id)->get();
+        $coa = \App\CertificateOnAsset::where('asset_id',$asset->id)->first();
+        
+        $path = \App\CertificateOnAssetAttachment::where('coa_id',$coa->id)->get();
             foreach ($path as $key => $value) {
-                \Storage::delete($value->attachment);
+                \Storage::delete($value->link);
             }
         // hapus path gambar di tabel
         \App\Picture::where('asset_id',$asset->id)->delete();
@@ -244,7 +246,13 @@ class AssetController extends Controller
     {
         $data = \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->get();
 
-        return response()->json($data);
+        $images = [];
+
+        foreach ($data as $key => $value) {
+            $images[] = \Storage::url($value->link);
+        }
+
+        return response()->json($images);
     }
 
     public function integrationStore(Request $request, Asset $asset)
@@ -264,7 +272,7 @@ class AssetController extends Controller
 
             foreach ($request->file('attachment')[$key] as $v) {
                 $attachment = new \App\CertificateOnAssetAttachment;
-                    $attachment->link = \Storage::url($v->store('public/attachments'));
+                    $attachment->link = $v->store('public/attachments');
                     $attachment->coa_id = $data->id;
                 $attachment->save();
             }
@@ -277,15 +285,20 @@ class AssetController extends Controller
         return redirect()->back();
     }
 
-    // BELUM BERES
     public function integrationDestroy(Request $request)
     {
-        \App\CertificateOnAsset::find($request->id)->delete();
+        $images = \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->get();
+
+        foreach ($images as $key => $value) {
+            $data = \Storage::delete($value->link);
+        }
+
+        \App\CertificateOnAsset::find($request->coa_id)->delete();
 
         $asset = Asset::find($request->asset_id);
             $asset->last_updated_by = \Auth::user()->id;
         $asset->save();
 
-        return response()->json('Success');
+        return response()->json(['success' => 'Certificate has been deleted!']);
     }
 }

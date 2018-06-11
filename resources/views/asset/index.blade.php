@@ -32,7 +32,7 @@
                                     <th width="1%">No</th>
                                     <th>Assets Name</th>
                                     <th>Category</th>
-                                    <th width="10%">Action</th>
+                                    <!-- <th width="10%">Action</th> -->
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -41,12 +41,30 @@
                                     @endphp
                                 	@foreach($data as $key => $value)
                                 	<tr>
-                                		<td>{{ $i++ }}</td>
-                                		<td>{{ $value->name }}</td>
-                                		<td>{{ $value->category }}</td>
-                                        <td class="btn-group">
+                                		<td>
+                                            <a href="{{ route('asset.userShow',$value->id) }}">
+                                                <div>
+                                                    {{ $i++ }}        
+                                                </div>
+                                            </a>
+                                        </td>
+                                		<td>
+                                            <a href="{{ route('asset.userShow',$value->id) }}">
+                                                <div>
+                                                    {{ $value->name }}        
+                                                </div>
+                                            </a>
+                                        </td>
+                                		<td>
+                                            <a href="{{ route('asset.userShow',$value->id) }}">
+                                                <div>
+                                                    {{ $value->category }}
+                                                </div>
+                                            </a>
+                                        </td>
+                                        <!-- <td class="btn-group">
                                             <a class="btn btn-secondary btn-detail" href="{{ route('asset.userShow',$value->id) }}">Detail</a>
-                                		</td>
+                                		</td> -->
                                 	</tr>
                                 	@endforeach
                                 </tbody>

@@ -108,7 +108,7 @@
                                     <input type="file" name="picture[]" id="picture" class="form-control{{ $errors->has('picture') ? ' is-invalid' : '' }}" disabled multiple>
                                     <div class="form-control">
                                     @foreach($picts as $key => $v)
-                                        <a href="{{ asset(Storage::url($v->path)) }}"><img src="{{ asset(Storage::url($v->path)) }}" width="200px"></a>
+                                        <a target="_blank" href="{{ asset(Storage::url($v->path)) }}"><img src="{{ asset(Storage::url($v->path)) }}" width="200px"></a>
                                     @endforeach
                                     </div>
                                     @if ($errors->has('picture'))

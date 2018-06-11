@@ -70,7 +70,7 @@
                                     <label for="picture"><b>Picture</b></label>
                                     <div class="form-control">
                                     @foreach($picts as $key => $v)
-                                        <a href="{{ asset(Storage::url($v->path)) }}"><img src="{{ asset(Storage::url($v->path)) }}" width="200px"></a>
+                                        <a target="_blank" href="{{ asset(Storage::url($v->path)) }}"><img src="{{ asset(Storage::url($v->path)) }}" width="200px"></a>
                                     @endforeach
                                     </div>
                                 </div>
@@ -109,7 +109,7 @@
         </div>
     </div>
     <div class="modal fade" id="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="attachmentModalLabel" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="attachmentModalTittle"></h5>
@@ -173,7 +173,7 @@
                             carousel += "<li data-target='#imageCarousel' data-slide-to='"+i+"'></li>"
 
                             html += "<div class='carousel-item'>";
-                            html += "<img src='.."+response[i].link+"'/>";
+                            html += "<img src='.."+response[i]+"'/>";
                             html += "</div>";
                         }
                         $('.carousel-indicators').html(carousel);

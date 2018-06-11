@@ -108,7 +108,7 @@
         </div>
     </div>
     <div class="modal fade" id="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="attachmentModalLabel" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="attachmentModalTittle"></h5>
@@ -145,13 +145,14 @@
 @endsection
 
 @section('extraScript')
+    
     <script src="{{ asset('assets/js/lib/select2/select2.min.js') }}"></script>
 
     <script type="text/javascript">
         ( function($) {
             $(document).ready(function() {
-            $('.certificateSelect').select2();
-        });
+                $('.certificateSelect').select2();
+            });
 
         $(document).on('click','.btn-show',function () {
             $('#attachmentModal').modal('show');
@@ -171,12 +172,11 @@
                         carousel += "<li data-target='#imageCarousel' data-slide-to='"+i+"'></li>"
 
                         html += "<div class='carousel-item'>";
-                        html += "<img src='../../.."+response[i].link+"'/>";
+                        html += "<img src='../../.."+response[i]+"'/>";
                         html += "</div>";
                     }
                     $('.carousel-indicators').html(carousel);
                     $('.carousel-inner').html(html);
-                    $('.carousel-indicators').addClass('active');
                     $('.carousel-item:first').addClass('active');
                 }
             });
@@ -193,24 +193,24 @@
             
         });
 
-        function removeCertificate(id,asset_id) {
+        function removeCertificate(coa_id,asset_id) {
             let x = confirm('Are you sure want to delete this certificate?');
 
             if (x==true) {
                 let values = {
                     '_token': '{{ csrf_token() }}',
-                    'id' : id,
+                    'coa_id' : coa_id,
                     'asset_id' : asset_id,
                 };
                 $.ajax({
                     url: "{{ route('asset.integrationDestroy')}}",
                     type: "post",
                     data: values,
-                    success: function() {
-                        alert('Certificate has been deleted');
+                    success: function(response) {
+                        alert(response.success);
+                        location.reload(true);
                         },
                 });
-                // location.reload(true);
             }
         };
 
@@ -243,6 +243,5 @@
         });
     })(jQuery);
         
-
     </script>
 @endsection

@@ -47,7 +47,7 @@
                                 		<td>{{ $value->category }}</td>
                                         <td class="btn-group">
                                             <a class="btn btn-secondary btn-detail" href="{{ route('asset.show',$value->id) }}">Detail</a>&nbsp
-                                            <a class="btn btn-secondary" href="{{ route('asset.integrationShow',$value->id)}}">Integration</a>
+                                            <a class="btn btn-secondary" href="{{ route('asset.integrationShow',$value->id)}}">Certificate</a>
                                 		</td>
                                 	</tr>
                                 	@endforeach
