@@ -119,14 +119,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label><b>Status</b></label>
-                                    <select name="status" data-placeholder="Status" class="form-control statusSelect" disabled>
+                                    <select name="status" class="form-control statusSelect" disabled>
                                         <option></option>
                                         @if ($value->status == true)
-                                            <option value="1" selected>&nbspAvailable</option>
-                                            <option value="0">&nbspNot Available</option>    
+                                            <option value="1" hidden selected>&nbspAvailable</option>
+                                            <option value="0">&nbspNot Available</option>
                                         @else
                                             <option value="1">&nbspAvailable</option>
-                                            <option value="0" selected>&nbspNot Available</option>
+                                            <option value="0" hidden selected>&nbspNot Available</option>
                                         @endif
                                     </select>
                                 </div>
@@ -183,7 +183,9 @@
         $(document).ready(function() {
             $('.categorySelect').select2();
             $('.regionSelect').select2();
-            $('.statusSelect').select2();
+            $('.statusSelect').select2({
+                placeholder: "Please select the status",
+            });
         });
 
     </script>

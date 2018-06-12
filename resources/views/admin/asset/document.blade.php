@@ -150,98 +150,96 @@
 
     <script type="text/javascript">
         ( function($) {
-            $(document).ready(function() {
-                $('.certificateSelect').select2();
-            });
-
-        $(document).on('click','.btn-show',function () {
-            $('#attachmentModal').modal('show');
-            let req = {
-                '_token': '{{ csrf_token() }}',
-                'coa_id': $(this).data('id'),
-            };
-            $.ajax({
-                url: "{{ route('asset.integrationAttachment') }}",
-                type: "post",
-                data: req,
-                success: function(response) {
-                    let carousel = "";
-                    let html = "";
-                    for (var i = 0; i < response.length; i++) {
-
-                        carousel += "<li data-target='#imageCarousel' data-slide-to='"+i+"'></li>"
-
-                        html += "<div class='carousel-item'>";
-                        html += "<img src='../../.."+response[i]+"'/>";
-                        html += "</div>";
-                    }
-                    $('.carousel-indicators').html(carousel);
-                    $('.carousel-inner').html(html);
-                    $('.carousel-item:first').addClass('active');
-                }
-            });
-        });
-
-        $(document).on('click','.btn-remove',function() {
-            if ($(this).val()) {
-                removeCertificate($(this).val(),$('input#asset_id').val());    
-            }
-            else {
-                let i = $('tbody.add-certificate tr').length;
-                document.getElementById('table-certificate').deleteRow(i);
-            }
-            
-        });
-
-        function removeCertificate(coa_id,asset_id) {
-            let x = confirm('Are you sure want to delete this certificate?');
-
-            if (x==true) {
-                let values = {
+            $(document).on('click','.btn-show',function () {
+                $('#attachmentModal').modal('show');
+                let req = {
                     '_token': '{{ csrf_token() }}',
-                    'coa_id' : coa_id,
-                    'asset_id' : asset_id,
+                    'coa_id': $(this).data('id'),
                 };
                 $.ajax({
-                    url: "{{ route('asset.integrationDestroy')}}",
+                    url: "{{ route('asset.integrationAttachment') }}",
                     type: "post",
-                    data: values,
+                    data: req,
                     success: function(response) {
-                        alert(response.success);
-                        location.reload(true);
-                        },
+                        let carousel = "";
+                        let html = "";
+                        for (var i = 0; i < response.length; i++) {
+
+                            carousel += "<li data-target='#imageCarousel' data-slide-to='"+i+"'></li>"
+
+                            html += "<div class='carousel-item'>";
+                            html += "<img src='../../.."+response[i]+"'/>";
+                            html += "</div>";
+                        }
+                        $('.carousel-indicators').html(carousel);
+                        $('.carousel-inner').html(html);
+                        $('.carousel-item:first').addClass('active');
+                    }
                 });
-            }
-        };
+            });
 
-        $(document).on('click','.btn-add',function() {
-            let html = '';
-            let i = $('tbody.add-certificate tr').length;
-                html += '<tr>';
-                html += '<td>';
-                html += '<select id="'+i+'" class="form-control certificateSelect" data-placeholder="Ceritificate Name" name="certificate_id['+i+']">';
-                html += '<option value=""></option>';
-                <?php foreach ($certificates as $key => $v) : ?>
-                    html += '<option value="{{$v->id}}">&nbsp{{$v->id." - ".$v->name}}</option>';
-                <?php endforeach; ?>
-                html += '</select>';
-                html += '</td>';
-                html += '<td>';
-                html += '<input type="text" class="form-control" placeholder="Certificate Number" name="number['+i+']">';
-                html += '</td>';
-                html += '<td>';
-                html += '<input type="file" class="form-control" name="attachment['+i+'][]" multiple>';
-                html += '</td>'; 
-                html += '<td>';
-                html += '<button type="button" class="form-control btn-remove"><i class="fa fa-minus"></i></button>';
-                html += '</td>';      
-                html += '</tr>';
+            $(document).on('click','.btn-remove',function() {
+                if ($(this).val()) {
+                    removeCertificate($(this).val(),$('input#asset_id').val());    
+                }
+                else {
+                    let i = $('tbody.add-certificate tr').length;
+                    document.getElementById('table-certificate').deleteRow(i);
+                }
+                
+            });
 
-            $('tbody.add-certificate').append(html);
-            $('.certificateSelect').select2();
-            $('select#'+i).focus();
-        });
-    })(jQuery);
+            function removeCertificate(coa_id,asset_id) {
+                let x = confirm('Are you sure want to delete this certificate?');
+
+                if (x==true) {
+                    let values = {
+                        '_token': '{{ csrf_token() }}',
+                        'coa_id' : coa_id,
+                        'asset_id' : asset_id,
+                    };
+                    $.ajax({
+                        url: "{{ route('asset.integrationDestroy')}}",
+                        type: "post",
+                        data: values,
+                        success: function(response) {
+                            alert(response.success);
+                            location.reload(true);
+                            },
+                    });
+                }
+            };
+
+            $(document).on('click','.btn-add',function() {
+                let html = '';
+                let i = $('tbody.add-certificate tr').length;
+                    html += '<tr>';
+                    html += '<td>';
+                    html += '<select id="'+i+'" class="form-control certificateSelect" name="certificate_id['+i+']">';
+                    html += '<option></option>';
+                    <?php foreach ($certificates as $key => $v) : ?>
+                        html += '<option value="{{$v->id}}">&nbsp{{$v->id." - ".$v->name}}</option>';
+                    <?php endforeach; ?>
+                    html += '</select>';
+                    html += '</td>';
+                    html += '<td>';
+                    html += '<input type="text" class="form-control" placeholder="Certificate Number" name="number['+i+']">';
+                    html += '</td>';
+                    html += '<td>';
+                    html += '<input type="file" class="form-control" name="attachment['+i+'][]" multiple>';
+                    html += '</td>'; 
+                    html += '<td>';
+                    html += '<button type="button" class="form-control btn-remove"><i class="fa fa-minus"></i></button>';
+                    html += '</td>';      
+                    html += '</tr>';
+
+                $('tbody.add-certificate').append(html);
+                $('.certificateSelect').select2({
+                    placeholder: "Please select a certificate",
+                });
+                $('select#'+i).focus();
+            });
+        })(jQuery);
         
     </script>
 @endsection
