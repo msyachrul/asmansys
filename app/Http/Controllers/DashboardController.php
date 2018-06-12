@@ -19,7 +19,7 @@ class DashboardController extends Controller
     {
         $data = (object) [
             'assets' => \App\Asset::all()->count(),
-            'certificates' => \App\Certificate::all()->count(),
+            'certificates' => \App\CertificateOnAsset::all()->count(),
             'categories' => \App\Category::all()->count(),
             'regions' => \App\Region::all()->count(),
         ];
