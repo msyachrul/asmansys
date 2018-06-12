@@ -30,7 +30,8 @@
                                 <thead>
                                   <tr>
                                     <th width="1%">No</th>
-                                    <th>Certificate Name</th>
+                                    <th>Certificate</th>
+                                    <th>Number</th>
                                     <!-- <th width="10%">Action</th> -->
                                   </tr>
                                 </thead>
@@ -42,6 +43,7 @@
                                 	<tr>
                                 		<td>{{ $i++ }}</td>
                                 		<td>{{ $value->name }}</td>
+                                        <td>{{ $value->number }}</td>
                                         <!-- <td class="btn-group">
                                             <a class="btn btn-secondary btn-detail" href="{{ route('certificate.userShow',$value->id) }}">Detail</a>
                                 		</td> -->

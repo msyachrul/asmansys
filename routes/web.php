@@ -45,7 +45,7 @@ Route::get('/asset','AssetController@userIndex')->name('asset.userIndex');
 
 Route::get('/asset/{asset}','AssetController@userShow')->name('asset.userShow');
 
-Route::get('/certificate','CertificateController@userIndex')->name('certificate.userIndex');
+Route::get('/certificate','CertificateOnAssetController@index')->name('certificate.userIndex');
 
 Route::get('/certificate/{certificate}','CertificateController@userShow')->name('certificate.userShow');
 
