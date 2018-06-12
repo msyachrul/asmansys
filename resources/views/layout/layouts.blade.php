@@ -33,8 +33,8 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="{{ route('dashboard.index') }}">Rendy Assets</a>
-                <a class="navbar-brand hidden" href="{{ route('dashboard.index') }}">RA</a>
+                <a class="navbar-brand" href="{{ route('dashboard.index') }}">{{ config('app.name')}}</a>
+                <a class="navbar-brand hidden" href="{{ route('dashboard.index') }}">GA</a>
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
