@@ -93,6 +93,14 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
+                                    <label for="status"><b>Status</b></label>
+                                    <select name="status" data-placeholder="Status" class="form-control statusSelect">
+                                        <option></option>
+                                        <option value="1">&nbspAvailable</option>
+                                        <option value="0">&nbspNot Available</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <button type="submit" class="btn btn-secondary form-control">Save</button>
                                 </div>
                             </form>
@@ -115,6 +123,7 @@
         $(document).ready(function() {
             $('.categorySelect').select2();
             $('.regionSelect').select2();
+            $('.statusSelect').select2();
         });
     </script>
 @endsection

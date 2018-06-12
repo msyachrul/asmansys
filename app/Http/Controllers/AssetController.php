@@ -18,14 +18,14 @@ class AssetController extends Controller
      */
     public function index()
     {
-        $data = Asset::join('categories','assets.category_id','categories.id')->select('assets.id','assets.name','categories.name as category')->get();
+        $data = Asset::join('categories','assets.category_id','categories.id')->select('assets.id','assets.name','categories.name as category','assets.status')->get();
         
         return view('admin.asset.index',compact('data'));
     }
 
     public function userIndex()
     {
-        $data = Asset::join('categories','assets.category_id','categories.id')->select('assets.id','assets.name','categories.name as category')->get();
+        $data = Asset::join('categories','assets.category_id','categories.id')->select('assets.id','assets.name','categories.name as category', 'assets.status')->get();
         
         return view('asset.index',compact('data'));
     }
@@ -57,6 +57,7 @@ class AssetController extends Controller
             'category_id' => 'required',
             'region_id' => 'required',
             'picture.*' => 'nullable|max:5000',
+            'status' => 'required',
         ]);
 
         // upload gambar dan mengembalikan string lokasi gambar
@@ -68,6 +69,7 @@ class AssetController extends Controller
             $data->description = $request->description;
             $data->category_id = $request->category_id;
             $data->region_id = $request->region_id;
+            $data->status = $request->status;
             $data->last_updated_by = \Auth::user()->id;
         $data->save();
 
@@ -102,6 +104,7 @@ class AssetController extends Controller
                 'assets.description',
                 'assets.category_id',
                 'assets.region_id',
+                'assets.status',
                 'users.name as user'
             )->first();
 
@@ -126,6 +129,7 @@ class AssetController extends Controller
                 'assets.description',
                 'assets.category_id',
                 'assets.region_id',
+                'assets.status',
                 'users.name as user'
             )->first();
 
@@ -166,6 +170,7 @@ class AssetController extends Controller
             'category_id' => 'required',
             'region_id' => 'required',
             'picture' => 'nullable|max:5000',
+            'status' => 'required',
         ]);
 
 
@@ -197,6 +202,7 @@ class AssetController extends Controller
             $data->description = $request->description;
             $data->category_id = $request->category_id;
             $data->region_id = $request->region_id;
+            $data->status = $request->status;
             $data->last_updated_by = \Auth::user()->id;
         $data->save();
 

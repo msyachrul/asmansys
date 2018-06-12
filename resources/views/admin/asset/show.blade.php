@@ -118,6 +118,19 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
+                                    <label><b>Status</b></label>
+                                    <select name="status" data-placeholder="Status" class="form-control statusSelect" disabled>
+                                        <option></option>
+                                        @if ($value->status == true)
+                                            <option value="1" selected>&nbspAvailable</option>
+                                            <option value="0">&nbspNot Available</option>    
+                                        @else
+                                            <option value="1">&nbspAvailable</option>
+                                            <option value="0" selected>&nbspNot Available</option>
+                                        @endif
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label><b>Last Updated By</b></label>
                                     <input type="text" class="form-control" value="{{ $value->user }}" disabled>
                                 </div>
@@ -170,6 +183,7 @@
         $(document).ready(function() {
             $('.categorySelect').select2();
             $('.regionSelect').select2();
+            $('.statusSelect').select2();
         });
 
     </script>

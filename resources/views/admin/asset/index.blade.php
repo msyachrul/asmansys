@@ -32,7 +32,7 @@
                                   <tr>
                                     <th width="1%">No</th>
                                     <th>Assets Name</th>
-                                    <th>Category</th>
+                                    <th>Status</th>
                                     <th width="10%">Action</th>
                                   </tr>
                                 </thead>
@@ -44,7 +44,7 @@
                                 	<tr>
                                 		<td>{{ $i++ }}</td>
                                 		<td>{{ $value->name }}</td>
-                                		<td>{{ $value->category }}</td>
+                                		<td>{{ $value->status == true ? "Available" : "Not Available" }}</td>
                                         <td class="btn-group">
                                             <a class="btn btn-secondary btn-detail" href="{{ route('asset.show',$value->id) }}">Detail</a>&nbsp
                                             <a class="btn btn-secondary" href="{{ route('asset.integrationShow',$value->id)}}">Certificate</a>

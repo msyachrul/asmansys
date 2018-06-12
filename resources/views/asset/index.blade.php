@@ -31,7 +31,7 @@
                                   <tr>
                                     <th width="1%">No</th>
                                     <th>Assets Name</th>
-                                    <th>Category</th>
+                                    <th>Status</th>
                                     <!-- <th width="10%">Action</th> -->
                                   </tr>
                                 </thead>
@@ -58,7 +58,7 @@
                                 		<td>
                                             <a href="{{ route('asset.userShow',$value->id) }}">
                                                 <div>
-                                                    {{ $value->category }}
+                                                    {{ $value->status == true ? "Available" : "Not Available" }}
                                                 </div>
                                             </a>
                                         </td>
