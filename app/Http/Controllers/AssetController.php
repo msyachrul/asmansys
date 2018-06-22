@@ -137,8 +137,8 @@ class AssetController extends Controller
 
         $integration = \App\CertificateOnAsset::join('certificates','certificate_on_assets.certificate_id','certificates.id')->where('certificate_on_assets.asset_id',$asset->id)->select('certificates.name','certificate_on_assets.number','certificate_on_assets.id')->get();
 
-        $category = \App\Category::all();
-        $region = \App\Region::all();
+        $category = \App\Category::where('id',$value->category_id)->first();
+        $region = \App\Region::where('id',$value->region_id)->first();
 
         return view('asset.show',compact('value','category','region','picts','integration'));
     }

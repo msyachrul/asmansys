@@ -41,30 +41,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="category"><b>Category</b></label>
-                                    <select class="form-control categorySelect" disabled>
-                                        <option value=""></option>
-                                        @foreach($category as $key => $v)
-                                            @if($v->id == $value->category_id)
-                                            <option value="{{ $v->id }}" hidden selected>&nbsp{{ $v->id." - ".$v->name }}</option>
-                                            @else
-                                            <option value="{{ $v->id }}">&nbsp{{ $v->id." - ".$v->name }}     
-                                            @endif
-                                        </option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" value="{{ $category->name }}" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="region"><b>Region</b></label>
-                                    <select class="form-control regionSelect" disabled>
-                                        <option value=""></option>
-                                        @foreach($region as $key => $v)
-                                            @if($v->id == $value->region_id)
-                                                <option value="{{ $v->id }}" hidden selected>&nbsp{{ $v->id." - ".$v->name }}</option>
-                                            @else
-                                                <option value="{{ $v->id }}">&nbsp{{ $v->id." - ".$v->name }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" value="{{ $region->name }}" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="picture"><b>Picture</b></label>
@@ -81,15 +62,20 @@
                                                 <tr>
                                                     <th width="50%">Certificate</th>
                                                     <th>Number</th>
-                                                    <th width="20%">Attachment</th>
+                                                    {{-- <th width="20%">Attachment</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($integration as $key => $v)
                                                 <tr>
-                                                    <td>{{ $v->name }}</td>
-                                                    <td>{{ $v->number }}</td>
-                                                    <td class="text-center"><button type="button" class="btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">Show</button></td>
+                                                    <td>
+                                                        <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">{{ $v->name }}</button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">{{ $v->number }}</button>
+                                                    </td>
+                                                    {{-- <td class="text-center"><button type="button" class="btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">Show</button>
+                                                    </td> --}}
                                                 </tr>
                                                 @endforeach
                                             </tbody>
