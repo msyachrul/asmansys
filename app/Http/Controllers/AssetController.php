@@ -18,7 +18,7 @@ class AssetController extends Controller
      */
     public function index()
     {
-        $data = Asset::join('categories','assets.category_id','categories.id')->select('assets.id','assets.name','categories.name as category','assets.status')->get();
+        $data = Asset::join('categories','assets.category_id','categories.id')->select('assets.id','assets.name','categories.name as category','assets.status')->orderBy('assets.id','DESC')->get();
         
         return view('admin.asset.index',compact('data'));
     }
