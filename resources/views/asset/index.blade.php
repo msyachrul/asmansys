@@ -31,6 +31,7 @@
                                   <tr>
                                     <th width="1%">No</th>
                                     <th>Assets Name</th>
+                                    <th>Region</th>
                                     <th>Status</th>
                                     <!-- <th width="10%">Action</th> -->
                                   </tr>
@@ -52,6 +53,13 @@
                                             <a href="{{ route('asset.userShow',$value->id) }}">
                                                 <div>
                                                     {{ $value->name }}        
+                                                </div>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('asset.userShow',$value->id) }}">
+                                                <div>
+                                                    {{ $value->region }}        
                                                 </div>
                                             </a>
                                         </td>
