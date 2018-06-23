@@ -53,7 +53,7 @@
                                             <tr>
                                                 <th width="40%">Certificate</th>
                                                 <th>Number</th>
-                                                <th width="10%">Attachment</th>
+                                                <th width="20%">Attachment</th>
                                                 <th width="5%"><button type="button" class="btn btn-secondary btn-add"><i class="fa fa-plus"></i></button></th>
                                             </tr>
                                         </thead>
@@ -72,7 +72,7 @@
                                                     </select>
                                                 </td>
                                                 <td class="text-right">
-                                                    <input type="text" class="form-control text-right" name="number[{{ $keys }}]" value="{{ $val->number }}" disabled>
+                                                    <input type="text" class="form-control" name="number[{{ $keys }}]" value="{{ $val->number }}" disabled>
                                                 </td>
                                                 <td class="text-center">
                                                     <button type="button" class="btn btn-link btn-show" style="color:grey" data-id="{{ $val->id }}">Show</button>
