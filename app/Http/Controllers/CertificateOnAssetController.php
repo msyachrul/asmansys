@@ -18,7 +18,7 @@ class CertificateOnAssetController extends Controller
      */
     public function index()
     {
-        $data = CertificateOnAsset::join('certificates','certificates.id','certificate_on_assets.certificate_id')->select('certificate_on_assets.id as id','certificates.name as name','certificate_on_assets.number')->get();
+        $data = CertificateOnAsset::join('certificates','certificates.id','certificate_on_assets.certificate_id')->select('certificate_on_assets.id as id','certificates.name as name','certificate_on_assets.number')->orderBy('certificate_on_assets.number','ASC')->get();
         return view('certificate.index',compact("data"));
     }
 
