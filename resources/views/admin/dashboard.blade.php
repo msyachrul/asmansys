@@ -88,6 +88,19 @@
             		</div>
             	</div>
             </div>
+            <div class="row">
+            	<div class="col-sm">
+            		<div class="card">
+            			<div class="card-header">
+            				<h3>{!! $charts->container() !!}</h3>
+            			</div>
+            			<div class="card-body">
+            				<script src=//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js charset=utf-8></script>
+            				{!! $charts->script() !!}
+            			</div>
+            		</div>
+            	</div>
+            </div>
         </div>
     </div>
 @endsection

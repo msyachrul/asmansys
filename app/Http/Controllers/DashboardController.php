@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Khill\Lavacharts\Lavacharts;
 use Illuminate\Support\Facades\DB;
+use App\Charts\MyChart;
 
 class DashboardController extends Controller
 {
@@ -41,7 +42,18 @@ class DashboardController extends Controller
             ]
         ]);
 
-        return view('admin.dashboard',compact('data','categoryChart'));
+        $resCert = \App\Certificate::join('certificate_on_assets','certificate_on_assets.certificate_id','certificates.id')->select(DB::raw('COUNT(certificate_on_assets.id) as `qty`'))->groupBy('certificates.id')->get()->toArray();
+        
+        $certificates = [];
+
+        foreach ($resCert as $key => $value) {
+            $certificates[$key] = $value['qty'];
+        }
+
+        $charts = new MyChart;
+        $charts->dataset('MyChart','pie', $certificates)->backgroundColor(['magenta','blue','cyan','yellow','grey']);
+
+        return view('admin.dashboard',compact('data','categoryChart','charts'));
     }
 
     /**
