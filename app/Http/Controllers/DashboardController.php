@@ -28,7 +28,7 @@ class DashboardController extends Controller
 
         $categoryChart = new Lavacharts;
         $value = \App\Asset::join('categories','categories.id','assets.category_id')
-                    ->select('categories.name as 0',DB::raw('COUNT(assets.id) as `1`'))->groupBy('assets.category_id')->get()->toArray();
+                    ->select('categories.name as 0',DB::raw('COUNT(assets.id) as `1`'))->groupBy('categories.id')->get()->toArray();
         $chart = $categoryChart->DataTable();
             $chart->addStringColumn('Category')
                      ->addNumberColumn('Quantity')
