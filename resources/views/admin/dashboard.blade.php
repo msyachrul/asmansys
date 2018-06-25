@@ -73,6 +73,21 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+            	<div class="col-sm">
+            		<div class="card">
+            			<div class="card-header">
+            				<h3>Asset by Category</h3>
+            			</div>
+            			<div class="card-body">
+            				<div id="categoryChart"></div>
+            				@php
+		            			echo $lava->render("PieChart","Category","categoryChart");
+		            		@endphp
+            			</div>
+            		</div>
+            	</div>
+            </div>
         </div>
     </div>
 @endsection

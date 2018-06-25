@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Khill\Lavacharts\Lavacharts;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -24,7 +26,18 @@ class DashboardController extends Controller
             'regions' => \App\Region::all()->count(),
         ];
 
-        return view('admin.dashboard',compact('data'));
+        $lava = new Lavacharts;
+        $value = \App\Asset::join('categories','categories.id','assets.category_id')
+                    ->select('categories.name as 0',DB::raw('COUNT(assets.id) as `1`'))->groupBy('assets.category_id')->get()->toArray();
+        $chart = $lava->DataTable();
+            $chart->addStringColumn('Category')
+                     ->addNumberColumn('Quantity')
+                     ->addRows($value);
+        $lava->PieChart('Category',$chart,[
+            'height' => 500,
+        ]);
+
+        return view('admin.dashboard',compact('data','lava'));
     }
 
     /**
