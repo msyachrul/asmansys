@@ -26,18 +26,22 @@ class DashboardController extends Controller
             'regions' => \App\Region::all()->count(),
         ];
 
-        $lava = new Lavacharts;
+        $categoryChart = new Lavacharts;
         $value = \App\Asset::join('categories','categories.id','assets.category_id')
                     ->select('categories.name as 0',DB::raw('COUNT(assets.id) as `1`'))->groupBy('assets.category_id')->get()->toArray();
-        $chart = $lava->DataTable();
+        $chart = $categoryChart->DataTable();
             $chart->addStringColumn('Category')
                      ->addNumberColumn('Quantity')
                      ->addRows($value);
-        $lava->PieChart('Category',$chart,[
+        $categoryChart->PieChart('Category',$chart,[
             'height' => 500,
+            'fontSize' => 14,
+            'legend' => [
+                'position' => 'bottom',
+            ]
         ]);
 
-        return view('admin.dashboard',compact('data','lava'));
+        return view('admin.dashboard',compact('data','categoryChart'));
     }
 
     /**
