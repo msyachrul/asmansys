@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Khill\Lavacharts\Lavacharts;
 use Illuminate\Support\Facades\DB;
-use App\Charts\MyChart;
+use App\Charts\CertificateChart;
+use App\Charts\CategoryChart;
+use App\Charts\RegionChart;
+use Faker\Factory as Faker;
 
 class DashboardController extends Controller
 {
@@ -27,33 +29,43 @@ class DashboardController extends Controller
             'regions' => \App\Region::all()->count(),
         ];
 
-        $categoryChart = new Lavacharts;
-        $value = \App\Asset::join('categories','categories.id','assets.category_id')
-                    ->select('categories.name as 0',DB::raw('COUNT(assets.id) as `1`'))->groupBy('categories.id')->get()->toArray();
-        $chart = $categoryChart->DataTable();
-            $chart->addStringColumn('Category')
-                     ->addNumberColumn('Quantity')
-                     ->addRows($value);
-        $categoryChart->PieChart('Category',$chart,[
-            'height' => 500,
-            'fontSize' => 14,
-            'legend' => [
-                'position' => 'bottom',
-            ]
-        ]);
-
-        $resCert = \App\Certificate::join('certificate_on_assets','certificate_on_assets.certificate_id','certificates.id')->select(DB::raw('COUNT(certificate_on_assets.id) as `qty`'))->groupBy('certificates.id')->get()->toArray();
+        // CertificateChart
+        $certificateData = \App\Certificate::join('certificate_on_assets','certificate_on_assets.certificate_id','certificates.id')->select('certificates.name as name',DB::raw('COUNT(certificate_on_assets.id) as `qty`'))->groupBy('certificates.id')->get();
         
-        $certificates = [];
-
-        foreach ($resCert as $key => $value) {
-            $certificates[$key] = $value['qty'];
+        foreach ($certificateData as $key => $value) {
+            $certificateChartLabels[$key] = $value->name;
+            $certificateChartQty[$key] = $value->qty;
+            $certificateChartColor[$key] = Faker::create()->hexcolor;
         }
 
-        $charts = new MyChart;
-        $charts->dataset('MyChart','pie', $certificates)->backgroundColor(['magenta','blue','cyan','yellow','grey']);
+        $certificateChart = new CertificateChart;
+        $certificateChart->labels($certificateChartLabels)->dataset('certificateChart','pie', $certificateChartQty)->backgroundColor($certificateChartColor);
 
-        return view('admin.dashboard',compact('data','categoryChart','charts'));
+        // CategoryChart
+        $categoryData = \App\Category::join('assets','assets.category_id','categories.id')->select('categories.name as name',DB::raw('COUNT(assets.id) as `qty`'))->groupBy('categories.id')->get();
+
+        foreach ($categoryData as $key => $value) {
+            $categoryChartLabels[$key] = $value->name;
+            $categoryChartQty[$key] = $value->qty;
+            $categoryChartColor[$key] = Faker::create()->hexcolor;
+        }        
+
+        $categoryChart = new CategoryChart;
+        $categoryChart->labels($categoryChartLabels)->dataset('categoryChart','pie',$categoryChartQty)->backgroundColor($categoryChartColor);
+
+        // RegionChart
+        $regionData = \App\Region::join('assets','assets.region_id','regions.id')->select('regions.name as name',DB::raw('COUNT(assets.id) as `qty`'))->groupBy('regions.id')->get();
+
+        foreach ($regionData as $key => $value) {
+            $regionChartLabels[$key] = $value->name;
+            $regionChartQty[$key] = $value->qty;
+            $regionChartColor[$key] = Faker::create()->hexcolor;
+        }
+
+        $regionChart = new RegionChart;
+        $regionChart->labels($regionChartLabels)->dataset('regionChart','pie',$regionChartQty)->backgroundColor($regionChartColor);
+
+        return view('admin.dashboard',compact('data','certificateChart','categoryChart','regionChart'));
     }
 
     /**

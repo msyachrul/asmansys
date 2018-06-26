@@ -77,13 +77,11 @@
             	<div class="col-sm">
             		<div class="card">
             			<div class="card-header">
-            				<h3>Assets</h3>
+            				<h3>Certificates</h3>
             			</div>
             			<div class="card-body">
-            				<div id="categoryChart"></div>
-            				@php
-		            			echo $categoryChart->render("PieChart","Category","categoryChart");
-		            		@endphp
+            				{!! $certificateChart->container() !!}
+            				{!! $certificateChart->script() !!}
             			</div>
             		</div>
             	</div>
@@ -92,15 +90,32 @@
             	<div class="col-sm">
             		<div class="card">
             			<div class="card-header">
-            				<h3>{!! $charts->container() !!}</h3>
+            				<h3>Categories</h3>
             			</div>
             			<div class="card-body">
-            				<script src=//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js charset=utf-8></script>
-            				{!! $charts->script() !!}
+            				{!! $categoryChart->container() !!}
+            				{!! $categoryChart->script() !!}
             			</div>
             		</div>
             	</div>
             </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Regions</h3>
+                        </div>
+                        <div class="card-body">
+                            {!! $regionChart->container() !!}
+                            {!! $regionChart->script() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+@endsection
+
+@section('extraScript')
+	<script src=//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js charset=utf-8></script>
 @endsection
