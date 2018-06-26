@@ -31,11 +31,16 @@ class DashboardController extends Controller
 
         // CertificateChart
         $certificateData = \App\Certificate::join('certificate_on_assets','certificate_on_assets.certificate_id','certificates.id')->select('certificates.name as name',DB::raw('COUNT(certificate_on_assets.id) as `qty`'))->groupBy('certificates.id')->get();
-        
-        foreach ($certificateData as $key => $value) {
-            $certificateChartLabels[$key] = $value->name;
-            $certificateChartQty[$key] = $value->qty;
-            $certificateChartColor[$key] = Faker::create()->hexcolor;
+
+        $certificateChartLabels = [];
+        $certificateChartQty = [];
+
+        if ($certificateData) {
+            foreach ($certificateData as $key => $value) {
+                $certificateChartLabels[$key] = $value->name;
+                $certificateChartQty[$key] = $value->qty;
+                $certificateChartColor[$key] = Faker::create()->hexcolor;
+            }
         }
 
         $certificateChart = new CertificateChart;
@@ -44,11 +49,16 @@ class DashboardController extends Controller
         // CategoryChart
         $categoryData = \App\Category::join('assets','assets.category_id','categories.id')->select('categories.name as name',DB::raw('COUNT(assets.id) as `qty`'))->groupBy('categories.id')->get();
 
-        foreach ($categoryData as $key => $value) {
-            $categoryChartLabels[$key] = $value->name;
-            $categoryChartQty[$key] = $value->qty;
-            $categoryChartColor[$key] = Faker::create()->hexcolor;
-        }        
+        $categoryChartLabels = [];
+        $categoryChartQty = [];
+
+        if ($categoryData) {
+            foreach ($categoryData as $key => $value) {
+                $categoryChartLabels[$key] = $value->name;
+                $categoryChartQty[$key] = $value->qty;
+                $categoryChartColor[$key] = Faker::create()->hexcolor;
+            }
+        }
 
         $categoryChart = new CategoryChart;
         $categoryChart->labels($categoryChartLabels)->dataset('categoryChart','pie',$categoryChartQty)->backgroundColor($categoryChartColor);
@@ -56,10 +66,12 @@ class DashboardController extends Controller
         // RegionChart
         $regionData = \App\Region::join('assets','assets.region_id','regions.id')->select('regions.name as name',DB::raw('COUNT(assets.id) as `qty`'))->groupBy('regions.id')->get();
 
-        foreach ($regionData as $key => $value) {
-            $regionChartLabels[$key] = $value->name;
-            $regionChartQty[$key] = $value->qty;
-            $regionChartColor[$key] = Faker::create()->hexcolor;
+        if ($regionData) {
+            foreach ($regionData as $key => $value) {
+                $regionChartLabels[$key] = $value->name;
+                $regionChartQty[$key] = $value->qty;
+                $regionChartColor[$key] = Faker::create()->hexcolor;
+            }
         }
 
         $regionChart = new RegionChart;
