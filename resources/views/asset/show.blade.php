@@ -56,27 +56,25 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th width="50%">Certificate</th>
-                                                    <th>Number</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($integration as $key => $v)
-                                                <tr>
-                                                    <td>
-                                                        <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">{{ $v->name }}</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">{{ $v->number }}</button>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                    <label><b>Certificate</b></label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="table-responsive">
+                                                <table class="table table-sm">                             
+                                                    <tbody>
+                                                        @foreach($integration as $key => $v)
+                                                        <tr>
+                                                            <td width="1%">
+                                                                <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">
+                                                                    {{ $v->shortname }} - {{ $v->number }}
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>  
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
