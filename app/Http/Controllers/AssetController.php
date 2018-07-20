@@ -25,7 +25,7 @@ class AssetController extends Controller
 
     public function userIndex()
     {
-        $data = Asset::join('categories','assets.category_id','categories.id')->join('regions','assets.region_id','regions.id')->select('assets.id','assets.name','categories.name as category','regions.name as region', 'assets.status')->orderBy('assets.name','ASC')->get();
+        $data = Asset::join('categories','assets.category_id','categories.id')->join('regions','assets.region_id','regions.id')->select('assets.id','assets.name','assets.address','categories.name as category','regions.name as region', 'assets.status')->orderBy('assets.name','ASC')->get();
         
         return view('asset.index',compact('data'));
     }

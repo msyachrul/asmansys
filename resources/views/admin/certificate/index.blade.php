@@ -42,7 +42,7 @@
                                 	@foreach($data as $key => $value)
                                 	<tr>
                                 		<td>{{ $i++ }}</td>
-                                		<td>{{ $value->name }}</td>
+                                		<td>{{ $value->name }} - {{ $value->shortname }}</td>
                                         <td class="btn-group">
                                             <a class="btn btn-secondary btn-detail" href="{{ route('certificate.show',$value->id) }}">Detail</a>
                                 		</td>

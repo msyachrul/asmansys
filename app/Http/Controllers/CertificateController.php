@@ -48,10 +48,12 @@ class CertificateController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:certificates,name',
+            'shortname' => 'required|unique:certificates,shortname',
         ]);
 
         $data = new Certificate;
             $data->name = $request->name;
+            $data->shortname = $request->shortname;
             $data->last_updated_by = \Auth::user()->id;
         $data->save();
 
@@ -66,14 +68,14 @@ class CertificateController extends Controller
      */
     public function show(Certificate $certificate)
     {
-        $value = Certificate::join('users','certificates.last_updated_by','users.id')->select('certificates.id','certificates.name','users.name as user')->where('certificates.id',$certificate->id)->first();
+        $value = Certificate::join('users','certificates.last_updated_by','users.id')->select('certificates.id','certificates.name','certificates.shortname','users.name as user')->where('certificates.id',$certificate->id)->first();
 
         return view('admin.certificate.show',compact('value'));
     }
 
     public function userShow(Certificate $certificate)
     {
-        $value = Certificate::join('users','certificates.last_updated_by','users.id')->select('certificates.id','certificates.name','users.name as user')->where('certificates.id',$certificate->id)->first();
+        $value = Certificate::join('users','certificates.last_updated_by','users.id')->select('certificates.id','certificates.name','certificates.shortname','users.name as user')->where('certificates.id',$certificate->id)->first();
 
         return view('certificate.show',compact('value'));
     }
@@ -100,10 +102,12 @@ class CertificateController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:certificates,name',
+            'shortname' => 'required|unique:certificates,shortname',
         ]);
 
         $data = Certificate::find($certificate->id);
             $data->name = $request->name;
+            $data->shortname = $request->shortname;
             $data->last_updated_by = \Auth::user()->id;
         $data->save();
 
