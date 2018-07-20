@@ -25,58 +25,64 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                              <table id="table-asset" class="table table-striped table-bordered">
-                                <thead>
-                                  <tr>
-                                    <th width="1%">No</th>
-                                    <th>Assets Name</th>
-                                    <th>Region</th>
-                                    <th>Status</th>
-                                    <!-- <th width="10%">Action</th> -->
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $i = 1;
-                                    @endphp
-                                	@foreach($data as $key => $value)
-                                	<tr>
-                                		<td>
-                                            <a href="{{ route('asset.userShow',$value->id) }}">
-                                                <div>
-                                                    {{ $i++ }}        
-                                                </div>
-                                            </a>
-                                        </td>
-                                		<td>
-                                            <a href="{{ route('asset.userShow',$value->id) }}">
-                                                <div>
-                                                    {{ $value->name }}        
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('asset.userShow',$value->id) }}">
-                                                <div>
-                                                    {{ $value->region }}        
-                                                </div>
-                                            </a>
-                                        </td>
-                                		<td>
-                                            <a href="{{ route('asset.userShow',$value->id) }}">
-                                                <div>
-                                                    {{ $value->status == true ? "Available" : "Not Available" }}
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <!-- <td class="btn-group">
-                                            <a class="btn btn-secondary btn-detail" href="{{ route('asset.userShow',$value->id) }}">Detail</a>
-                                		</td> -->
-                                	</tr>
-                                	@endforeach
-                                </tbody>
-                              </table>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="table-responsive">
+                                      <table id="table-asset" class="table">
+                                        <thead class="thead-light">
+                                          <tr>
+                                            <th width="1%">No</th>
+                                            <th>Assets</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $i = 1;
+                                            @endphp
+                                            @foreach($data as $key => $value)
+                                            <tr>
+                                                <td>
+                                                    <a href="{{ route('asset.userShow',$value->id) }}">
+                                                        <div>
+                                                            {{ $i++ }}        
+                                                        </div>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('asset.userShow',$value->id) }}">
+                                                        <table class="table table-sm">
+                                                            <tr>
+                                                                <td colspan="3"><b>{{ $value->name }}</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="10%">Address</td>
+                                                                <td width="1%">:</td>
+                                                                <td>{{ $value->address }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Category</td>
+                                                                <td>:</td>
+                                                                <td>{{ $value->category }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Region</td>
+                                                                <td>:</td>
+                                                                <td>{{ $value->region }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Status</td>
+                                                                <td>:</td>
+                                                                <td><b>{{ $value->status == true ? "Available" : "Not Available" }}</b></td>
+                                                            </tr>
+                                                        </table>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

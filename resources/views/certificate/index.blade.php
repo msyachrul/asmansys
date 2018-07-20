@@ -25,32 +25,45 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                              <table id="table-certificate" class="table table-striped table-bordered">
-                                <thead>
-                                  <tr>
-                                    <th width="1%">No</th>
-                                    <th>Number</th>
-                                    <th>Certificate</th>
-                                    <!-- <th width="10%">Action</th> -->
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $i = 1;
-                                    @endphp
-                                	@foreach($data as $key => $value)
-                                	<tr>
-                                		<td>{{ $i++ }}</td>
-                                        <td>{{ $value->number }}</td>
-                                        <td>{{ $value->name }}</td>
-                                        <!-- <td class="btn-group">
-                                            <a class="btn btn-secondary btn-detail" href="{{ route('certificate.userShow',$value->id) }}">Detail</a>
-                                		</td> -->
-                                	</tr>
-                                	@endforeach
-                                </tbody>
-                              </table>
+                            <div class="row">
+                                <div class="col">
+                                  <div class="table-responsive">
+                                      <table id="table-certificate" class="table">
+                                        <thead>
+                                          <tr>
+                                            <th width="1%">No</th>
+                                            <th>Certificate</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $i = 1;
+                                            @endphp
+                                            @foreach($data as $key => $value)
+                                            <tr>
+                                                <td>
+                                                    <a href="{{ route('asset.userShow',$value->asset_id) }}">{{ $i++ }}</a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('asset.userShow',$value->asset_id) }}">
+                                                        <table class="table table-sm">
+                                                            <tr>
+                                                                <td colspan="3"><b>{{ $value->name }}</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="10%">Number</td>
+                                                                <td width="1%">:</td>
+                                                                <td>{{ $value->number }}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                      </table>
+                                    </div>  
+                                </div>
                             </div>
                         </div>
                     </div>

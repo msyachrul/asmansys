@@ -62,7 +62,6 @@
                                                 <tr>
                                                     <th width="50%">Certificate</th>
                                                     <th>Number</th>
-                                                    {{-- <th width="20%">Attachment</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -74,8 +73,6 @@
                                                     <td>
                                                         <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">{{ $v->number }}</button>
                                                     </td>
-                                                    {{-- <td class="text-center"><button type="button" class="btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">Show</button>
-                                                    </td> --}}
                                                 </tr>
                                                 @endforeach
                                             </tbody>

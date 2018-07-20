@@ -34,6 +34,15 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
+                                    <label for="shortname"><b>Short Name</b></label>
+                                    <input type="text" name="shortname" id="shortname" class="form-control{{ $errors->has('shortname') ? ' is-invalid' : '' }}" autocomplete="off" autofocus="on" placeholder="Short Name">
+                                    @if ($errors->has('shortname'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('shortname') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
                                     <button type="submit" class="btn btn-secondary form-control">Save</button>
                                 </div>
                             </form>

@@ -45,6 +45,15 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
+                                    <label for="shortname"><b>Short Name</b></label>
+                                    <input type="text" name="shortname" id="shortname" class="form-control{{ $errors->has('shortname') ? ' is-invalid' : '' }}" autocomplete="off" value="{{ $value->shortname }}" readonly="on">
+                                    @if ($errors->has('shortname'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('shortname') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
                                     <label><b>Last Updated By</b></label>
                                     <input type="text" class="form-control" value="{{ $value->user }}" disabled>
                                 </div>
