@@ -34,6 +34,7 @@ class DashboardController extends Controller
 
         $certificateChartLabels = [];
         $certificateChartQty = [];
+        $certificateChartColor = [];
 
         if ($certificateData) {
             foreach ($certificateData as $key => $value) {
@@ -51,6 +52,7 @@ class DashboardController extends Controller
 
         $categoryChartLabels = [];
         $categoryChartQty = [];
+        $categoryChartColor = [];
 
         if ($categoryData) {
             foreach ($categoryData as $key => $value) {
@@ -65,6 +67,10 @@ class DashboardController extends Controller
 
         // RegionChart
         $regionData = \App\Region::join('assets','assets.region_id','regions.id')->select('regions.name as name',DB::raw('COUNT(assets.id) as `qty`'))->groupBy('regions.id')->get();
+
+        $regionChartLabels = [];
+        $regionChartQty = [];
+        $regionChartColor = [];
 
         if ($regionData) {
             foreach ($regionData as $key => $value) {

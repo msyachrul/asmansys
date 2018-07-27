@@ -33,7 +33,7 @@
                                     <th width="1%">No</th>
                                     <th>Name</th>
                                     <th>Email Address</th>
-                                    <th width="10%">Action</th>
+                                    <th width="5%">Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -45,7 +45,7 @@
                                 		<td>{{ $i++ }}</td>
                                 		<td>{{ $value->name }}</td>
                                 		<td>{{ $value->email }}</td>
-                                        <td class="btn-group">
+                                        <td>
                                             <a class="btn btn-secondary btn-detail" href="{{ route('user.show',$value->id) }}">Detail</a>
                                 		</td>
                                 	</tr>

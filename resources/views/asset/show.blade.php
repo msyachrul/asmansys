@@ -18,7 +18,7 @@
     <div class="content mt-3">
         <div class="animated fadeIn">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md">
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">
@@ -26,73 +26,61 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form id="update-form" style="max-width:70%;margin:auto">
-                                <div class="form-group">
-                                    <label for="name"><b>Name</b></label>
-                                    <input type="text" class="form-control" value="{{ $value->name }}" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="address"><b>Address</b></label>
-                                    <textarea class="form-control" style="height:200px;resize:none" readonly>{{ $value->address }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="description"><b>Description</b></label>
-                                    <textarea class="form-control" style="height:200px;resize:none"readonly>{{ $value->description }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="category"><b>Category</b></label>
-                                    <input type="text" class="form-control" value="{{ $category->name }}" disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label for="region"><b>Region</b></label>
-                                    <input type="text" class="form-control" value="{{ $region->name }}" disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label for="picture"><b>Picture</b></label>
-                                    <div class="form-control">
-                                    @foreach($picts as $key => $v)
-                                        <a target="_blank" href="{{ asset(Storage::url($v->path)) }}"><img src="{{ asset(Storage::url($v->path)) }}" width="200px"></a>
-                                    @endforeach
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label><b>Certificate</b></label>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="table-responsive">
-                                                <table class="table table-sm">                             
-                                                    <tbody>
-                                                        @foreach($integration as $key => $v)
-                                                        <tr>
-                                                            <td width="1%">
-                                                                <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">
-                                                                    {{ $v->shortname }} - {{ $v->number }}
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>  
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label><b>Status</b></label>
-                                    @if ($value->status == true)
-                                        <input type="text" class="form-control" value="Available" disabled>
-                                    @else
-                                        <input type="text" class="form-control" value="Not Available" disabled>
-                                    @endif
-                                </div>
-                                <!-- <div class="form-group">
-                                    <label><b>Last Updated By</b></label>
-                                    <input type="text" class="form-control" value="{{ $value->user }}" disabled>
-                                </div> -->
+                            <table class="table">
+                                <tr>
+                                    <td width="10%">Name</td>
+                                    <td width="1%">:</td>
+                                    <td>{{ $value->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td>:</td>
+                                    <td>{{ $value->address }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Description</td>
+                                    <td>:</td>
+                                    <td>{{ $value->description }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Category</td>
+                                    <td>:</td>
+                                    <td>{{ $category->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Region</td>
+                                    <td>:</td>
+                                    <td>{{ $region->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Pictures</td>
+                                    <td>:</td>
+                                    <td>
+                                        @foreach($picts as $key => $v)
+                                            <a target="_blank" href="{{ asset(Storage::url($v->path)) }}"><img src="{{ asset(Storage::url($v->path)) }}" width="200px"></a>
+                                        @endforeach
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Certificate</td>
+                                    <td>:</td>
+                                    <td>
+                                        @foreach($integration as $key => $v)
+                                            <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">
+                                                {{ $v->shortname }} - {{ $v->number }}
+                                            </button>
+                                        @endforeach
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td>:</td>
+                                    <td>{{ $value->status ? "Available" : "Not Available"}}</td>
+                                </tr>
+                            </table>
                                 <div class="form-group btn-process">
                                     <a href="{{ route('asset.userIndex') }}" class="btn btn-secondary form-control">Close</a>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>
