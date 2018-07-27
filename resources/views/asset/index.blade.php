@@ -4,6 +4,11 @@
 
 @section('extraStyleSheet')
 	<link rel="stylesheet" href="{{ asset('assets/css/lib/datatable/dataTables.bootstrap.min.css') }}">
+    <style type="text/css">
+        body {
+            padding-right:0 !important;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb','Assets')
@@ -49,33 +54,46 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('asset.userShow',$value->id) }}">
-                                                        <table class="table table-sm">
-                                                            <tr>
-                                                                <td colspan="3"><b>{{ $value->name }}</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td width="10%">Address</td>
-                                                                <td width="1%">:</td>
-                                                                <td>{{ $value->address }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Category</td>
-                                                                <td>:</td>
-                                                                <td>{{ $value->category }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Region</td>
-                                                                <td>:</td>
-                                                                <td>{{ $value->region }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Status</td>
-                                                                <td>:</td>
-                                                                <td><b>{{ $value->status == true ? "Available" : "Not Available" }}</b></td>
-                                                            </tr>
-                                                        </table>
-                                                    </a>
+                                                    <table class="table table-sm">
+                                                        <tr>
+                                                            <td colspan="3">
+                                                                <a href="{{ route('asset.userShow',$value->id) }}"><b>{{ $value->name }}</b></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="10%">
+                                                                <a href="{{ route('asset.userShow',$value->id) }}">Category</a>
+                                                            </td>
+                                                            <td width="1%">
+                                                                <a href="{{ route('asset.userShow',$value->id) }}">:</a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ route('asset.userShow',$value->id) }}">{{ $value->category }}</a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <a href="{{ route('asset.userShow',$value->id) }}">Region</a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ route('asset.userShow',$value->id) }}">:</a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ route('asset.userShow',$value->id) }}">{{ $value->region }}</a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <a href="{{ route('asset.userShow',$value->id) }}">Status</a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ route('asset.userShow',$value->id) }}">:</a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ route('asset.userShow',$value->id) }}"><b>{{ $value->status ? "Available" : "Not Available" }}</b></a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </td>
                                             </tr>
                                             @endforeach
