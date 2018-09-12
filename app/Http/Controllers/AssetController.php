@@ -255,7 +255,7 @@ class AssetController extends Controller
         $images = [];
 
         foreach ($data as $key => $value) {
-            $images[] = \Storage::url($value->link);
+            $images[] = asset(\Storage::url($value->link));
         }
 
         return response()->json($images);

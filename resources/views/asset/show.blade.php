@@ -152,7 +152,7 @@
                             carousel += "<li data-target='#imageCarousel' data-slide-to='"+i+"'></li>"
 
                             html += "<div class='carousel-item'>";
-                            html += "<img src='.."+response[i]+"'/>";
+                            html += "<img src='"+response[i]+"'/>";
                             html += "</div>";
                         }
                         $('.carousel-indicators').html(carousel);
