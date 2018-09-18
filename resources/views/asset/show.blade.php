@@ -87,42 +87,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="attachmentModalLabel" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="attachmentModalTittle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="pictureCarousel" class="carousel slide" data-ride="carousel">
-                        <!-- Indicator -->
-                        <ol class="carousel-indicators">
-                            <li data-target="#pictureCarousel" data-slide-to="0" class="active"></li>
-                        </ol>
-                          <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <img src="{{ asset(Storage::url($v->path)) }}" width="200px">
-                        </div>
-                        <!-- Left and right controls -->
-                        <a class="left carousel-control-prev" href="#imageCarousel" data-slide="prev">
-                            <span class="fa fa-chevron-left"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control-next" href="#imageCarousel" data-slide="next">
-                            <span class="fa fa-chevron-right"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
     <div class="modal fade" id="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="attachmentModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
