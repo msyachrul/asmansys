@@ -225,10 +225,12 @@ class AssetController extends Controller
 
         $coa = \App\CertificateOnAsset::where('asset_id',$asset->id)->first();
         
-        $path = \App\CertificateOnAssetAttachment::where('coa_id',$coa->id)->get();
-            foreach ($path as $key => $value) {
-                \Storage::delete($value->link);
-            }
+        if ($coa) {
+            $path = \App\CertificateOnAssetAttachment::where('coa_id',$coa->id)->get();
+                foreach ($path as $key => $value) {
+                    \Storage::delete($value->link);
+                }
+        }
         // hapus path gambar di tabel
         \App\Picture::where('asset_id',$asset->id)->delete();
         // hapus data
