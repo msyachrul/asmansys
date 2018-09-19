@@ -32,6 +32,19 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Region : {{ request('region') ? $selectedRegion->name : "ALL"}}</button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item {{ request('region') ? '' : 'active'}}" href="{{ route('asset.userIndex')}}">ALL</a>
+                                            @foreach($regions as $key => $region)
+                                            <a class="dropdown-item {{ $region->id==request('region') ? 'active' : ''}}" href="{{ route('asset.userIndex','region='.$region->id)}}">{{$region->name}}</a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
                                     <div class="table-responsive">
                                       <table id="table-asset" class="table">
                                         <thead class="thead-light">
