@@ -18,8 +18,19 @@ class CertificateOnAssetController extends Controller
      */
     public function index()
     {
-        $data = CertificateOnAsset::join('certificates','certificates.id','certificate_on_assets.certificate_id')->select('certificate_on_assets.id as id','certificates.name as name','certificate_on_assets.number','certificate_on_assets.asset_id')->orderBy('certificate_on_assets.asset_id','ASC')->get();
-        return view('certificate.index',compact("data"));
+        $certificates = \App\Certificate::all();
+
+        $selectedCertificate = \App\Certificate::where('id',request('id'))->first();
+
+        $data = CertificateOnAsset::join('certificates','certificates.id','certificate_on_assets.certificate_id')->select('certificate_on_assets.id as id','certificates.name as name','certificate_on_assets.number','certificate_on_assets.asset_id');
+
+        if (request('id')) {
+            $data = $data->where('certificates.id',request('id'));
+        }
+
+        $data = $data->orderBy('certificate_on_assets.asset_id','ASC')->get();
+
+        return view('certificate.index',compact('data','certificates','selectedCertificate'));
     }
 
     /**
