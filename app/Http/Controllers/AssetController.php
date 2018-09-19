@@ -27,7 +27,11 @@ class AssetController extends Controller
     {
         $regions = \App\Region::all();
 
+        $categories = \App\Category::all();
+
         $selectedRegion = \App\Region::where('id',request('region'))->first();
+
+        $selectedCategory = \App\Category::where('id',request('category'))->first();
 
         $data = Asset::join('categories','assets.category_id','categories.id')->join('regions','assets.region_id','regions.id')->select('assets.id','assets.name','assets.address','categories.name as category','regions.name as region', 'assets.status');
 
@@ -35,9 +39,13 @@ class AssetController extends Controller
             $data = $data->where('regions.id',request('region'));
         }
 
+        if (request('category')) {
+            $data = $data->where('categories.id',request('category'));
+        }
+
         $data = $data->orderBy('assets.name','ASC')->get();
         
-        return view('asset.index',compact('data','regions','selectedRegion'));
+        return view('asset.index',compact('data','regions','selectedRegion','categories','selectedCategory'));
     }
 
     /**

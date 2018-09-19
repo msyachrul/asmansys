@@ -41,7 +41,7 @@
                                 	@foreach($data as $key => $value)
                                 	<tr>
                                 		<td>{{ $i++ }}</td>
-                                		<td>{{ $value->name }}</td>
+                                		<td><a href="{{ route('asset.userIndex','category='.$value->id)}}">{{ $value->name }}</a></td>
                                         <!-- <td class="btn-group">
                                             <a class="btn btn-secondary btn-detail" href="{{ route('category.userShow',$value->id) }}">Detail</a>
                                 		</td> -->

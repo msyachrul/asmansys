@@ -20,7 +20,7 @@
 
 @section('content')
     <div class="content mt-3">
-        <div class="animated fadeIn">
+        <div class="acategoryd fadeIn">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -33,16 +33,31 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Region : {{ request('region') ? $selectedRegion->name : "ALL"}}</button>
+                                        <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Region : {{ request('region') ? $selectedRegion->name : "ALL"}}</button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item {{ request('region') ? '' : 'active'}}" href="{{ route('asset.userIndex')}}">ALL</a>
+                                            <a class="dropdown-item {{ request('region') ? '' : 'active'}}" href="{{ route('asset.userIndex','category='.request('category'))}}">ALL</a>
                                             @foreach($regions as $key => $region)
-                                            <a class="dropdown-item {{ $region->id==request('region') ? 'active' : ''}}" href="{{ route('asset.userIndex','region='.$region->id)}}">{{$region->name}}</a>
+                                            <a class="dropdown-item {{ $region->id==request('region') ? 'active' : ''}}" href="{{ route('asset.userIndex','region='.$region->id.'&category='.request('category')) }}">{{ $region->name }}</a>
                                             @endforeach
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownCategoryButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category : {{ request('category') ? $selectedCategory->name : "ALL"}}</button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownCategoryButton">
+                                            <a class="dropdown-item {{ request('category') ? '' : 'active'}}" href="{{ route('asset.userIndex','region='.request('region'))}}">ALL</a>
+                                            @foreach($categories as $key => $category)
+                                            <a class="dropdown-item {{ $category->id==request('category') ? 'active' : ''}}" href="{{ route('asset.userIndex','region='.request('region').'&category='.$category->id) }}">{{ $category->name }}</a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <a href="{{ route('asset.userIndex') }}" class="btn btn-secondary form-control">Reset</a>
+                                </div>
                             </div>
+                            <br>
                             <div class="row">
                                 <div class="col">
                                     <div class="table-responsive">
