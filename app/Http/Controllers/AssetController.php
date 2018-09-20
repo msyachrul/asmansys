@@ -284,31 +284,68 @@ class AssetController extends Controller
     public function integrationStore(Request $request, Asset $asset)
     {
         $this->validate($request, [
-                'certificate_id.*' => 'required',
-                'number.*' => 'required',
+                'certificate_id' => 'required',
+                'number' => 'required',
             ], ['required' => "The fields can't be null"]);
-
-        foreach ($request->certificate_id as $key => $value) {
 
             $data = new \App\CertificateOnAsset;
                 $data->asset_id = $asset->id;
-                $data->certificate_id = $request->certificate_id[$key];
-                $data->number = $request->number[$key];
+                $data->certificate_id = $request->certificate_id;
+                $data->number = $request->number;
             $data->save();
 
-            foreach ($request->file('attachment')[$key] as $v) {
-                $attachment = new \App\CertificateOnAssetAttachment;
-                    $attachment->link = $v->store('public/attachments');
-                    $attachment->coa_id = $data->id;
-                $attachment->save();
+            if ($request->file('attachment')) {
+                foreach ($request->file('attachment') as $v) {
+                    $attachment = new \App\CertificateOnAssetAttachment;
+                        $attachment->link = $v->store('public/attachments');
+                        $attachment->coa_id = $data->id;
+                    $attachment->save();
+                }
             }
 
             $asset = Asset::find($asset->id);
                 $asset->last_updated_by = \Auth::user()->id;
             $asset->save();
-        }
 
         return redirect()->back();
+    }
+
+    public function integrationUpdate(Request $request)
+    {
+        $this->validate($request, [
+                'certificate_id' => 'required',
+                'number' => 'required',
+                'coa_id' => 'required',
+                'asset_id' => 'required',
+            ], ['required' => "The fields can't be null"]);
+
+            $data = \App\CertificateOnAsset::find($request->coa_id);
+                $data->certificate_id = $request->certificate_id;
+                $data->number = $request->number;
+            $data->save();
+
+            if ($request->file('attachment')) {
+                $images = \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->get();
+
+                    foreach ($images as $key => $value) {
+                        $data = \Storage::delete($value->link);
+                    }
+                    
+                \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->delete();
+
+                foreach ($request->file('attachment') as $v) {
+                    $attachment = new \App\CertificateOnAssetAttachment;
+                        $attachment->link = $v->store('public/attachments');
+                        $attachment->coa_id = $request->coa_id;
+                    $attachment->save();
+                }
+            }
+
+            $asset = Asset::find($request->asset_id);
+                $asset->last_updated_by = \Auth::user()->id;
+            $asset->save();
+
+        return redirect()->back();   
     }
 
     public function integrationDestroy(Request $request)

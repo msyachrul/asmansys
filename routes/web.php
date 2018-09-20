@@ -25,11 +25,14 @@ Route::resource('/menu/asset','AssetController');
 
 Route::get('/menu/asset/document/{asset}','AssetController@integrationShow')->name('asset.integrationShow');
 
-Route::post('/menu/asset/document/{asset}/store','AssetController@integrationStore')->name('asset.integrationStore');
+Route::post('/menu/asset/document/attachment','AssetController@integrationAttachment')->name('asset.integrationAttachment');
+
+Route::post('/menu/asset/document/{asset}','AssetController@integrationStore')->name('asset.integrationStore');
+
+Route::put('/menu/asset/document/{asset}','AssetController@integrationUpdate')->name('asset.integrationUpdate');
 
 Route::post('/menu/asset/document/delete','AssetController@integrationDestroy')->name('asset.integrationDestroy');
 
-Route::post('/menu/asset/document/attachment','AssetController@integrationAttachment')->name('asset.integrationAttachment');
 
 Route::resource('/menu/category','CategoryController');
 
