@@ -78,7 +78,7 @@
                                     <td>{{ $value->status ? "Available" : "Not Available"}}</td>
                                 </tr>
                             </table>
-                                <div class="form-group btn-process">
+                                <div class="form-group btn-process d-print-none">
                                     <a href="{{ route('asset.userIndex') }}" class="btn btn-secondary form-control">Close</a>
                                 </div>
                         </div>
@@ -101,13 +101,9 @@
                     <div id="imageCarousel" class="carousel slide" data-ride="carousel">
                         <!-- Indicator -->
                         <ol class="carousel-indicators">
-
                         </ol>
                           <!-- Wrapper for slides -->
                         <div class="carousel-inner">
-                            <div class="carousel-item">
-                                <img src="{{ asset(Storage::url($v->path)) }}" width="200px">
-                            </div>                         
                         </div>
                         <!-- Left and right controls -->
                         <a class="left carousel-control-prev" href="#imageCarousel" data-slide="prev">
