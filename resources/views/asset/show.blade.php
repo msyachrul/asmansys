@@ -67,7 +67,7 @@
                                     <td>
                                         @foreach($integration as $key => $v)
                                             <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">
-                                                {{ $v->shortname }} - {{ $v->number }}
+                                                {{ $v->shortname }} - {{ $v->number }} - <b>{{ $v->concerned }}</b>
                                             </button>
                                         @endforeach
                                     </td>
