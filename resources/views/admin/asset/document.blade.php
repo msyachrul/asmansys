@@ -52,7 +52,6 @@
                                         <tr>
                                             <th>Certificate</th>
                                             <th>Number</th>
-                                            <th>Last Position</th>
                                             <th>Concerned</th>
                                             <th width="5%">Attachment</th>
                                             <th width="5%" class="text-center"><button type="button" class="btn btn-secondary btn-add"><i class="fa fa-plus"></i></button></th>
@@ -68,17 +67,14 @@
                                                 {{ $val->number }}
                                             </td>
                                             <td>
-
-                                            </td>
-                                            <td>
-                                                
+                                                {{ $val->concerned }}
                                             </td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-link btn-show" style="color:grey" data-id="{{ $val->id }}">Show</button>
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-secondary btn-edit" data-coa_id="{{ $val->id }}" data-certificate_id="{{ $val->certificate_id }}" data-number="{{ $val->number }}"><i class="fa fa-pencil"></i></button>
+                                                    <button type="button" class="btn btn-secondary btn-edit" data-coa_id="{{ $val->id }}" data-certificate_id="{{ $val->certificate_id }}" data-number="{{ $val->number }}" data-concerned="{{ $val->concerned }}"><i class="fa fa-pencil"></i></button>
                                                     &nbsp
                                                     <button type="button" class="btn btn-secondary btn-remove" value="{{ $val->id }}"><i class="fa fa-minus"></i></button>
                                                 </div>
@@ -160,6 +156,10 @@
                         <div class="form-group">
                             <label>Number</label>
                             <input type="text" class="form-control" name="number" placeholder="Certificate number" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Concerned</label>
+                            <input type="text" class="form-control" name="concerned" placeholder="Person or Place" required>
                         </div>
                         <div class="form-group">
                             <label>Attachment</label>
@@ -252,7 +252,8 @@
                 $('#form-certificate').append('<input type="hidden" name="asset_id" value="{{ $value->id }}">');
                 $('#form-certificate').append('<input type="hidden" name="coa_id" value="'+$(this).data("coa_id")+'">');
                 $('#form-certificate select').val($(this).data('certificate_id'));
-                $('#form-certificate input[type=text]').val($(this).data('number'));
+                $('#form-certificate input[name=number]').val($(this).data('number'));
+                $('#form-certificate input[name=concerned]').val($(this).data('concerned'));
             });
         })(jQuery);
         
