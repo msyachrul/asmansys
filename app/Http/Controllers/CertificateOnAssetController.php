@@ -22,7 +22,7 @@ class CertificateOnAssetController extends Controller
 
         $selectedCertificate = \App\Certificate::where('id',request('id'))->first();
 
-        $data = CertificateOnAsset::join('certificates','certificates.id','certificate_on_assets.certificate_id')->select('certificate_on_assets.id as id','certificates.name as name','certificate_on_assets.number','certificate_on_assets.asset_id');
+        $data = CertificateOnAsset::join('certificates','certificates.id','certificate_on_assets.certificate_id')->select('certificate_on_assets.id as id','certificates.name as name','certificate_on_assets.number','certificate_on_assets.asset_id','certificate_on_assets.concerned');
 
         if (request('id')) {
             $data = $data->where('certificates.id',request('id'));

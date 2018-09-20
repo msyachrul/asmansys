@@ -69,6 +69,11 @@
                                                                 <td width="1%">:</td>
                                                                 <td>{{ $value->number }}</td>
                                                             </tr>
+                                                            <tr>
+                                                                <td>Concerned</td>
+                                                                <td width="1%">:</td>
+                                                                <td>{{ $value->concerned }}</td>
+                                                            </tr>
                                                         </table>
                                                     </a>
                                                 </td>
