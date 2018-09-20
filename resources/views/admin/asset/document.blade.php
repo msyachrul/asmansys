@@ -89,7 +89,6 @@
                                 <input type="text" class="form-control" value="{{ $value->user }}" disabled>
                             </div>
                             <div class="form-group btn-group">
-                                <button type="submit" class="btn btn-secondary">Save</button>&nbsp
                                 <a href="{{ route('asset.index') }}" class="btn btn-secondary form-control">Close</a>
                             </div>
                         </div>
