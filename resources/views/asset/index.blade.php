@@ -24,13 +24,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header d-print-none">
                             <div class="card-title">
                             	<strong style="font-size:24px">List of Assets</strong>	
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row">
+                            <div class="row d-print-none">
                                 <div class="col">
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Region : {{ request('region') ? $selectedRegion->name : "ALL"}}</button>
@@ -56,13 +56,20 @@
                                 <div class="col">
                                     <a href="{{ route('asset.userIndex') }}" class="btn btn-secondary form-control">Reset</a>
                                 </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-secondary form-control" onclick="window.print()">Print</button>
+                                </div>
                             </div>
-                            <br>
+                            <br class="d-print-none">
                             <div class="row">
                                 <div class="col">
                                     <div class="table-responsive">
                                       <table id="table-asset" class="table">
                                         <thead class="thead-light">
+                                          <tr>
+                                              <td></td>
+                                              <td class="d-none d-print-block text-center"><b style="font-size:24px">List of Assets</b></td>
+                                          </tr>
                                           <tr>
                                             <th width="1%">No</th>
                                             <th>Assets</th>
@@ -156,8 +163,8 @@
           $('#table-asset').DataTable(
             {
                 pageLength: 10,
-                bLengthChange: false,
             });
+          $('#table-asset_wrapper .row:first, #table-asset_wrapper .row:last').addClass('d-print-none');
         } );
     </script>
 @endsection

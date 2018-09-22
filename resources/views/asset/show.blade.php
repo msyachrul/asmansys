@@ -22,7 +22,10 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">
-                                <span style="font-size:24px">Asset Detail</span>                
+                                <span class="d-print-none" style="font-size:24px">Asset Detail - </span><span style="font-size:24px">{{ $value->name }}</span>
+                                <div class="pull-right d-print-none">
+                                    <button type="button" class="btn btn-secondary" onclick="window.print()">Print</button>
+                                </div>            
                             </div>
                         </div>
                         <div class="card-body">
