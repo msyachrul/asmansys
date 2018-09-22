@@ -26,7 +26,7 @@
 <body>
     <!-- Left Panel -->
 
-    <aside id="left-panel" class="left-panel">
+    <aside id="left-panel" class="left-panel d-print-none">
         <nav class="navbar navbar-expand-sm navbar-default">
 
             <div class="navbar-header">
@@ -87,7 +87,7 @@
     <div id="right-panel" class="right-panel">        
 
         <!-- Header-->
-        <header id="header" class="header">
+        <header id="header" class="header d-print-none">
 
             <div class="header-menu">
 
@@ -120,7 +120,7 @@
         </header>
 
         <!-- Content-->
-        <div class="breadcrumbs">
+        <div class="breadcrumbs d-print-none">
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
