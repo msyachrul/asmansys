@@ -21,20 +21,11 @@
                                 <span>Certificate</span>
                                 <div class="btn-group pull-right">
                                     {{ $value->name }}
-                                    <!-- <a class="btn btn-secondary btn-edit" href="#"><i class="fa fa-edit"></i> Edit</a>
-                                    &nbsp
-                                    <a class="btn btn-secondary" href="#" onclick="removeItem();"><i class="fa fa-trash"></i> Remove</a>
-                                    <form id="remove-form" action="#" method="post" style="display: none">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form> -->
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="name"><b>Name</b></label>
-                                <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" autocomplete="off" autofocus="on" placeholder="Asset Name" value="{{ $value->name }}" disabled>
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('name') }}</strong>
@@ -52,6 +43,7 @@
                                         <tr>
                                             <th>Certificate</th>
                                             <th>Number</th>
+                                            <th>NOP</th>
                                             <th>Concerned</th>
                                             <th width="5%">Attachment</th>
                                             <th width="5%" class="text-center"><button type="button" class="btn btn-secondary btn-add"><i class="fa fa-plus"></i></button></th>
@@ -67,14 +59,17 @@
                                                 {{ $val->number }}
                                             </td>
                                             <td>
+                                                {{ $val->nop }}
+                                            </td>
+                                            <td>
                                                 {{ $val->concerned }}
                                             </td>
                                             <td class="text-center">
-                                                <button type="button" class="btn btn-link btn-show" style="color:grey" data-id="{{ $val->id }}">Show</button>
+                                                <button type="button" class="btn btn-link btn-attachment" style="color:grey" data-id="{{ $val->id }}">Show</button>
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-secondary btn-edit" data-coa_id="{{ $val->id }}" data-certificate_id="{{ $val->certificate_id }}" data-number="{{ $val->number }}" data-concerned="{{ $val->concerned }}"><i class="fa fa-pencil"></i></button>
+                                                    <button type="button" class="btn btn-secondary btn-show" data-coa_id="{{ $val->id }}" data-certificate_id="{{ $val->certificate_id }}" data-number="{{ $val->number }}" data-nop="{{ $val->nop }}" data-last_owner="{{ $val->last_owner }}" data-current_owner="{{ $val->current_owner }}" data-year="{{ $val->year }}" data-concerned="{{ $val->concerned }}"><i class="fa fa-eye"></i></button>
                                                     &nbsp
                                                     <button type="button" class="btn btn-secondary btn-remove" value="{{ $val->id }}"><i class="fa fa-minus"></i></button>
                                                 </div>
@@ -136,9 +131,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="certificateModalTittle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <div class="pull-right">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
+                    </div>
                 </div>
                 <div class="modal-body">
                     <form id="form-certificate" method="post" enctype="multipart/form-data">
@@ -157,8 +154,24 @@
                             <input type="text" class="form-control" name="number" placeholder="Certificate number" required autocomplete="off">
                         </div>
                         <div class="form-group">
+                            <label>NOP</label>
+                            <input type="text" class="form-control" name="nop" placeholder="Number of tax Object" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
                             <label>Concerned</label>
                             <input type="text" class="form-control" name="concerned" placeholder="Person or Place" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Owner</label>
+                            <input type="text" class="form-control" name="last_owner" placeholder="Name of last owner" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Current Owner</label>
+                            <input type="text" class="form-control" name="current_owner" placeholder="Name of current owner" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Year</label>
+                            <input type="text" class="form-control" name="year" placeholder="Year of obtaining" required>
                         </div>
                         <div class="form-group">
                             <label>Attachment</label>
@@ -167,7 +180,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('form-certificate').submit()">Save</button>
+                    <button type="button" class="btn btn-secondary btn-save" onclick="document.getElementById('form-certificate').submit()">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -180,7 +193,7 @@
 
     <script type="text/javascript">
         ( function($) {
-            $(document).on('click','.btn-show',function () {
+            $(document).on('click','.btn-attachment',function () {
                 $('#attachmentModal').modal('show');
                 let req = {
                     '_token': '{{ csrf_token() }}',
@@ -237,22 +250,36 @@
                 $('#certificateModal').modal('show');
                 $('#certificateModalTittle').text('Add Certificate');
                 $('#form-certificate').attr('action','{{ route("asset.integrationStore",$value->id)}}');
-                $('#form-certificate input[name=_method]').remove();
-                $('#form-certificate input[name=coa_id]').remove();
+                $('.btn-edit, #form-certificate input[name=_method], #form-certificate input[name=coa_id], #form-certificate input[name=asset_id]').remove();
                 $('#form-certificate select').prop('selectedIndex',0);
-                $('#form-certificate input[name=number]').val('');
+                $('#form-certificate input:not(input[name=_token])').val('');
+                $('#form-certificate input, #form-certificate select').removeAttr('disabled');
+                $('.btn-save').removeAttr('disabled');
             });
 
-            $(document).on('click','.btn-edit',function() {
+            $(document).on('click','.btn-show',function() {
                 $('#certificateModal').modal('show');
-                $('#certificateModalTittle').text('Edit Certificate');
+                $('.btn-edit, #form-certificate input[name=_method], #form-certificate input[name=coa_id], #form-certificate input[name=asset_id]').remove();
+                $('#certificateModal .modal-header .pull-right').append('<button type="button" class="btn btn-secondary btn-sm btn-edit">Edit</button>');
+                $('#certificateModalTittle').text('Show Certificate');
                 $('#form-certificate').attr('action','{{ route("asset.integrationUpdate",$value->id)}}');
                 $('#form-certificate').append('@method("PUT")');
                 $('#form-certificate').append('<input type="hidden" name="asset_id" value="{{ $value->id }}">');
                 $('#form-certificate').append('<input type="hidden" name="coa_id" value="'+$(this).data("coa_id")+'">');
                 $('#form-certificate select').val($(this).data('certificate_id'));
                 $('#form-certificate input[name=number]').val($(this).data('number'));
+                $('#form-certificate input[name=nop]').val($(this).data('nop'));
+                $('#form-certificate input[name=last_owner]').val($(this).data('last_owner'));
+                $('#form-certificate input[name=current_owner]').val($(this).data('current_owner'));
+                $('#form-certificate input[name=year]').val($(this).data('year'));
                 $('#form-certificate input[name=concerned]').val($(this).data('concerned'));
+                $('#form-certificate input, #form-certificate select, .btn-save').attr('disabled','yes');
+            });
+
+            $(document).on('click','.btn-edit',function() {
+                $('#certificateModalTittle').text('Edit Certificate');
+                $('.btn-edit').remove();
+                $('.btn-save, #form-certificate input, #form-certificate select').removeAttr('disabled');
             });
         })(jQuery);
         

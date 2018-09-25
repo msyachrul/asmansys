@@ -16,6 +16,33 @@ class AssetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function getAssetData($asset_id)
+    {
+        $data['asset'] = Asset::join('categories','assets.category_id','categories.id')
+        ->join('regions','assets.region_id','regions.id')
+        ->join('users','assets.last_updated_by','users.id')
+        ->where('assets.id',$asset_id)
+            ->select(
+                'assets.id',
+                'assets.name',
+                'assets.address',
+                'assets.description',
+                'assets.category_id',
+                'assets.region_id',
+                'assets.status',
+                'assets.note',
+                'users.name as user'
+            )->first();
+
+        $data['picts'] = \App\Picture::where('asset_id',$data['asset']->id)->get();
+
+        $data['category'] = \App\Category::all();
+        $data['region'] = \App\Region::all();
+
+        return $data;
+    }
+
     public function index()
     {
         $data = Asset::join('categories','assets.category_id','categories.id')->select('assets.id','assets.name','categories.name as category','assets.status')->orderBy('assets.id','DESC')->get();
@@ -88,6 +115,7 @@ class AssetController extends Controller
             $data->category_id = $request->category_id;
             $data->region_id = $request->region_id;
             $data->status = $request->status;
+            $data->note = $request->note;
             $data->last_updated_by = \Auth::user()->id;
         $data->save();
 
@@ -111,54 +139,25 @@ class AssetController extends Controller
      */
     public function show(Asset $asset)
     {
-        $value = Asset::join('categories','assets.category_id','categories.id')
-        ->join('regions','assets.region_id','regions.id')
-        ->join('users','assets.last_updated_by','users.id')
-        ->where('assets.id',$asset->id)
-            ->select(
-                'assets.id',
-                'assets.name',
-                'assets.address',
-                'assets.description',
-                'assets.category_id',
-                'assets.region_id',
-                'assets.status',
-                'users.name as user'
-            )->first();
 
-        $picts = \App\Picture::where('asset_id',$value->id)->get();
+        $data = $this->getAssetData($asset->id);
 
-        $category = \App\Category::all();
-        $region = \App\Region::all();
-
-        return view('admin.asset.show',compact('value','category','region','picts'));
+        return view('admin.asset.show',compact('data'));
     }
 
     public function userShow(Asset $asset)
     {
-        $value = Asset::join('categories','assets.category_id','categories.id')
-        ->join('regions','assets.region_id','regions.id')
-        ->join('users','assets.last_updated_by','users.id')
-        ->where('assets.id',$asset->id)
-            ->select(
-                'assets.id',
-                'assets.name',
-                'assets.address',
-                'assets.description',
-                'assets.category_id',
-                'assets.region_id',
-                'assets.status',
-                'users.name as user'
-            )->first();
 
-        $picts = \App\Picture::where('asset_id',$value->id)->get();
+        $data = $this->getAssetData($asset->id);
 
-        $integration = \App\CertificateOnAsset::join('certificates','certificate_on_assets.certificate_id','certificates.id')->where('certificate_on_assets.asset_id',$asset->id)->select('certificates.name','certificates.shortname','certificate_on_assets.number','certificate_on_assets.id','certificate_on_assets.concerned')->get();
+        $data['category'] = \App\Category::where('id',$data['asset']->category_id)->first();
 
-        $category = \App\Category::where('id',$value->category_id)->first();
-        $region = \App\Region::where('id',$value->region_id)->first();
+        $data['region'] = \App\Region::where('id',$data['asset']->region_id)->first();
 
-        return view('asset.show',compact('value','category','region','picts','integration'));
+
+        $data['integration'] = \App\CertificateOnAsset::join('certificates','certificate_on_assets.certificate_id','certificates.id')->where('certificate_on_assets.asset_id',$asset->id)->select('certificates.name','certificates.shortname','certificate_on_assets.number','certificate_on_assets.id','certificate_on_assets.concerned')->get();
+
+        return view('asset.show',compact('data'));
     }
 
     /**
@@ -221,6 +220,7 @@ class AssetController extends Controller
             $data->category_id = $request->category_id;
             $data->region_id = $request->region_id;
             $data->status = $request->status;
+            $data->note = $request->note;
             $data->last_updated_by = \Auth::user()->id;
         $data->save();
 
@@ -261,7 +261,17 @@ class AssetController extends Controller
     {
         $value = Asset::join('users','assets.last_updated_by','users.id')->where('assets.id',$asset->id)->select('assets.id','assets.name','users.name as user')->first();
         
-        $integration = \App\CertificateOnAsset::join('certificates','certificate_on_assets.certificate_id','certificates.id')->where('certificate_on_assets.asset_id',$asset->id)->select('certificate_on_assets.id','certificates.name','certificates.id as certificate_id','certificate_on_assets.number','certificate_on_assets.concerned')->get();
+        $integration = \App\CertificateOnAsset::join('certificates','certificate_on_assets.certificate_id','certificates.id')->where('certificate_on_assets.asset_id',$asset->id)
+            ->select(
+                'certificate_on_assets.id',
+                'certificates.name',
+                'certificates.id as certificate_id',
+                'certificate_on_assets.number',
+                'certificate_on_assets.nop',
+                'certificate_on_assets.last_owner',
+                'certificate_on_assets.current_owner',
+                'certificate_on_assets.year',
+                'certificate_on_assets.concerned')->get();
         
         $certificates = \App\Certificate::all();
 
@@ -293,6 +303,10 @@ class AssetController extends Controller
                 $data->asset_id = $asset->id;
                 $data->certificate_id = $request->certificate_id;
                 $data->number = $request->number;
+                $data->nop = $request->nop;
+                $data->last_owner = $request->last_owner;
+                $data->current_owner = $request->current_owner;
+                $data->year = $request->year;
                 $data->concerned = $request->concerned;
             $data->save();
 
@@ -325,6 +339,10 @@ class AssetController extends Controller
             $data = \App\CertificateOnAsset::find($request->coa_id);
                 $data->certificate_id = $request->certificate_id;
                 $data->number = $request->number;
+                $data->nop = $request->nop;
+                $data->last_owner = $request->last_owner;
+                $data->current_owner = $request->current_owner;
+                $data->year = $request->year;
                 $data->concerned = $request->concerned;
             $data->save();
 

@@ -101,6 +101,10 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label for="note"><b>Note</b></label>
+                                    <input type="text" class="form-control" name="note" placeholder="Selled or Year">
+                                </div>
+                                <div class="form-group">
                                     <button type="submit" class="btn btn-secondary form-control">Save</button>
                                 </div>
                             </form>

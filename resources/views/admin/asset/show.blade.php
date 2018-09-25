@@ -27,7 +27,7 @@
                                     <a class="btn btn-secondary btn-edit" href="#"><i class="fa fa-edit"></i> Edit</a>
                                     &nbsp
                                     <a class="btn btn-secondary" href="#" onclick="removeItem();"><i class="fa fa-trash"></i> Remove</a>
-                                    <form id="remove-form" action="{{ route('asset.destroy',$value->id) }}" method="post" style="display: none">
+                                    <form id="remove-form" action="{{ route('asset.destroy',$data['asset']->id) }}" method="post" style="display: none">
                                         @csrf
                                         @method('DELETE')
                                     </form>
@@ -36,12 +36,12 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form id="update-form" action="{{ route('asset.update',$value->id) }}" method="post" style="max-width:70%;margin:auto" enctype="multipart/form-data">
+                            <form id="update-form" action="{{ route('asset.update',$data['asset']->id) }}" method="post" style="max-width:70%;margin:auto" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
                                     <label for="name"><b>Name</b></label>
-                                    <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" autocomplete="off" autofocus="on" placeholder="Asset Name" value="{{ $value->name }}" readonly>
+                                    <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" autocomplete="off" autofocus="on" placeholder="Asset Name" value="{{ $data['asset']->name }}" readonly>
                                     @if ($errors->has('name'))
                                         <span class="invalid-feedback">
                                             <strong>{{ $errors->first('name') }}</strong>
@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="address"><b>Address</b></label>
-                                    <textarea name="address" id="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" style="height:200px;resize:none" placeholder="Asset Address" readonly>{{ $value->address }}</textarea>
+                                    <textarea name="address" id="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" style="height:200px;resize:none" placeholder="Asset Address" readonly>{{ $data['asset']->address }}</textarea>
                                     @if ($errors->has('address'))
                                         <span class="invalid-feedback">
                                             <strong>{{ $errors->first('address') }}</strong>
@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="description"><b>Description</b></label>
-                                    <textarea name="description" id="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" style="height:200px;resize:none" placeholder="Asset Description" readonly>{{ $value->description }}</textarea>
+                                    <textarea name="description" id="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" style="height:200px;resize:none" placeholder="Asset Description" readonly>{{ $data['asset']->description }}</textarea>
                                     @if ($errors->has('description'))
                                         <span class="invalid-feedback">
                                             <strong>{{ $errors->first('description') }}</strong>
@@ -70,13 +70,8 @@
                                     <label for="category"><b>Category</b></label>
                                     <select name="category_id" data-placeholder="Asset Category" class="form-control categorySelect" disabled>
                                         <option value=""></option>
-                                        @foreach($category as $key => $v)
-                                            @if($v->id == $value->category_id)
-                                            <option value="{{ $v->id }}" hidden selected>&nbsp{{ $v->id." - ".$v->name }}</option>
-                                            @else
-                                            <option value="{{ $v->id }}">&nbsp{{ $v->id." - ".$v->name }}     
-                                            @endif
-                                        </option>
+                                        @foreach($data['category'] as $key => $v)
+                                        <option value="{{ $v->id }}" {{ $v->id == $data['asset']->category_id ? 'selected' : '' }}>&nbsp{{ $v->id." - ".$v->name }}</option>
                                         @endforeach
                                     </select>
                                     @if ($errors->has('category_id'))
@@ -89,12 +84,8 @@
                                     <label for="region"><b>Region</b></label>
                                     <select name="region_id" data-placeholder="Asset Region" class="form-control regionSelect" disabled>
                                         <option value=""></option>
-                                        @foreach($region as $key => $v)
-                                            @if($v->id == $value->region_id)
-                                                <option value="{{ $v->id }}" hidden selected>&nbsp{{ $v->id." - ".$v->name }}</option>
-                                            @else
-                                                <option value="{{ $v->id }}">&nbsp{{ $v->id." - ".$v->name }}</option>
-                                            @endif
+                                        @foreach($data['region'] as $key => $v)
+                                            <option value="{{ $v->id }}" {{ $v->id == $data['asset']->region_id ? 'selected' : '' }}>&nbsp{{ $v->id." - ".$v->name }}</option>
                                         @endforeach
                                     </select>
                                     @if ($errors->has('region_id'))
@@ -107,7 +98,7 @@
                                     <label for="picture"><b>Picture</b></label>
                                     <input type="file" name="picture[]" id="picture" class="form-control{{ $errors->has('picture') ? ' is-invalid' : '' }}" disabled multiple>
                                     <div class="form-control">
-                                    @foreach($picts as $key => $v)
+                                    @foreach($data['picts'] as $key => $v)
                                         <a target="_blank" href="{{ asset(Storage::url($v->path)) }}"><img src="{{ asset(Storage::url($v->path)) }}" width="200px"></a>
                                     @endforeach
                                     </div>
@@ -121,7 +112,7 @@
                                     <label><b>Status</b></label>
                                     <select name="status" class="form-control statusSelect" disabled>
                                         <option></option>
-                                        @if ($value->status == true)
+                                        @if ($data['asset']->status == true)
                                             <option value="1" hidden selected>&nbspAvailable</option>
                                             <option value="0">&nbspNot Available</option>
                                         @else
@@ -131,8 +122,12 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label><b>Note</b></label>
+                                    <input type="text" class="form-control" name="note" value="{{ $data['asset']->note }}" disabled>
+                                </div>
+                                <div class="form-group">
                                     <label><b>Last Updated By</b></label>
-                                    <input type="text" class="form-control" value="{{ $value->user }}" disabled>
+                                    <input type="text" class="form-control" value="{{ $data['asset']->user }}" disabled>
                                 </div>
                                 <div class="form-group btn-process">
                                     <a href="{{ route('asset.index') }}" class="btn btn-secondary form-control">Close</a>

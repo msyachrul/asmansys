@@ -22,7 +22,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">
-                                <span class="d-print-none" style="font-size:24px">Asset Detail - </span><span style="font-size:24px">{{ $value->name }}</span>
+                                <span class="d-print-none" style="font-size:24px">Asset Detail - </span><span style="font-size:24px">{{ $data['asset']->name }}</span>
                                 <div class="pull-right d-print-none">
                                     <button type="button" class="btn btn-secondary" onclick="window.print()">Print</button>
                                 </div>            
@@ -33,33 +33,33 @@
                                 <tr>
                                     <td width="10%">Name</td>
                                     <td width="1%">:</td>
-                                    <td>{{ $value->name }}</td>
+                                    <td>{{ $data['asset']->name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Address</td>
                                     <td>:</td>
-                                    <td>{{ $value->address }}</td>
+                                    <td>{{ $data['asset']->address }}</td>
                                 </tr>
                                 <tr>
                                     <td>Description</td>
                                     <td>:</td>
-                                    <td>{{ $value->description }}</td>
+                                    <td>{{ $data['asset']->description }}</td>
                                 </tr>
                                 <tr>
                                     <td>Category</td>
                                     <td>:</td>
-                                    <td>{{ $category->name }}</td>
+                                    <td>{{ $data['category']->name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Region</td>
                                     <td>:</td>
-                                    <td>{{ $region->name }}</td>
+                                    <td>{{ $data['region']->name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Pictures</td>
                                     <td>:</td>
                                     <td>
-                                        @foreach($picts as $key => $v)
+                                        @foreach($data['picts'] as $key => $v)
                                             <a href="#" data-toggle="modal" data-target="#pictureModal"><img src="{{ asset(Storage::url($v->path)) }}" width="200px"></a>
                                         @endforeach
                                     </td>
@@ -68,7 +68,7 @@
                                     <td>Certificate</td>
                                     <td>:</td>
                                     <td>
-                                        @foreach($integration as $key => $v)
+                                        @foreach($data['integration'] as $key => $v)
                                             <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">
                                                 {{ $v->shortname }} - {{ $v->number }} - <b>{{ $v->concerned }}</b>
                                             </button>
@@ -78,7 +78,7 @@
                                 <tr>
                                     <td>Status</td>
                                     <td>:</td>
-                                    <td>{{ $value->status ? "Available" : "Not Available"}}</td>
+                                    <td>{{ $data['asset']->status ? "Available" : "Not Available"}}</td>
                                 </tr>
                             </table>
                                 <div class="form-group btn-process d-print-none">
