@@ -19,6 +19,7 @@ class CreateAssetsTable extends Migration
             $table->string('address');
             $table->string('description');
             $table->boolean('status');
+            $table->string('note',100);
             $table->timestamps();
             $table->integer('last_updated_by');
         });
