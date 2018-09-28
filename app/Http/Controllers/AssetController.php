@@ -17,6 +17,14 @@ class AssetController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function createLog($information)
+    {
+        $log = new \App\log;
+            $log->information = $information . " by " . \Auth::user()->name;
+        $log->save();
+
+    }
+
     public function getAssetData($asset_id)
     {
         $data['asset'] = Asset::join('categories','assets.category_id','categories.id')
@@ -128,6 +136,8 @@ class AssetController extends Controller
             }
         }
 
+        $this->createLog('Create new asset : ' . $request->name);
+
         return redirect()->route('asset.index');
     }
 
@@ -156,6 +166,8 @@ class AssetController extends Controller
 
 
         $data['integration'] = \App\CertificateOnAsset::join('certificates','certificate_on_assets.certificate_id','certificates.id')->where('certificate_on_assets.asset_id',$asset->id)->select('certificates.name','certificates.shortname','certificate_on_assets.number','certificate_on_assets.id','certificate_on_assets.concerned')->get();
+
+        // $this->createLog('Open Asset ' . $data['asset']->name);
 
         return view('asset.show',compact('data'));
     }
@@ -235,6 +247,8 @@ class AssetController extends Controller
      */
     public function destroy(Asset $asset)
     {
+        $this->createLog('Remove asset : ' . $asset->id . " - " . $this->getAssetData($asset->id)['asset']->name );
+
         // hapus gambar
         $path = \App\Picture::where('asset_id',$asset->id)->get();
             foreach ($path as $key => $value) {
@@ -299,29 +313,31 @@ class AssetController extends Controller
                 'concerned' => 'required',
             ], ['required' => "The fields can't be null"]);
 
-            $data = new \App\CertificateOnAsset;
-                $data->asset_id = $asset->id;
-                $data->certificate_id = $request->certificate_id;
-                $data->number = $request->number;
-                $data->nop = $request->nop;
-                $data->last_owner = $request->last_owner;
-                $data->current_owner = $request->current_owner;
-                $data->year = $request->year;
-                $data->concerned = $request->concerned;
-            $data->save();
+        $data = new \App\CertificateOnAsset;
+            $data->asset_id = $asset->id;
+            $data->certificate_id = $request->certificate_id;
+            $data->number = $request->number;
+            $data->nop = $request->nop;
+            $data->last_owner = $request->last_owner;
+            $data->current_owner = $request->current_owner;
+            $data->year = $request->year;
+            $data->concerned = $request->concerned;
+        $data->save();
 
-            if ($request->file('attachment')) {
-                foreach ($request->file('attachment') as $v) {
-                    $attachment = new \App\CertificateOnAssetAttachment;
-                        $attachment->link = $v->store('public/attachments');
-                        $attachment->coa_id = $data->id;
-                    $attachment->save();
-                }
+        if ($request->file('attachment')) {
+            foreach ($request->file('attachment') as $v) {
+                $attachment = new \App\CertificateOnAssetAttachment;
+                    $attachment->link = $v->store('public/attachments');
+                    $attachment->coa_id = $data->id;
+                $attachment->save();
             }
+        }
 
-            $asset = Asset::find($asset->id);
-                $asset->last_updated_by = \Auth::user()->id;
-            $asset->save();
+        $asset = Asset::find($asset->id);
+            $asset->last_updated_by = \Auth::user()->id;
+        $asset->save();
+
+        $this->createLog('Add certificate on asset : ' . $asset->id . " - " . $this->getAssetData($asset->id)['asset']->name);
 
         return redirect()->back();
     }
@@ -336,42 +352,46 @@ class AssetController extends Controller
                 'concerned' => 'required',
             ], ['required' => "The fields can't be null"]);
 
-            $data = \App\CertificateOnAsset::find($request->coa_id);
-                $data->certificate_id = $request->certificate_id;
-                $data->number = $request->number;
-                $data->nop = $request->nop;
-                $data->last_owner = $request->last_owner;
-                $data->current_owner = $request->current_owner;
-                $data->year = $request->year;
-                $data->concerned = $request->concerned;
-            $data->save();
+        $data = \App\CertificateOnAsset::find($request->coa_id);
+            $data->certificate_id = $request->certificate_id;
+            $data->number = $request->number;
+            $data->nop = $request->nop;
+            $data->last_owner = $request->last_owner;
+            $data->current_owner = $request->current_owner;
+            $data->year = $request->year;
+            $data->concerned = $request->concerned;
+        $data->save();
 
-            if ($request->file('attachment')) {
-                $images = \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->get();
+        if ($request->file('attachment')) {
+            $images = \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->get();
 
-                    foreach ($images as $key => $value) {
-                        $data = \Storage::delete($value->link);
-                    }
-                    
-                \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->delete();
-
-                foreach ($request->file('attachment') as $v) {
-                    $attachment = new \App\CertificateOnAssetAttachment;
-                        $attachment->link = $v->store('public/attachments');
-                        $attachment->coa_id = $request->coa_id;
-                    $attachment->save();
+                foreach ($images as $key => $value) {
+                    $data = \Storage::delete($value->link);
                 }
-            }
+                
+            \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->delete();
 
-            $asset = Asset::find($request->asset_id);
-                $asset->last_updated_by = \Auth::user()->id;
-            $asset->save();
+            foreach ($request->file('attachment') as $v) {
+                $attachment = new \App\CertificateOnAssetAttachment;
+                    $attachment->link = $v->store('public/attachments');
+                    $attachment->coa_id = $request->coa_id;
+                $attachment->save();
+            }
+        }
+
+        $asset = Asset::find($request->asset_id);
+            $asset->last_updated_by = \Auth::user()->id;
+        $asset->save();
+
+        $this->createLog('Update certificate on asset : ' . $request->asset_id . " - " . $this->getAssetData($request->asset_id)['asset']->name);
 
         return redirect()->back();   
     }
 
     public function integrationDestroy(Request $request)
     {
+        $this->createLog('Remove certificate on asset : ' . $request->asset_id . " - " . $this->getAssetData($request->asset_id)['asset']->name);
+
         $images = \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->get();
 
         foreach ($images as $key => $value) {

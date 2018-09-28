@@ -222,25 +222,25 @@
             });
 
             $(document).on('click','.btn-remove',function() {
-                removeCertificate($(this).val(),"{{ $value->id }}");    
+                removeCertificate($(this).val());    
             });
 
-            function removeCertificate(coa_id,asset_id) {
+            function removeCertificate(coa_id) {
                 let x = confirm('Are you sure want to delete this certificate?');
 
                 if (x==true) {
                     let values = {
                         '_token': '{{ csrf_token() }}',
                         'coa_id' : coa_id,
-                        'asset_id' : asset_id,
+                        'asset_id' : {{ $value->id }},
                     };
                     $.ajax({
-                        url: "{{ route('asset.integrationDestroy')}}",
+                        url: "{{ route('asset.integrationDestroy') }}",
                         type: "post",
                         data: values,
                         success: function(response) {
                             alert(response.success);
-                            document.location.href = "{{ url('menu/asset/document') }}/"+values.asset_id;
+                            document.location.href = "{{ route('asset.integrationShow',$value->id) }}";
                             },
                     });
                 }
