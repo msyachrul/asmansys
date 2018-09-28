@@ -31,8 +31,7 @@ Route::post('/menu/asset/document/{asset}','AssetController@integrationStore')->
 
 Route::put('/menu/asset/document/{asset}','AssetController@integrationUpdate')->name('asset.integrationUpdate');
 
-Route::post('/menu/asset/document/delete','AssetController@integrationDestroy')->name('asset.integrationDestroy');
-
+Route::post('/menu/asset/document','AssetController@integrationDestroy')->name('asset.integrationDestroy');
 
 Route::resource('/menu/category','CategoryController');
 
