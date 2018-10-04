@@ -16,6 +16,23 @@
 @section('content')
     <div class="content mt-3">
         <div class="animated fadeIn">
+            <div class="row justify-content-end">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Certificate : {{ request('id') ? $selectedCertificate->name : "ALL"}}</button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item {{ request('id') ? '' : 'active'}}" href="{{ route('certificate.userIndex')}}">ALL</a>
+                                    @foreach($certificates as $key => $certificate)
+                                    <a class="dropdown-item {{ $certificate->id==request('id') ? 'active' : ''}}" href="{{ route('certificate.userIndex','id='.$certificate->id)}}">{{$certificate->name}}</a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -25,20 +42,6 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Certificate : {{ request('id') ? $selectedCertificate->name : "ALL"}}</button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item {{ request('id') ? '' : 'active'}}" href="{{ route('certificate.userIndex')}}">ALL</a>
-                                            @foreach($certificates as $key => $certificate)
-                                            <a class="dropdown-item {{ $certificate->id==request('id') ? 'active' : ''}}" href="{{ route('certificate.userIndex','id='.$certificate->id)}}">{{$certificate->name}}</a>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
                             <div class="row">
                                 <div class="col">
                                   <div class="table-responsive">
