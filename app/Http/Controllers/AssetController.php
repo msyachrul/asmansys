@@ -19,7 +19,7 @@ class AssetController extends Controller
 
     public function createLog($information)
     {
-        $log = new \App\log;
+        $log = new \App\Log;
             $log->information = $information . " by " . \Auth::user()->name;
         $log->save();
 
