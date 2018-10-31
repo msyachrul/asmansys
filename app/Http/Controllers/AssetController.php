@@ -310,7 +310,7 @@ class AssetController extends Controller
         $this->validate($request, [
                 'certificate_id' => 'required',
                 'number' => 'required',
-                'concerned' => 'required',
+                // 'concerned' => 'required',
             ], ['required' => "The fields can't be null"]);
 
         $data = new \App\CertificateOnAsset;
@@ -349,7 +349,7 @@ class AssetController extends Controller
                 'number' => 'required',
                 'coa_id' => 'required',
                 'asset_id' => 'required',
-                'concerned' => 'required',
+                // 'concerned' => 'required',
             ], ['required' => "The fields can't be null"]);
 
         $data = \App\CertificateOnAsset::find($request->coa_id);
