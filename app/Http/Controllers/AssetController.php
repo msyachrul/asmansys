@@ -34,6 +34,7 @@ class AssetController extends Controller
             ->select(
                 'assets.id',
                 'assets.name',
+                'assets.nop',
                 'assets.address',
                 'assets.description',
                 'assets.category_id',
@@ -105,6 +106,7 @@ class AssetController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:assets,name',
+            'nop' => 'required',
             'address' => 'required',
             'description'  => 'required',
             'category_id' => 'required',
@@ -118,6 +120,7 @@ class AssetController extends Controller
 
         $data = new Asset;
             $data->name = $request->name;
+            $data->nop = $request->nop;
             $data->address = $request->address;
             $data->description = $request->description;
             $data->category_id = $request->category_id;
@@ -194,6 +197,8 @@ class AssetController extends Controller
     {
 
         $this->validate($request, [
+            'name' => 'required',
+            'nop' => 'required',
             'address' => 'required',
             'description'  => 'required',
             'category_id' => 'required',
@@ -227,6 +232,7 @@ class AssetController extends Controller
 
         $data = Asset::find($asset->id);
             $data->name = $request->name;
+            $data->nop = $request->nop;
             $data->address = $request->address;
             $data->description = $request->description;
             $data->category_id = $request->category_id;
@@ -281,10 +287,8 @@ class AssetController extends Controller
                 'certificates.name',
                 'certificates.id as certificate_id',
                 'certificate_on_assets.number',
-                'certificate_on_assets.nop',
                 'certificate_on_assets.last_owner',
                 'certificate_on_assets.current_owner',
-                'certificate_on_assets.year',
                 'certificate_on_assets.concerned')->get();
         
         $certificates = \App\Certificate::all();
@@ -317,10 +321,8 @@ class AssetController extends Controller
             $data->asset_id = $asset->id;
             $data->certificate_id = $request->certificate_id;
             $data->number = $request->number;
-            $data->nop = $request->nop;
             $data->last_owner = $request->last_owner;
             $data->current_owner = $request->current_owner;
-            $data->year = $request->year;
             $data->concerned = $request->concerned;
         $data->save();
 
@@ -355,10 +357,8 @@ class AssetController extends Controller
         $data = \App\CertificateOnAsset::find($request->coa_id);
             $data->certificate_id = $request->certificate_id;
             $data->number = $request->number;
-            $data->nop = $request->nop;
             $data->last_owner = $request->last_owner;
             $data->current_owner = $request->current_owner;
-            $data->year = $request->year;
             $data->concerned = $request->concerned;
         $data->save();
 

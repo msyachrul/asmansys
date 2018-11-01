@@ -16,10 +16,8 @@ class CreateCertificateOnAssetsTable extends Migration
         Schema::create('certificate_on_assets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('number');
-            $table->string('nop',30);
             $table->string('last_owner',30);
-            $table->string('curret_owner',30);
-            $table->string('year',10);
+            $table->string('curret_owner',30);;
             $table->string('concerned');
             $table->timestamps();
         });

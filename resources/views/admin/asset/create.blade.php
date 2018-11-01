@@ -38,6 +38,15 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
+                                    <label for="nop"><b>NOP</b></label>
+                                    <input type="text" name="nop" id="nop" class="form-control{{ $errors->has('nop') ? ' is-invalid' : '' }}" autocomplete="off" autofocus="on" placeholder="NOP">
+                                    @if ($errors->has('nop'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('nop') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
                                     <label for="address"><b>Address</b></label>
                                     <textarea name="address" id="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" style="height:200px;resize:none" placeholder="Asset Address"></textarea>
                                     @if ($errors->has('address'))
@@ -102,7 +111,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="note"><b>Note</b></label>
-                                    <input type="text" class="form-control" name="note" placeholder="Selled or Year">
+                                    <input type="text" class="form-control" name="note" placeholder="Note of asset">
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-secondary form-control">Save</button>
