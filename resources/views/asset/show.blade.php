@@ -36,6 +36,11 @@
                                     <td>{{ $data['asset']->name }}</td>
                                 </tr>
                                 <tr>
+                                    <td>NOP</td>
+                                    <td>:</td>
+                                    <td>{{ $data['asset']->nop }}</td>
+                                </tr>
+                                <tr>
                                     <td>Address</td>
                                     <td>:</td>
                                     <td>{{ $data['asset']->address }}</td>
@@ -65,20 +70,28 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Certificate</td>
+                                    <td>Status</td>
+                                    <td>:</td>
+                                    <td>{{ $data['asset']->status ? "Available" : "Not Available"}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Certificates</td>
                                     <td>:</td>
                                     <td>
-                                        @foreach($data['integration'] as $key => $v)
-                                            <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">
-                                                {{ $v->shortname }} - {{ $v->number }} - <b>{{ $v->concerned }}</b>
-                                            </button>
+                                        @php
+                                            $no = 1;
+                                        @endphp
+                                        @foreach($data['integration'] as $key => $v)   
+                                        <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">
+                                            {{ $no++ }}. {{ $v->shortname }} - {{ $v->number }}
+                                        </button>
                                         @endforeach
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Status</td>
+                                    <td>Note</td>
                                     <td>:</td>
-                                    <td>{{ $data['asset']->status ? "Available" : "Not Available"}}</td>
+                                    <td>{{ $data['asset']->note }}</td>
                                 </tr>
                             </table>
                                 <div class="form-group btn-process d-print-none">

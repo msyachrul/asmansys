@@ -49,6 +49,15 @@
                                     @endif
                                 </div>
                                 <div class="form-group">
+                                    <label for="nop"><b>NOP</b></label>
+                                    <input type="text" name="nop" id="nop" class="form-control{{ $errors->has('nop') ? ' is-invalid' : '' }}" autocomplete="off" autofocus="on" placeholder="NOP" value="{{ $data['asset']->nop }}" readonly>
+                                    @if ($errors->has('nop'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('nop') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
                                     <label for="address"><b>Address</b></label>
                                     <textarea name="address" id="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" style="height:200px;resize:none" placeholder="Asset Address" readonly>{{ $data['asset']->address }}</textarea>
                                     @if ($errors->has('address'))
@@ -123,7 +132,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label><b>Note</b></label>
-                                    <input type="text" class="form-control" name="note" value="{{ $data['asset']->note }}" disabled>
+                                    <input type="text" class="form-control" name="note" value="{{ $data['asset']->note }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label><b>Last Updated By</b></label>
@@ -160,7 +169,8 @@
         
         $(document).on('click','.btn-edit', function () {
             $('.btn-edit').removeClass('btn-edit').addClass('btn-cancel').html('<i class="fa fa-close"></i> Cancel');
-            $('input#name').removeAttr('readonly').focus();
+            $('input').removeAttr('readonly');
+            $('input#name').focus();
             $('textarea').removeAttr('readonly');
             $('select').removeAttr('disabled');
             $('input[type=file]').removeAttr('disabled');
@@ -168,7 +178,7 @@
         });
         $(document).on('click','.btn-cancel', function () {
             $('.btn-cancel').removeClass('btn-cancel').addClass('btn-edit').html('<i class="fa fa-edit"></i> Edit')
-            $('input#name').attr('readonly','on');
+            $('input').attr('readonly','on');
             $('textarea').attr('readonly','on');
             $('select').attr('disabled','true');
             $('input[type=file]').attr('disabled','true');

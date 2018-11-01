@@ -43,7 +43,6 @@
                                         <tr>
                                             <th>Certificate</th>
                                             <th>Number</th>
-                                            <th>NOP</th>
                                             <th>Concerned</th>
                                             <th width="5%">Attachment</th>
                                             <th width="5%" class="text-center"><button type="button" class="btn btn-secondary btn-add"><i class="fa fa-plus"></i></button></th>
@@ -59,9 +58,6 @@
                                                 {{ $val->number }}
                                             </td>
                                             <td>
-                                                {{ $val->nop }}
-                                            </td>
-                                            <td>
                                                 {{ $val->concerned }}
                                             </td>
                                             <td class="text-center">
@@ -69,7 +65,7 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-secondary btn-show" data-coa_id="{{ $val->id }}" data-certificate_id="{{ $val->certificate_id }}" data-number="{{ $val->number }}" data-nop="{{ $val->nop }}" data-last_owner="{{ $val->last_owner }}" data-current_owner="{{ $val->current_owner }}" data-year="{{ $val->year }}" data-concerned="{{ $val->concerned }}"><i class="fa fa-eye"></i></button>
+                                                    <button type="button" class="btn btn-secondary btn-show" data-coa_id="{{ $val->id }}" data-certificate_id="{{ $val->certificate_id }}" data-number="{{ $val->number }}" data-last_owner="{{ $val->last_owner }}" data-current_owner="{{ $val->current_owner }}" data-concerned="{{ $val->concerned }}"><i class="fa fa-eye"></i></button>
                                                     &nbsp
                                                     <button type="button" class="btn btn-secondary btn-remove" value="{{ $val->id }}"><i class="fa fa-minus"></i></button>
                                                 </div>
@@ -154,10 +150,6 @@
                             <input type="text" class="form-control" name="number" placeholder="Certificate number" required autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label>NOP</label>
-                            <input type="text" class="form-control" name="nop" placeholder="Number of tax Object" required autocomplete="off">
-                        </div>
-                        <div class="form-group">
                             <label>Concerned</label>
                             <input type="text" class="form-control" name="concerned" placeholder="Person or Place" required autocomplete="off">
                         </div>
@@ -168,10 +160,6 @@
                         <div class="form-group">
                             <label>Current Owner</label>
                             <input type="text" class="form-control" name="current_owner" placeholder="Name of current owner" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Year</label>
-                            <input type="text" class="form-control" name="year" placeholder="Year of obtaining" required>
                         </div>
                         <div class="form-group">
                             <label>Attachment</label>
@@ -268,10 +256,8 @@
                 $('#form-certificate').append('<input type="hidden" name="coa_id" value="'+$(this).data("coa_id")+'">');
                 $('#form-certificate select').val($(this).data('certificate_id'));
                 $('#form-certificate input[name=number]').val($(this).data('number'));
-                $('#form-certificate input[name=nop]').val($(this).data('nop'));
                 $('#form-certificate input[name=last_owner]').val($(this).data('last_owner'));
                 $('#form-certificate input[name=current_owner]').val($(this).data('current_owner'));
-                $('#form-certificate input[name=year]').val($(this).data('year'));
                 $('#form-certificate input[name=concerned]').val($(this).data('concerned'));
                 $('#form-certificate input, #form-certificate select, .btn-save').attr('disabled','yes');
             });
