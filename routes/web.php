@@ -20,6 +20,7 @@ Route::get('/', function() {
 Route::resource('/dashboard','DashboardController');
 
 // Admin
+Route::get('/menu/asset/api','AssetController@adminAssetApi')->name('asset.api');
 
 Route::resource('/menu/asset','AssetController');
 
@@ -33,6 +34,7 @@ Route::put('/menu/asset/document/{asset}','AssetController@integrationUpdate')->
 
 Route::post('/menu/asset/document','AssetController@integrationDestroy')->name('asset.integrationDestroy');
 
+
 Route::resource('/menu/category','CategoryController');
 
 Route::resource('/menu/region','RegionController');
@@ -42,6 +44,7 @@ Route::resource('/menu/certificate','CertificateController');
 Route::resource('/menu/user','UserController');
 
 // User
+Route::get('/asset/api','AssetController@userAssetApi')->name('asset.userApi');
 
 Route::get('/asset','AssetController@userIndex')->name('asset.userIndex');
 

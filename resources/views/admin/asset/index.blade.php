@@ -37,20 +37,6 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                        $i = 1;
-                                    @endphp
-                                	@foreach($data as $key => $value)
-                                	<tr>
-                                		<td>{{ $i++ }}</td>
-                                		<td>{{ $value->name }}</td>
-                                		<td>{{ $value->status == true ? "Available" : "Not Available" }}</td>
-                                        <td class="btn-group">
-                                            <a class="btn btn-secondary btn-detail" href="{{ route('asset.show',$value->id) }}">Detail</a>&nbsp
-                                            <a class="btn btn-secondary" href="{{ route('asset.integrationShow',$value->id)}}">Certificate</a>
-                                		</td>
-                                	</tr>
-                                	@endforeach
                                 </tbody>
                               </table>
                             </div>
@@ -77,10 +63,18 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-          $('#table-asset').DataTable(
-            {
+          $('#table-asset').DataTable({
+                processing: true,
+                serverSide: true,
                 pageLength: 10,
                 bLengthChange: false,
+                ajax: "{{ route('asset.api') }}",
+                columns: [
+                    {data: 'DT_RowIndex', name: 'id'},
+                    {data: 'name', name: 'name'},
+                    {data: 'status', name: 'status'},
+                    {data: 'action', name: 'action'},
+                ]
             });
         } );
     </script>

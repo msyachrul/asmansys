@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Asset;
+use DataTables;
 use Illuminate\Http\Request;
 
 class AssetController extends Controller
@@ -54,9 +55,7 @@ class AssetController extends Controller
 
     public function index()
     {
-        $data = Asset::join('categories','assets.category_id','categories.id')->select('assets.id','assets.name','categories.name as category','assets.status')->orderBy('assets.id','DESC')->get();
-        
-        return view('admin.asset.index',compact('data'));
+        return view('admin.asset.index');
     }
 
     public function userIndex()
@@ -69,19 +68,13 @@ class AssetController extends Controller
 
         $selectedCategory = \App\Category::where('id',request('category'))->first();
 
-        $data = Asset::join('categories','assets.category_id','categories.id')->join('regions','assets.region_id','regions.id')->select('assets.id','assets.name','assets.address','categories.name as category','regions.name as region', 'assets.status');
+        $filter = null;
 
-        if (request('region')) {
-            $data = $data->where('regions.id',request('region'));
+        if (request()->query()) {
+            $filter = explode('?',request()->fullUrl())[1];
         }
-
-        if (request('category')) {
-            $data = $data->where('categories.id',request('category'));
-        }
-
-        $data = $data->orderBy('assets.name','ASC')->get();
         
-        return view('asset.index',compact('data','regions','selectedRegion','categories','selectedCategory'));
+        return view('asset.index',compact('regions','selectedRegion','categories','selectedCategory','filter'));
     }
 
     /**
@@ -405,5 +398,47 @@ class AssetController extends Controller
         $asset->save();
 
         return response()->json(['success' => 'Certificate has been deleted!']);
+    }
+
+    public function adminAssetApi()
+    {
+        $query = Asset::query();
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->editColumn('status', function ($query) {
+                return $query->status ? 'Available' : 'Not Available';
+            })
+            ->addColumn('action', function ($query) {
+                return view('layout._action', [
+                    'urlDetail' => route('asset.show', $query->id),
+                    'urlIntegration' => route('asset.integrationShow', $query->id),
+                ]);
+            })
+            ->make(true);
+    }
+
+    public function userAssetApi()
+    {
+        $query = Asset::query();
+
+        if (request()->query('category')) {
+            $query = $query->where('category_id', request()->query('category'));
+        }
+
+        if (request()->query('region')) {
+            $query = $query->where('region_id', request()->query('region'));
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->editColumn('name', function ($query) {
+                return view('asset.row', [
+                    'url' => route('asset.userShow', $query->id),
+                    'model' => $query,
+                ]);
+            })
+            ->rawColumns(['name'])
+            ->make(true);
     }
 }

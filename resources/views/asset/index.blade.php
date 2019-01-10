@@ -91,62 +91,6 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                            @php
-                                                $i = 1;
-                                            @endphp
-                                            @foreach($data as $key => $value)
-                                            <tr>
-                                                <td>
-                                                    <a href="{{ route('asset.userShow',$value->id) }}">
-                                                        <div>
-                                                            {{ $i++ }}        
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <table class="table table-sm">
-                                                        <tr>
-                                                            <td colspan="3">
-                                                                <a href="{{ route('asset.userShow',$value->id) }}"><b>{{ $value->name }}</b></a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td width="10%">
-                                                                <a href="{{ route('asset.userShow',$value->id) }}">Category</a>
-                                                            </td>
-                                                            <td width="1%">
-                                                                <a href="{{ route('asset.userShow',$value->id) }}">:</a>
-                                                            </td>
-                                                            <td>
-                                                                <a href="{{ route('asset.userShow',$value->id) }}">{{ $value->category }}</a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="{{ route('asset.userShow',$value->id) }}">Region</a>
-                                                            </td>
-                                                            <td>
-                                                                <a href="{{ route('asset.userShow',$value->id) }}">:</a>
-                                                            </td>
-                                                            <td>
-                                                                <a href="{{ route('asset.userShow',$value->id) }}">{{ $value->region }}</a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="{{ route('asset.userShow',$value->id) }}">Status</a>
-                                                            </td>
-                                                            <td>
-                                                                <a href="{{ route('asset.userShow',$value->id) }}">:</a>
-                                                            </td>
-                                                            <td>
-                                                                <a href="{{ route('asset.userShow',$value->id) }}"><b>{{ $value->status ? "Available" : "Not Available" }}</b></a>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            @endforeach
                                         </tbody>
                                       </table>
                                     </div>
@@ -175,11 +119,18 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-          $('#table-asset').DataTable(
-            {
+            const filter = "{!! $filter !!}";
+            $('#table-asset').DataTable({
+                processing: true,
+                serverSide: true,
                 pageLength: 10,
+                ajax: "{{ route('asset.userApi') }}?" + filter,
+                columns: [
+                    {data: 'DT_RowIndex', name: 'id'},
+                    {data: 'name', name: 'name'},
+                ]
             });
-          $('#table-asset_wrapper .row:first, #table-asset_wrapper .row:last').addClass('d-print-none');
-        } );
+            $('#table-asset_wrapper .row:first, #table-asset_wrapper .row:last').addClass('d-print-none');
+        });
     </script>
 @endsection
