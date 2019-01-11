@@ -68,13 +68,13 @@ class AssetController extends Controller
 
         $selectedCategory = \App\Category::where('id',request('category'))->first();
 
-        $filter = null;
+        $apiUrl = route('asset.userApi');
 
         if (request()->query()) {
-            $filter = explode('?',request()->fullUrl())[1];
+            $apiUrl = $apiUrl . '?' . explode('?', request()->fullUrl())[1];
         }
         
-        return view('asset.index',compact('regions','selectedRegion','categories','selectedCategory','filter'));
+        return view('asset.index',compact('regions','selectedRegion','categories','selectedCategory','apiUrl'));
     }
 
     /**

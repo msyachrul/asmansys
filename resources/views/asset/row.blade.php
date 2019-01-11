@@ -1,40 +1,40 @@
-<table class="table table-sm">
+<table class="table table-sm asset-show" data-href="{{ $url }}">
     <tr>
         <td colspan="3">
-            <a href="{{ $url }}"><b>{{ $model->name }}</b></a>
+            <b>{{ $model->name }}</b>
         </td>
     </tr>
     <tr>
         <td width="10%">
-            <a href="{{ $url }}">Category</a>
+            Category
         </td>
         <td width="1%">
-            <a href="{{ $url }}">:</a>
+            :
         </td>
         <td>
-            <a href="{{ $url }}">{{ $model->category->name }}</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="{{ $url }}">Region</a>
-        </td>
-        <td>
-            <a href="{{ $url }}">:</a>
-        </td>
-        <td>
-            <a href="{{ $url }}">{{ $model->region->name }}</a>
+            {{ $model->category->name }}
         </td>
     </tr>
     <tr>
         <td>
-            <a href="{{ $url }}">Status</a>
+            Region
         </td>
         <td>
-            <a href="{{ $url }}">:</a>
+            :
         </td>
         <td>
-            <a href="{{ $url }}"><b>{{ $model->status ? "Available" : "Not Available" }}</b></a>
+            {{ $model->region->name }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Status
+        </td>
+        <td>
+            :
+        </td>
+        <td>
+            <b>{{ $model->status ? "Available" : "Not Available" }}</b>
         </td>
     </tr>
 </table>

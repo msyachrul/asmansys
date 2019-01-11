@@ -20,13 +20,13 @@
 
 @section('content')
     <div class="content mt-3">
-        <div class="acategoryd fadeIn">
-            <div class="row justify-content-end d-print-none">
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card">
-                        <div class="card-body">
+        <div class="animated fadeIn">
+            <div class="card">
+                <div class="card-header d-print-none">
+                    <div class="row">
+                        <div class="col-sm">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Region : {{ request('region') ? $selectedRegion->name : "ALL"}}</button>
+                                <button class="btn btn-outline-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Region : {{ request('region') ? $selectedRegion->name : "ALL"}}</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item {{ request('region') ? '' : 'active'}}" href="{{ route('asset.userIndex','category='.request('category'))}}">ALL</a>
                                     @foreach($regions as $key => $region)
@@ -35,13 +35,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card">
-                        <div class="card-body">
+                        <div class="col-sm">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownCategoryButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category : {{ request('category') ? $selectedCategory->name : "ALL"}}</button>
+                                <button class="btn btn-outline-secondary dropdown-toggle form-control" type="button" id="dropdownCategoryButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category : {{ request('category') ? $selectedCategory->name : "ALL"}}</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownCategoryButton">
                                     <a class="dropdown-item {{ request('category') ? '' : 'active'}}" href="{{ route('asset.userIndex','region='.request('region'))}}">ALL</a>
                                     @foreach($categories as $key => $category)
@@ -50,53 +46,29 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <a href="{{ route('asset.userIndex') }}" class="btn btn-secondary form-control">Reset</a>
-                                </div>
-                                <div class="col">
-                                    <button type="button" class="btn btn-secondary form-control" onclick="window.print()">Print</button>
-                                </div>
-                            </div>
+                        <div class="col-sm">
+                            <a href="{{ route('asset.userIndex') }}" class="btn btn-outline-secondary form-control">Reset</a>
+                        </div>
+                        <div class="col-sm">
+                            <a href="javascript:window.print()" class="btn btn-outline-secondary form-control">Print</a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header d-print-none">
-                            <div class="card-title">
-                            	<strong style="font-size:24px">List of Assets</strong>	
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="table-responsive">
-                                      <table id="table-asset" class="table">
-                                        <thead class="thead-light">
-                                          <tr>
-                                              <td></td>
-                                              <td class="d-none d-print-block text-center"><b style="font-size:24px">List of Assets</b></td>
-                                          </tr>
-                                          <tr>
-                                            <th width="1%">No</th>
-                                            <th>Assets</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                      <table id="table-asset" class="table table-striped" width="100%">
+                        <thead>
+                          <tr>
+                            <th colspan="2" class="text-center" style="font-size:24px">List of Assets</th>
+                          </tr>
+                          <tr>
+                            <th width="1%">No</th>
+                            <th>Assets</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
                     </div>
                 </div>
             </div>
@@ -119,18 +91,20 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            const filter = "{!! $filter !!}";
             $('#table-asset').DataTable({
                 processing: true,
                 serverSide: true,
                 pageLength: 10,
-                ajax: "{{ route('asset.userApi') }}?" + filter,
+                ajax: "{!! $apiUrl !!}",
                 columns: [
                     {data: 'DT_RowIndex', name: 'id'},
                     {data: 'name', name: 'name'},
                 ]
             });
             $('#table-asset_wrapper .row:first, #table-asset_wrapper .row:last').addClass('d-print-none');
+        });
+        $('body').on('click', '.asset-show', function () {
+            window.open($(this).data('href'), '_self');
         });
     </script>
 @endsection

@@ -46,6 +46,8 @@ Route::resource('/menu/user','UserController');
 // User
 Route::get('/asset/api','AssetController@userAssetApi')->name('asset.userApi');
 
+Route::get('/certificate/api','CertificateOnAssetController@coaApi')->name('certificate.coaApi');
+
 Route::get('/asset','AssetController@userIndex')->name('asset.userIndex');
 
 Route::get('/asset/{asset}','AssetController@userShow')->name('asset.userShow');

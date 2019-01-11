@@ -53,35 +53,6 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                            @php
-                                                $i = 1;
-                                            @endphp
-                                            @foreach($data as $key => $value)
-                                            <tr>
-                                                <td>
-                                                    <a href="{{ route('asset.userShow',$value->asset_id) }}">{{ $i++ }}</a>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('asset.userShow',$value->asset_id) }}">
-                                                        <table class="table table-sm">
-                                                            <tr>
-                                                                <td colspan="3"><b>{{ $value->name }}</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td width="10%">Number</td>
-                                                                <td width="1%">:</td>
-                                                                <td>{{ $value->number }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Concerned</td>
-                                                                <td width="1%">:</td>
-                                                                <td>{{ $value->concerned }}</td>
-                                                            </tr>
-                                                        </table>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            @endforeach
                                         </tbody>
                                       </table>
                                     </div>  
@@ -110,10 +81,16 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-          $('#table-certificate').DataTable(
-            {
+          $('#table-certificate').DataTable({
+                processing: true,
+                serverSide: true,
                 pageLength: 10,
                 bLengthChange: false,
+                ajax: "{!! $apiUrl !!}",
+                columns: [
+                    {data: 'DT_RowIndex', name: 'id'},
+                    {data: 'name', name: 'name'},
+                ]
             });
         } );
     </script>

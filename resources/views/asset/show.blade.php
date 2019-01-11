@@ -23,8 +23,10 @@
                         <div class="card-header">
                             <div class="card-title">
                                 <span class="d-print-none" style="font-size:24px">Asset Detail - </span><span style="font-size:24px">{{ $data['asset']->name }}</span>
-                                <div class="pull-right d-print-none">
-                                    <button type="button" class="btn btn-secondary" onclick="window.print()">Print</button>
+                                <div class="btn-group pull-right d-print-none">
+                                    <a href="javascript:window.print()" class="btn btn-secondary">Print</a>
+                                    &nbsp
+                                    <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
                                 </div>            
                             </div>
                         </div>
