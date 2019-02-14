@@ -291,12 +291,16 @@ class AssetController extends Controller
 
     public function integrationAttachment(Request $request)
     {
-        $data = \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->get();
+        $data = \App\CertificateOnAssetAttachment::where('coa_id',$request->coa_id)->get()->toArray();
+
+        if ($data == null) {
+            $data[] = ['link' => 'public/attachments/blank.png'];
+        }
 
         $images = [];
 
         foreach ($data as $key => $value) {
-            $images[] = asset(\Storage::url($value->link));
+            $images[] = asset(\Storage::url($value['link']));
         }
 
         return response()->json($images);
