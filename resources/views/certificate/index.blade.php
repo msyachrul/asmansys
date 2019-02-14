@@ -88,9 +88,9 @@
                 bLengthChange: false,
                 ajax: "{!! $apiUrl !!}",
                 columns: [
-                    {data: 'DT_RowIndex', name: 'id'},
-                    {data: 'name', name: 'name'},
-                ]
+                    {data: 'DT_RowIndex', name: 'certificate_id'},
+                    {data: 'name', name: 'name', orderable: false},
+                ],
             });
         } );
     </script>

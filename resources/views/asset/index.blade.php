@@ -99,12 +99,12 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'id'},
                     {data: 'name', name: 'name'},
-                ]
+                ],
+                order: [
+                    [1, 'asc'],
+                ],
             });
             $('#table-asset_wrapper .row:first, #table-asset_wrapper .row:last').addClass('d-print-none');
         });
-        // $('body').on('click', '.asset-show', function () {
-        //     window.open($(this).data('href'), '_self');
-        // });
     </script>
 @endsection
