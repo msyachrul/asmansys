@@ -23,32 +23,13 @@ class CertificateOnAssetController extends Controller
 
         $selectedCertificate = \App\Certificate::where('id',request('certificate_id'))->first();
 
-        $apiUrl = route('certificate.coaApi');
-
-        if (request()->query()) {
-            $apiUrl = $apiUrl . '?' . explode('?', request()->fullUrl())[1];
-        }
-
-        return view('certificate.index',compact('certificates','selectedCertificate','apiUrl'));
+        return view('certificate.index',compact('certificates', 'selectedCertificate'));
     }
 
     public function coaApi()
     {
-        $query = CertificateOnAsset::query();
+        $data = CertificateOnAsset::select(['certificate_on_assets.asset_id as id', 'assets.name as asset', 'certificates.name as certificate', 'certificate_on_assets.number as number', 'certificate_on_assets.concerned as concerned'])->join('certificates', 'certificate_on_assets.certificate_id', 'certificates.id')->join('assets', 'certificate_on_assets.asset_id', 'assets.id')->paginate(9);
 
-        if (request()->query('certificate_id')) {
-            $query = $query->where('certificate_id', request()->query('certificate_id'));
-        }
-
-        return DataTables::of($query)
-            ->addIndexColumn()
-            ->addColumn('name', function ($query) {
-                return view('certificate.row',[
-                    'model' => $query,
-                    'url' => route('asset.userShow', $query->asset_id)
-                ]);
-            })
-            ->rawColumns(['name'])
-            ->make(true);
+        return $data;
     }
 }

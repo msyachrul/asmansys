@@ -37,7 +37,7 @@
             <b>{{ $model->status ? "Available" : "Not Available" }}</b>
         </td>
     </tr>
-    <tr>
+    <tr class="d-print-none">
         <td>
             <a target="_blank" href="{{ $url }}" class="btn btn-sm btn-secondary rounded">Show Detail</a>
         </td>

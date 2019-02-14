@@ -88,57 +88,52 @@
 
         <!-- Header-->
         <header id="header" class="header d-print-none">
-
             <div class="header-menu">
-
                 <div class="col-sm-7">
                     <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
                     <div class="header-left">
-
                     </div>
                 </div>
-
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ Auth::user()->name }}
                         </a>
                         <div class="user-menu dropdown-menu">
-                                <a class="nav-link" href="{{ route('user.profile') }}"><i class="fa fa-user"></i> My Profile</a>
-
-                                <a class="nav-link" href="#" onclick="document.getElementById('logout-form').submit()"><i class="fa fa-power-off"></i> Logout</a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="post" style="display:none;">
-                                    @csrf
-                                </form>
+                            <a class="nav-link" href="{{ route('user.profile') }}"><i class="fa fa-user"></i> My Profile</a>
+                            <a class="nav-link" href="#" onclick="document.getElementById('logout-form').submit()"><i class="fa fa-power-off"></i> Logout</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="post" style="display:none;">
+                                @csrf
+                            </form>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </header>
 
         <!-- Content-->
-        <div class="breadcrumbs d-print-none">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h1>@yield('breadcrumb')</h1>
+        <div class="breadcrumbs">
+            <div class="row d-print-none">
+                <div class="col-lg-4 col-12 ml-4 mr-4">
+                    <div class="page-header float-left">
+                        <div class="page-title">
+                            <h1>@yield('breadcrumb')</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg col-12 ml-4 mr-4">
+                    <div class="page-header float-right">
+                        <div class="page-title">
+                            <ol class="breadcrumb text-right">
+                                @yield('breadcrumbList')
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            @yield('breadcrumbList')
-                        </ol>
-                    </div>
-                </div>
-            </div>
+            <hr class="d-print-none">
+            @yield('content')
         </div>
-        @yield('content')
         <!-- /Content -->
     </div><!-- /#right-panel -->
 
