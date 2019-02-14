@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="dropdown">
-                                <button class="btn btn-outline-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Region : {{ request('region') ? $selectedRegion->name : "ALL"}}</button>
+                                <button class="btn btn-outline-secondary btn-block dropdown-toggle rounded" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Region : {{ request('region') ? $selectedRegion->name : "ALL"}}</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item {{ request('region') ? '' : 'active'}}" href="{{ route('asset.userIndex','category='.request('category'))}}">ALL</a>
                                     @foreach($regions as $key => $region)
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-sm">
                             <div class="dropdown">
-                                <button class="btn btn-outline-secondary dropdown-toggle form-control" type="button" id="dropdownCategoryButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category : {{ request('category') ? $selectedCategory->name : "ALL"}}</button>
+                                <button class="btn btn-outline-secondary btn-block dropdown-toggle rounded" type="button" id="dropdownCategoryButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category : {{ request('category') ? $selectedCategory->name : "ALL"}}</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownCategoryButton">
                                     <a class="dropdown-item {{ request('category') ? '' : 'active'}}" href="{{ route('asset.userIndex','region='.request('region'))}}">ALL</a>
                                     @foreach($categories as $key => $category)
@@ -47,10 +47,10 @@
                             </div>
                         </div>
                         <div class="col-sm">
-                            <a href="{{ route('asset.userIndex') }}" class="btn btn-outline-secondary form-control">Reset</a>
+                            <a href="{{ route('asset.userIndex') }}" class="btn btn-outline-secondary btn-block rounded">Reset</a>
                         </div>
                         <div class="col-sm">
-                            <a href="javascript:window.print()" class="btn btn-outline-secondary form-control">Print</a>
+                            <a href="javascript:window.print()" class="btn btn-outline-secondary btn-block rounded">Print</a>
                         </div>
                     </div>
                 </div>
@@ -103,8 +103,8 @@
             });
             $('#table-asset_wrapper .row:first, #table-asset_wrapper .row:last').addClass('d-print-none');
         });
-        $('body').on('click', '.asset-show', function () {
-            window.open($(this).data('href'), '_self');
-        });
+        // $('body').on('click', '.asset-show', function () {
+        //     window.open($(this).data('href'), '_self');
+        // });
     </script>
 @endsection

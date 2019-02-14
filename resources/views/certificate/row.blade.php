@@ -1,15 +1,20 @@
 <table class="table table-sm">
     <tr>
-        <td colspan="3"><a href="{{ $url }}"><b>{{ $model->certificate->name }}</b></a></td>
+        <td colspan="3"><b>{{ $model->certificate->name }}</b></td>
     </tr>
     <tr>
-        <td width="10%"><a href="{{ $url }}">Number</a></td>
-        <td width="1%"><a href="{{ $url }}">:</a></td>
-        <td><a href="{{ $url }}">{{ $model->number }}</a></td>
+        <td width="10%">Number</td>
+        <td width="1%">:</td>
+        <td>{{ $model->number }}</td>
     </tr>
     <tr>
-        <td><a href="{{ $url }}">Concerned</a></td>
-        <td width="1%"><a href="{{ $url }}">:</a></td>
-        <td><a href="{{ $url }}">{{ $model->concerned }}</a></td>
+        <td>Concerned</td>
+        <td width="1%">:</td>
+        <td>{{ $model->concerned }}</td>
+    </tr>
+    <tr>
+        <td>
+            <a target="_blank" href="{{ $url }}" class="btn btn-sm btn-secondary rounded">Show Detail</a>
+        </td>
     </tr>
 </table>

@@ -21,7 +21,7 @@ class CertificateOnAssetController extends Controller
     {
         $certificates = \App\Certificate::all();
 
-        $selectedCertificate = \App\Certificate::where('id',request('id'))->first();
+        $selectedCertificate = \App\Certificate::where('id',request('certificate_id'))->first();
 
         $apiUrl = route('certificate.coaApi');
 
@@ -35,6 +35,10 @@ class CertificateOnAssetController extends Controller
     public function coaApi()
     {
         $query = CertificateOnAsset::query();
+
+        if (request()->query('certificate_id')) {
+            $query = $query->where('certificate_id', request()->query('certificate_id'));
+        }
 
         return DataTables::of($query)
             ->addIndexColumn()

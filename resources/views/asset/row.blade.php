@@ -1,4 +1,4 @@
-<table class="table table-sm asset-show" data-href="{{ $url }}">
+<table class="table table-sm">
     <tr>
         <td colspan="3">
             <b>{{ $model->name }}</b>
@@ -35,6 +35,11 @@
         </td>
         <td>
             <b>{{ $model->status ? "Available" : "Not Available" }}</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a target="_blank" href="{{ $url }}" class="btn btn-sm btn-secondary rounded">Show Detail</a>
         </td>
     </tr>
 </table>
