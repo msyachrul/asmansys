@@ -106,6 +106,7 @@ class AssetController extends Controller
             'region_id' => 'required',
             'picture.*' => 'nullable|max:5000',
             'status' => 'required',
+            'note' => 'required',
         ]);
 
         // upload gambar dan mengembalikan string lokasi gambar

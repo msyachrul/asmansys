@@ -38,62 +38,117 @@
             <div class="certificate-list row mt-4"></div>
         </div>
     </div>
+
+    <div class="modal fade" id="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="attachmentModalLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attachmentModalTittle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="imageCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- Indicator -->
+                        <ol class="carousel-indicators">
+                        </ol>
+                          <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                        </div>
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control-prev" href="#imageCarousel" data-slide="prev">
+                            <span class="fa fa-chevron-left"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control-next" href="#imageCarousel" data-slide="next">
+                            <span class="fa fa-chevron-right"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('extraScript')
-    <script src="{{ asset('assets/js/lib/data-table/datatables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/buttons.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/jszip.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/datatables-init.js') }}"></script>
-
     <script type="text/javascript">
-        function showModal(data) {
+        function showCard(data) {
             let concerned = data.concerned ? data.concerned : 'Unknown';
 
-            return `<div class="col-lg-4 col-12"><div class="card"><div class="card-header"><h4 class="card-title">Certificate No.`+ data.number +`</h4></div><div class="card-body"><table class="table table-sm"><tr><td colspan="3">`+ data.asset +`</td></tr><tr><td>Certificate</td><td>:</td><td>`+ data.certificate +`</td></tr><tr><td>Concerned</td><td>:</td><td>`+ concerned +`</td></tr></table><a target="_blank" href="{{ url('/asset') }}/`+ data.id +`" class="btn btn-sm btn-secondary rounded">Show Detail</a></div></div></div>`;
+            return `<div class="col-lg-4 col-12"><div class="card"><div class="card-header"><h4 class="card-title">Certificate No.`+ data.number +`</h4></div><div class="card-body"><table class="table table-sm"><tr><td colspan="3">`+ data.asset +`</td></tr><tr><td>Certificate</td><td>:</td><td>`+ data.certificate +`</td></tr><tr><td>Concerned</td><td>:</td><td>`+ concerned +`</td></tr></table><a href="#" class="btn btn-sm btn-show btn-secondary rounded" data-id="`+ data.id +`" data-title="`+ data.asset +`">Show Detail</a></div></div></div>`;
 
         }
 
-        function doAjax(href) {
-            $('.certificate-list').empty();
+        (function ($) {
+            function doAjax(href) {
+                $('.certificate-list').empty();
 
-            $.get(href, function (response) {
-                let btnPrev = $('.btn-prev');
-                let btnNext = $('.btn-next');
+                $.get(href, function (response) {
+                    let btnPrev = $('.btn-prev');
+                    let btnNext = $('.btn-next');
 
-                btnPrev.removeAttr('disabled');
-                btnNext.removeAttr('disabled');
+                    btnPrev.removeAttr('disabled');
+                    btnNext.removeAttr('disabled');
 
-                if (response.prev_page_url === null) {
-                    btnPrev.attr('disabled', 'disabled');
-                }
+                    if (response.prev_page_url === null) {
+                        btnPrev.attr('disabled', 'disabled');
+                    }
 
-                if (response.next_page_url === null) {
-                    btnNext.attr('disabled', 'disabled');
-                }
+                    if (response.next_page_url === null) {
+                        btnNext.attr('disabled', 'disabled');
+                    }
 
-                btnPrev.attr('href', response.prev_page_url);
-                btnNext.attr('href', response.next_page_url);
+                    btnPrev.attr('href', response.prev_page_url);
+                    btnNext.attr('href', response.next_page_url);
 
-                $.each(response.data, function(index, value) {
-                    $('.certificate-list').append(showModal(value));
+                    $.each(response.data, function(index, value) {
+                        $('.certificate-list').append(showCard(value));
+                    });
+                });
+            }
+
+            $(document).ready(function() {
+                doAjax('{{ route("certificate.coaApi") }}');
+            });
+
+            $('.btn-prev, .btn-next').click(function() {
+                doAjax($(this).attr('href'));
+            });
+
+            $('body').on('click','.btn-show', function () {
+                let title = $(this).data('title');
+
+                $('#attachmentModal').modal('show');
+                let req = {
+                    '_token': '{{ csrf_token() }}',
+                    'coa_id': $(this).data('id'),
+                };
+                $.ajax({
+                    url: "{{ route('asset.integrationAttachment') }}",
+                    type: "post",
+                    data: req,
+                    success: function(response) {
+                        $('.modal .modal-title').text(title);
+
+                        let carousel = "";
+                        let html = "";
+                        for (var i = 0; i < response.length; i++) {
+
+                            carousel += "<li data-target='#imageCarousel' data-slide-to='"+i+"'></li>"
+
+                            html += "<div class='carousel-item'>";
+                            html += "<img src='"+response[i]+"'/>";
+                            html += "</div>";
+                        }
+                        $('.carousel-indicators').html(carousel);
+                        $('.carousel-inner').html(html);
+                        $('.carousel-indicators').addClass('active');
+                        $('.carousel-item:first').addClass('active');
+                    }
                 });
             });
-        }
-
-        $(document).ready(function() {
-            doAjax('{{ route("certificate.coaApi") }}');
-        });
-
-        $('.btn-prev, .btn-next').click(function() {
-            doAjax($(this).attr('href'));
-        });
+        })(jQuery);
     </script>
 @endsection

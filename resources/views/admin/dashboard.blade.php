@@ -117,5 +117,5 @@
 @endsection
 
 @section('extraScript')
-	<script src=//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js charset=utf-8></script>
+	<script src="{{ asset('/assets/js/chartjs.min.js') }}" charset=utf-8></script>
 @endsection
