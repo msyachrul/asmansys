@@ -24,7 +24,7 @@
                             <div class="card-title">
                                 <span class="d-print-none" style="font-size:24px">Asset Detail - </span><span style="font-size:24px">{{ $data['asset']->name }}</span>
                                 <div class="pull-right d-print-none">
-                                    <button type="button" class="btn btn-secondary" onclick="window.print()">Print</button>
+                                    <a href="javascript:window.print()" class="btn btn-secondary rounded">Print</a>
                                 </div>            
                             </div>
                         </div>
@@ -78,13 +78,17 @@
                                     <td>Certificates</td>
                                     <td>:</td>
                                     <td>
-                                        @php
-                                            $no = 1;
-                                        @endphp
-                                        @foreach($data['integration'] as $key => $v)   
-                                        <button type="button" class="form-control text-left btn btn-link btn-show" style="color:grey" data-id="{{ $v->id }}">
-                                            {{ $no++ }}. {{ $v->shortname }} - {{ $v->number }}
-                                        </button>
+                                        @foreach($data['integration'] as $key => $v)
+                                        <div class="row">
+                                            <div class="col-lg-12 col-12">
+                                                [{{ $v->shortname }}] No.{{ $v->number }}
+                                            </div>
+                                            <div class="col-lg-12 col-12 mb-2">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary btn-show rounded d-print-none" data-id="{{ $v->id }}" data-title="{{ $v->name }} No.{{ $v->number }}">
+                                                    Show Attachment
+                                                </button>
+                                            </div>
+                                        </div>
                                         @endforeach
                                     </td>
                                 </tr>
@@ -94,9 +98,6 @@
                                     <td>{{ $data['asset']->note }}</td>
                                 </tr>
                             </table>
-                                <div class="form-group btn-process d-print-none">
-                                    <a href="{{ route('asset.userIndex') }}" class="btn btn-secondary form-control">Close</a>
-                                </div>
                         </div>
                     </div>
                 </div>
@@ -132,9 +133,6 @@
                         </a>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
             </div>
         </div>
     </div>
@@ -152,6 +150,8 @@
             });
 
             $(document).on('click','.btn-show',function () {
+                let title = $(this).data('title');
+
                 $('#attachmentModal').modal('show');
                 let req = {
                     '_token': '{{ csrf_token() }}',
@@ -162,6 +162,8 @@
                     type: "post",
                     data: req,
                     success: function(response) {
+                        $('.modal .modal-title').text(title);
+
                         let carousel = "";
                         let html = "";
                         for (var i = 0; i < response.length; i++) {

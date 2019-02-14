@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CertificateOnAsset;
+use DataTables;
 use Illuminate\Http\Request;
 
 class CertificateOnAssetController extends Controller
@@ -20,82 +21,34 @@ class CertificateOnAssetController extends Controller
     {
         $certificates = \App\Certificate::all();
 
-        $selectedCertificate = \App\Certificate::where('id',request('id'))->first();
+        $selectedCertificate = \App\Certificate::where('id',request('certificate_id'))->first();
 
-        $data = CertificateOnAsset::join('certificates','certificates.id','certificate_on_assets.certificate_id')->select('certificate_on_assets.id as id','certificates.name as name','certificate_on_assets.number','certificate_on_assets.asset_id','certificate_on_assets.concerned');
+        $apiUrl = route('certificate.coaApi');
 
-        if (request('id')) {
-            $data = $data->where('certificates.id',request('id'));
+        if (request()->query()) {
+            $apiUrl = $apiUrl . '?' . explode('?', request()->fullUrl())[1];
         }
 
-        $data = $data->orderBy('certificate_on_assets.asset_id','ASC')->get();
-
-        return view('certificate.index',compact('data','certificates','selectedCertificate'));
+        return view('certificate.index',compact('certificates','selectedCertificate','apiUrl'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function coaApi()
     {
-        //
-    }
+        $query = CertificateOnAsset::query();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if (request()->query('certificate_id')) {
+            $query = $query->where('certificate_id', request()->query('certificate_id'));
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('name', function ($query) {
+                return view('certificate.row',[
+                    'model' => $query,
+                    'url' => route('asset.userShow', $query->asset_id)
+                ]);
+            })
+            ->rawColumns(['name'])
+            ->make(true);
     }
 }

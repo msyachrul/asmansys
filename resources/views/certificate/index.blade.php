@@ -21,11 +21,11 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Certificate : {{ request('id') ? $selectedCertificate->name : "ALL"}}</button>
+                                <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Certificate : {{ request('certificate_id') ? $selectedCertificate->name : "ALL"}}</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item {{ request('id') ? '' : 'active'}}" href="{{ route('certificate.userIndex')}}">ALL</a>
+                                    <a class="dropdown-item {{ request('certificate_id') ? '' : 'active'}}" href="{{ route('certificate.userIndex')}}">ALL</a>
                                     @foreach($certificates as $key => $certificate)
-                                    <a class="dropdown-item {{ $certificate->id==request('id') ? 'active' : ''}}" href="{{ route('certificate.userIndex','id='.$certificate->id)}}">{{$certificate->name}}</a>
+                                    <a class="dropdown-item {{ $certificate->id==request('certificate_id') ? 'active' : ''}}" href="{{ route('certificate.userIndex','certificate_id='.$certificate->id)}}">{{$certificate->name}}</a>
                                     @endforeach
                                 </div>
                             </div>
@@ -53,35 +53,6 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                            @php
-                                                $i = 1;
-                                            @endphp
-                                            @foreach($data as $key => $value)
-                                            <tr>
-                                                <td>
-                                                    <a href="{{ route('asset.userShow',$value->asset_id) }}">{{ $i++ }}</a>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('asset.userShow',$value->asset_id) }}">
-                                                        <table class="table table-sm">
-                                                            <tr>
-                                                                <td colspan="3"><b>{{ $value->name }}</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td width="10%">Number</td>
-                                                                <td width="1%">:</td>
-                                                                <td>{{ $value->number }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Concerned</td>
-                                                                <td width="1%">:</td>
-                                                                <td>{{ $value->concerned }}</td>
-                                                            </tr>
-                                                        </table>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            @endforeach
                                         </tbody>
                                       </table>
                                     </div>  
@@ -110,10 +81,16 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-          $('#table-certificate').DataTable(
-            {
+          $('#table-certificate').DataTable({
+                processing: true,
+                serverSide: true,
                 pageLength: 10,
                 bLengthChange: false,
+                ajax: "{!! $apiUrl !!}",
+                columns: [
+                    {data: 'DT_RowIndex', name: 'id'},
+                    {data: 'name', name: 'name'},
+                ]
             });
         } );
     </script>
