@@ -2,10 +2,6 @@
 
 @section('title','Certificates')
 
-@section('extraStyleSheet')
-	<link rel="stylesheet" href="{{ asset('assets/css/lib/datatable/dataTables.bootstrap.min.css') }}">
-@endsection
-
 @section('breadcrumb','Certificates')
 
 @section('breadcrumbList')
@@ -17,9 +13,9 @@
     <div class="content mt-3">
         <div class="animated fadeIn">
             <div class="row">
-                <div class="col-lg-4 col-8">
+                <div class="col-md-4 col-8">
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle btn-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Certificate : {{ request('certificate_id') ? $selectedCertificate->name : "ALL"}}</button>
+                        <button class="btn btn-outline-secondary dropdown-toggle rounded" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Certificate : {{ request('certificate_id') ? $selectedCertificate->name : "ALL"}}</button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item {{ request('certificate_id') ? '' : 'active'}}" href="{{ route('certificate.userIndex')}}">ALL</a>
                             @foreach($certificates as $key => $certificate)
@@ -28,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-8 col-4 text-right">
+                <div class="col-md-8 col-4 text-right">
                     <div class="btn-group">
                         <button type="button" class="btn btn-outline-secondary btn-prev" href="">Prev</button>
                         <button type="button" class="btn btn-outline-secondary btn-next" href="">Next</button>
@@ -77,7 +73,7 @@
         function showCard(data) {
             let concerned = data.concerned ? data.concerned : 'Unknown';
 
-            return `<div class="col-lg-4 col-12"><div class="card"><div class="card-header"><h4 class="card-title">Certificate No.`+ data.number +`</h4></div><div class="card-body"><table class="table table-sm"><tr><td colspan="3">`+ data.asset +`</td></tr><tr><td>Certificate</td><td>:</td><td>`+ data.certificate +`</td></tr><tr><td>Concerned</td><td>:</td><td>`+ concerned +`</td></tr></table><a href="#" class="btn btn-sm btn-show btn-secondary rounded" data-id="`+ data.id +`" data-title="`+ data.asset +`">Show Detail</a></div></div></div>`;
+            return `<div class="col-lg-4 col-md-6 col-12"><div class="card"><div class="card-header"><h4 class="card-title">Certificate No.`+ data.number +`</h4></div><div class="card-body"><table class="table table-sm"><tr><td colspan="3">`+ data.asset +`</td></tr><tr><td>Certificate</td><td>:</td><td>`+ data.certificate +`</td></tr><tr><td>Concerned</td><td>:</td><td>`+ concerned +`</td></tr></table><a href="#" class="btn btn-sm btn-show btn-secondary rounded" data-id="`+ data.id +`" data-title="`+ data.asset +`">Show Detail</a></div></div></div>`;
 
         }
 
