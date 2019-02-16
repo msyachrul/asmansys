@@ -25,10 +25,8 @@
 </head>
 <body>
     <!-- Left Panel -->
-
     <aside id="left-panel" class="left-panel d-print-none">
         <nav class="navbar navbar-expand-sm navbar-default">
-
             <div class="navbar-header">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
@@ -36,7 +34,6 @@
                 <a class="navbar-brand" href="{{ route('dashboard.index') }}">{{ config('app.name')}}</a>
                 <a class="navbar-brand hidden" href="{{ route('dashboard.index') }}">GA</a>
             </div>
-
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
@@ -56,7 +53,6 @@
                     <li>
                         <a href="{{ route('region.userIndex') }}"> <i class="menu-icon fa fa-map"></i>Regions</a>
                     </li>
-
                     <!-- menu title 2 -->
                     <h3 class="menu-title">Manage Menu</h3>
                     <li>
@@ -74,77 +70,59 @@
                     <li>
                         <a href="{{ route('user.index') }}"> <i class="menu-icon fa fa-user"></i> Users Management</a>
                     </li>
-                    
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
     </aside><!-- /#left-panel -->
-
     <!-- /Left Panel -->
-
     <!-- Right Panel -->
-
     <div id="right-panel" class="right-panel">        
-
         <!-- Header-->
         <header id="header" class="header d-print-none">
-
-            <div class="header-menu">
-
-                <div class="col-sm-7">
+            <div class="header-menu row">
+                <div class="col ml-3">
                     <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
                     <div class="header-left">
-
                     </div>
                 </div>
-
-                <div class="col-sm-5">
-                    <div class="user-area dropdown float-right">
+                <div class="col">
+                    <div class="dropdown pull-right">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ Auth::user()->name }}
                         </a>
-                        <div class="user-menu dropdown-menu">
-                                <a class="nav-link" href="{{ route('user.profile') }}"><i class="fa fa-user"></i> My Profile</a>
-
-                                <a class="nav-link" href="#" onclick="document.getElementById('logout-form').submit()"><i class="fa fa-power-off"></i> Logout</a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="post" style="display:none;">
-                                    @csrf
-                                </form>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{{ route('user.profile') }}"><i class="fa fa-user"></i> My Profile</a>
+                            <a class="dropdown-item" href="#" onclick="document.getElementById('logout-form').submit()"><i class="fa fa-power-off"></i> Logout</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="post" style="display:none;">
+                                @csrf
+                            </form>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </header>
 
         <!-- Content-->
-        <div class="breadcrumbs d-print-none">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
+        <div class="page-header d-print-none">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col">
                         <h1>@yield('breadcrumb')</h1>
                     </div>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
+                    <div class="col">
+                        <ol class="breadcrumb pull-right">
                             @yield('breadcrumbList')
                         </ol>
                     </div>
                 </div>
             </div>
         </div>
+        <hr class="d-print-none">
         @yield('content')
         <!-- /Content -->
     </div><!-- /#right-panel -->
 
     <!-- Right Panel -->
-
-
     <script src="{{ asset('assets/js/vendor/jquery-2.1.4.min.js') }}"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins.js') }}"></script>

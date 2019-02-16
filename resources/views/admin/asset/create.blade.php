@@ -66,29 +66,29 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="category"><b>Category</b></label>
-                                    <select name="category_id" data-placeholder="Asset Category" class="form-control categorySelect">
+                                    <select name="category_id" data-placeholder="Asset Category" class="form-control categorySelect {{ $errors->has('category_id') ? ' is-invalid' : '' }}">
                                         <option value=""></option>
                                         @foreach($category as $key => $value)
                                         <option value="{{ $value->id }}">&nbsp{{ $value->id." - ".$value->name }}</option>
                                         @endforeach
                                     </select>
-                                    @if ($errors->has('category'))
+                                    @if ($errors->has('category_id'))
                                         <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('category') }}</strong>
+                                            <strong>{{ $errors->first('category_id') }}</strong>
                                         </span>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="region"><b>Region</b></label>
-                                    <select name="region_id" data-placeholder="Asset Region" class="form-control regionSelect">
+                                    <select name="region_id" data-placeholder="Asset Region" class="form-control regionSelect {{ $errors->has('region_id') ? ' is-invalid' : '' }}">
                                         <option value=""></option>
                                         @foreach($region as $key => $value)
                                         <option value="{{ $value->id }}">&nbsp{{ $value->id." - ".$value->name }}</option>
                                         @endforeach
                                     </select>
-                                    @if ($errors->has('region'))
+                                    @if ($errors->has('region_id'))
                                         <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('region') }}</strong>
+                                            <strong>{{ $errors->first('region_id') }}</strong>
                                         </span>
                                     @endif
                                 </div>
@@ -103,15 +103,25 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="status"><b>Status</b></label>
-                                    <select name="status" data-placeholder="Status" class="form-control statusSelect">
+                                    <select name="status" data-placeholder="Status" class="form-control statusSelect {{ $errors->has('status') ? ' is-invalid' : '' }}">
                                         <option></option>
                                         <option value="1">&nbspAvailable</option>
                                         <option value="0">&nbspNot Available</option>
                                     </select>
+                                    @if ($errors->has('status'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('status') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="note"><b>Note</b></label>
-                                    <input type="text" class="form-control" name="note" placeholder="Note of asset">
+                                    <input type="text" class="form-control {{ $errors->has('note') ? ' is-invalid' : '' }}" name="note" placeholder="Note of asset">
+                                    @if ($errors->has('note'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('note') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-secondary form-control">Save</button>

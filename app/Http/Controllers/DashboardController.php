@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Charts\CertificateChart;
-use App\Charts\CategoryChart;
-use App\Charts\RegionChart;
+use App\Charts\Chartjs;
 use Faker\Factory as Faker;
 
 class DashboardController extends Controller
@@ -44,8 +42,13 @@ class DashboardController extends Controller
             }
         }
 
-        $certificateChart = new CertificateChart;
+        $certificateChart = new Chartjs;
         $certificateChart->labels($certificateChartLabels)->dataset('certificateChart','pie', $certificateChartQty)->backgroundColor($certificateChartColor);
+        $certificateChart->options([
+            'legend' => [
+                'position' => 'right',
+            ],
+        ]);
 
         // CategoryChart
         $categoryData = \App\Category::join('assets','assets.category_id','categories.id')->select('categories.name as name',DB::raw('COUNT(assets.id) as `qty`'))->groupBy('categories.id')->get();
@@ -62,8 +65,13 @@ class DashboardController extends Controller
             }
         }
 
-        $categoryChart = new CategoryChart;
+        $categoryChart = new Chartjs;
         $categoryChart->labels($categoryChartLabels)->dataset('categoryChart','pie',$categoryChartQty)->backgroundColor($categoryChartColor);
+        $categoryChart->options([
+            'legend' => [
+                'position' => 'right',
+            ],
+        ]);
 
         // RegionChart
         $regionData = \App\Region::join('assets','assets.region_id','regions.id')->select('regions.name as name',DB::raw('COUNT(assets.id) as `qty`'))->groupBy('regions.id')->get();
@@ -80,75 +88,14 @@ class DashboardController extends Controller
             }
         }
 
-        $regionChart = new RegionChart;
+        $regionChart = new Chartjs;
         $regionChart->labels($regionChartLabels)->dataset('regionChart','pie',$regionChartQty)->backgroundColor($regionChartColor);
+        $regionChart->options([
+            'legend' => [
+                'position' => 'right',
+            ],
+        ]);
 
         return view('admin.dashboard',compact('data','certificateChart','categoryChart','regionChart'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

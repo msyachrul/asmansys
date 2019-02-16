@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="row">
-            	<div class="col-sm">
+            	<div class="col-md-12">
             		<div class="card">
             			<div class="card-header">
             				<h3>Certificates</h3>
@@ -85,9 +85,7 @@
             			</div>
             		</div>
             	</div>
-            </div>
-            <div class="row">
-            	<div class="col-sm">
+            	<div class="col-md-12">
             		<div class="card">
             			<div class="card-header">
             				<h3>Categories</h3>
@@ -97,10 +95,8 @@
             				{!! $categoryChart->script() !!}
             			</div>
             		</div>
-            	</div>
-            </div>
-            <div class="row">
-                <div class="col-sm">
+            	</div>            
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h3>Regions</h3>
@@ -117,5 +113,5 @@
 @endsection
 
 @section('extraScript')
-	<script src=//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js charset=utf-8></script>
+	<script src="{{ asset('/assets/js/chartjs.min.js') }}" charset=utf-8></script>
 @endsection

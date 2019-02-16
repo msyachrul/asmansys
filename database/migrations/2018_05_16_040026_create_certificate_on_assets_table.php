@@ -17,7 +17,7 @@ class CreateCertificateOnAssetsTable extends Migration
             $table->increments('id');
             $table->string('number');
             $table->string('last_owner',30);
-            $table->string('curret_owner',30);;
+            $table->string('current_owner',30);;
             $table->string('concerned');
             $table->timestamps();
         });

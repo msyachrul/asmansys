@@ -1,3 +1,5 @@
+/database/factories
+/database/seeds/
 /node_modules
 /public/hot
 /public/storage

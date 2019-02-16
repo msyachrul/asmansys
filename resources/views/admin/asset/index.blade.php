@@ -22,7 +22,7 @@
                         <div class="card-header">
                             <div class="card-title">
                             	<strong style="font-size:24px">List of Assets</strong>
-                            	<a class="btn btn-secondary pull-right" href="{{ route('asset.create') }}"><i class="fa fa-plus"></i> Create New</a>	
+                            	<a class="btn btn-secondary rounded pull-right" href="{{ route('asset.create') }}"><i class="fa fa-plus"></i> Create New</a>	
                             </div>
                         </div>
                         <div class="card-body">

@@ -1257,10 +1257,6 @@ header .form-inline {
       .header-left .dropdown .dropdown-menu .dropdown-item:hover {
         background: transparent; }
 
-.dropdown-menu {
-  border-radius: 0;
-  transform: none !important; }
-
 .for-notification .dropdown-menu .dropdown-item {
   padding: 5px 15px !important;
   text-overflow: ellipsis; }

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\CertificateOnAsset;
-use DataTables;
+use App\Certificate;
+use App\Asset;
 use Illuminate\Http\Request;
 
 class CertificateOnAssetController extends Controller
@@ -19,36 +20,21 @@ class CertificateOnAssetController extends Controller
      */
     public function index()
     {
-        $certificates = \App\Certificate::all();
+        $certificates = Certificate::select(['id', 'name'])->orderBy('name', 'ASC')->get();
+        $assets = Asset::select(['id', 'name'])->orderBy('name', 'ASC')->get();
 
-        $selectedCertificate = \App\Certificate::where('id',request('certificate_id'))->first();
+        $listCertificate = CertificateOnAsset::select(['certificate_on_assets.asset_id as id', 'assets.name as asset', 'certificates.name as certificate', 'certificate_on_assets.number as number', 'certificate_on_assets.concerned as concerned'])->join('certificates', 'certificate_on_assets.certificate_id', 'certificates.id')->join('assets', 'certificate_on_assets.asset_id', 'assets.id');
 
-        $apiUrl = route('certificate.coaApi');
-
-        if (request()->query()) {
-            $apiUrl = $apiUrl . '?' . explode('?', request()->fullUrl())[1];
+        if (request('certificate')) {
+            $listCertificate = $listCertificate->where('certificate_on_assets.certificate_id', request('certificate'));
         }
 
-        return view('certificate.index',compact('certificates','selectedCertificate','apiUrl'));
-    }
-
-    public function coaApi()
-    {
-        $query = CertificateOnAsset::query();
-
-        if (request()->query('certificate_id')) {
-            $query = $query->where('certificate_id', request()->query('certificate_id'));
+        if (request('asset')) {
+            $listCertificate = $listCertificate->where('certificate_on_assets.asset_id', request('asset'));
         }
 
-        return DataTables::of($query)
-            ->addIndexColumn()
-            ->addColumn('name', function ($query) {
-                return view('certificate.row',[
-                    'model' => $query,
-                    'url' => route('asset.userShow', $query->asset_id)
-                ]);
-            })
-            ->rawColumns(['name'])
-            ->make(true);
+        $listCertificate = $listCertificate->orderBy('assets.name', 'ASC')->paginate(9);
+
+        return view('certificate.index',compact('certificates', 'assets', 'listCertificate'));
     }
 }

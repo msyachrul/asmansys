@@ -20,9 +20,9 @@
                             <div class="card-title">
                                 <span style="font-size:24px">Detail User</span>
                                 <div class="btn-group pull-right">
-                                    <a class="btn btn-secondary btn-edit" href="#"><i class="fa fa-edit"></i> Edit</a>
+                                    <a class="btn btn-secondary btn-edit rounded" href="#"><i class="fa fa-edit"></i> Edit</a>
                                     &nbsp
-                                    <a class="btn btn-secondary" href="#" onclick="removeItem();"><i class="fa fa-trash"></i> Remove</a>
+                                    <a class="btn btn-secondary rounded" href="#" onclick="removeItem();"><i class="fa fa-trash"></i> Remove</a>
                                     <form id="remove-form" action="{{ route('user.destroy',$user->id) }}" method="post" style="display: none">
                                         @csrf
                                         @method('DELETE')
