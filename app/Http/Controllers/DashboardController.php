@@ -46,7 +46,7 @@ class DashboardController extends Controller
         $certificateChart->labels($certificateChartLabels)->dataset('certificateChart','pie', $certificateChartQty)->backgroundColor($certificateChartColor);
         $certificateChart->options([
             'legend' => [
-                'position' => 'right',
+                'position' => 'bottom',
             ],
         ]);
 
@@ -69,7 +69,7 @@ class DashboardController extends Controller
         $categoryChart->labels($categoryChartLabels)->dataset('categoryChart','pie',$categoryChartQty)->backgroundColor($categoryChartColor);
         $categoryChart->options([
             'legend' => [
-                'position' => 'right',
+                'position' => 'bottom',
             ],
         ]);
 
@@ -92,7 +92,7 @@ class DashboardController extends Controller
         $regionChart->labels($regionChartLabels)->dataset('regionChart','pie',$regionChartQty)->backgroundColor($regionChartColor);
         $regionChart->options([
             'legend' => [
-                'position' => 'right',
+                'position' => 'bottom',
             ],
         ]);
 
