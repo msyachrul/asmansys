@@ -17,7 +17,7 @@ Route::get('/', function() {
 	return redirect()->route('dashboard.index');
 });
 
-Route::resource('/dashboard','DashboardController');
+Route::get('/dashboard','DashboardController@index')->name('dashboard.index');
 
 // Admin
 Route::get('/menu/asset/api','AssetController@adminAssetApi')->name('asset.api');
@@ -35,19 +35,23 @@ Route::put('/menu/asset/document/{asset}','AssetController@integrationUpdate')->
 Route::post('/menu/asset/document','AssetController@integrationDestroy')->name('asset.integrationDestroy');
 
 
-Route::resource('/menu/category','CategoryController');
+Route::resource('/menu/category','CategoryController')->except([
+	'edit',
+]);
 
-Route::resource('/menu/region','RegionController');
+Route::resource('/menu/region','RegionController')->except([
+	'edit',
+]);
 
-Route::resource('/menu/certificate','CertificateController');
+Route::resource('/menu/certificate','CertificateController')->except([
+	'edit',
+]);
 
-Route::resource('/menu/user','UserController');
+Route::resource('/menu/user','UserController')->except([
+	'edit',
+]);
 
 // User
-Route::get('/asset/api','AssetController@userAssetApi')->name('asset.userApi');
-
-Route::get('/certificate/api','CertificateOnAssetController@coaApi')->name('certificate.coaApi');
-
 Route::get('/asset','AssetController@userIndex')->name('asset.userIndex');
 
 Route::get('/asset/{asset}','AssetController@userShow')->name('asset.userShow');

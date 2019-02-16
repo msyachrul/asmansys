@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\CertificateOnAsset;
-use DataTables;
+use App\Certificate;
+use App\Asset;
 use Illuminate\Http\Request;
 
 class CertificateOnAssetController extends Controller
@@ -19,17 +20,21 @@ class CertificateOnAssetController extends Controller
      */
     public function index()
     {
-        $certificates = \App\Certificate::all();
+        $certificates = Certificate::select(['id', 'name'])->orderBy('name', 'ASC')->get();
+        $assets = Asset::select(['id', 'name'])->orderBy('name', 'ASC')->get();
 
-        $selectedCertificate = \App\Certificate::where('id',request('certificate_id'))->first();
+        $listCertificate = CertificateOnAsset::select(['certificate_on_assets.asset_id as id', 'assets.name as asset', 'certificates.name as certificate', 'certificate_on_assets.number as number', 'certificate_on_assets.concerned as concerned'])->join('certificates', 'certificate_on_assets.certificate_id', 'certificates.id')->join('assets', 'certificate_on_assets.asset_id', 'assets.id');
 
-        return view('certificate.index',compact('certificates', 'selectedCertificate'));
-    }
+        if (request('certificate')) {
+            $listCertificate = $listCertificate->where('certificate_on_assets.certificate_id', request('certificate'));
+        }
 
-    public function coaApi()
-    {
-        $data = CertificateOnAsset::select(['certificate_on_assets.asset_id as id', 'assets.name as asset', 'certificates.name as certificate', 'certificate_on_assets.number as number', 'certificate_on_assets.concerned as concerned'])->join('certificates', 'certificate_on_assets.certificate_id', 'certificates.id')->join('assets', 'certificate_on_assets.asset_id', 'assets.id')->paginate(9);
+        if (request('asset')) {
+            $listCertificate = $listCertificate->where('certificate_on_assets.asset_id', request('asset'));
+        }
 
-        return $data;
+        $listCertificate = $listCertificate->orderBy('assets.name', 'ASC')->paginate(9);
+
+        return view('certificate.index',compact('certificates', 'assets', 'listCertificate'));
     }
 }

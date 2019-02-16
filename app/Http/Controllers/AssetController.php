@@ -60,21 +60,21 @@ class AssetController extends Controller
 
     public function userIndex()
     {
-        $regions = \App\Region::all();
+        $regions = \App\Region::select(['id', 'name'])->orderBy('name', 'ASC')->get();
+        $categories = \App\Category::select(['id', 'name'])->orderBy('name', 'ASC')->get();
+        $listAsset = Asset::select(['assets.id as id', 'assets.name as asset', 'regions.name as region', 'categories.name as category', 'assets.status as status'])->join('regions', 'assets.region_id', 'regions.id')->join('categories', 'assets.category_id', 'categories.id');
 
-        $categories = \App\Category::all();
+        if (request('region')) {
+            $listAsset = $listAsset->where('assets.region_id', request('region'));
+        }
 
-        $selectedRegion = \App\Region::where('id',request('region'))->first();
-
-        $selectedCategory = \App\Category::where('id',request('category'))->first();
-
-        $apiUrl = route('asset.userApi');
-
-        if (request()->query()) {
-            $apiUrl = $apiUrl . '?' . explode('?', request()->fullUrl())[1];
+        if (request('category')) {
+            $listAsset = $listAsset->where('assets.category_id', request('category'));
         }
         
-        return view('asset.index',compact('regions','selectedRegion','categories','selectedCategory','apiUrl'));
+        $listAsset = $listAsset->orderBy('assets.name', 'ASC')->paginate(9);
+        
+        return view('asset.index',compact('regions', 'categories', 'listAsset'));
     }
 
     /**
@@ -84,8 +84,8 @@ class AssetController extends Controller
      */
     public function create()
     {
-        $category = \App\Category::all();
-        $region = \App\Region::all();
+        $category = \App\Category::select(['id', 'name'])->orderBy('name', 'ASC')->get();
+        $region = \App\Region::select(['id', 'name'])->orderBy('name', 'ASC')->get();
         return view('admin.asset.create',compact('category','region'));
     }
 
@@ -167,17 +167,6 @@ class AssetController extends Controller
         // $this->createLog('Open Asset ' . $data['asset']->name);
 
         return view('asset.show',compact('data'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Asset  $asset
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Asset $asset)
-    {
-        //
     }
 
     /**
@@ -420,30 +409,6 @@ class AssetController extends Controller
                     'urlIntegration' => route('asset.integrationShow', $query->id),
                 ]);
             })
-            ->make(true);
-    }
-
-    public function userAssetApi()
-    {
-        $query = Asset::query();
-
-        if (request()->query('category')) {
-            $query = $query->where('category_id', request()->query('category'));
-        }
-
-        if (request()->query('region')) {
-            $query = $query->where('region_id', request()->query('region'));
-        }
-
-        return DataTables::of($query)
-            ->addIndexColumn()
-            ->editColumn('name', function ($query) {
-                return view('asset.row', [
-                    'url' => route('asset.userShow', $query->id),
-                    'model' => $query,
-                ]);
-            })
-            ->rawColumns(['name'])
             ->make(true);
     }
 }

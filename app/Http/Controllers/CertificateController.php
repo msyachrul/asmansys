@@ -81,17 +81,6 @@ class CertificateController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Certificate  $certificate
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Certificate $certificate)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

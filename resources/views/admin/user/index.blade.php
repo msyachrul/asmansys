@@ -22,7 +22,7 @@
                         <div class="card-header">
                             <div class="card-title">
                             	<strong style="font-size:24px">List of Users</strong>
-                            	<a class="btn btn-secondary pull-right" href="{{ route('user.create') }}"><i class="fa fa-plus"></i> Create New</a>	
+                            	<a class="btn btn-secondary rounded pull-right" href="{{ route('user.create') }}"><i class="fa fa-plus"></i> Create New</a>	
                             </div>
                         </div>
                         <div class="card-body">
@@ -46,7 +46,7 @@
                                 		<td>{{ $value->name }}</td>
                                 		<td>{{ $value->email }}</td>
                                         <td>
-                                            <a class="btn btn-secondary btn-detail" href="{{ route('user.show',$value->id) }}">Detail</a>
+                                            <a class="btn btn-secondary btn-sm btn-detail rounded" href="{{ route('user.show',$value->id) }}">Detail</a>
                                 		</td>
                                 	</tr>
                                 	@endforeach

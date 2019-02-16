@@ -2,15 +2,6 @@
 
 @section('title','Assets')
 
-@section('extraStyleSheet')
-	<link rel="stylesheet" href="{{ asset('assets/css/lib/datatable/dataTables.bootstrap.min.css') }}">
-    <style type="text/css">
-        body {
-            padding-right:0 !important;
-        }
-    </style>
-@endsection
-
 @section('breadcrumb','Assets')
 
 @section('breadcrumbList')
@@ -19,56 +10,79 @@
 @endsection
 
 @section('content')
-    <div class="content mt-3">
+    <div class="content">
         <div class="animated fadeIn">
-            <div class="card">
-                <div class="card-header d-print-none">
-                    <div class="row">
-                        <div class="col-sm">
-                            <div class="dropdown">
-                                <button class="btn btn-outline-secondary btn-block dropdown-toggle rounded" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Region : {{ request('region') ? $selectedRegion->name : "ALL"}}</button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item {{ request('region') ? '' : 'active'}}" href="{{ route('asset.userIndex','category='.request('category'))}}">ALL</a>
-                                    @foreach($regions as $key => $region)
-                                    <a class="dropdown-item {{ $region->id==request('region') ? 'active' : ''}}" href="{{ route('asset.userIndex','region='.$region->id.'&category='.request('category')) }}">{{ $region->name }}</a>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm">
-                            <div class="dropdown">
-                                <button class="btn btn-outline-secondary btn-block dropdown-toggle rounded" type="button" id="dropdownCategoryButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category : {{ request('category') ? $selectedCategory->name : "ALL"}}</button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownCategoryButton">
-                                    <a class="dropdown-item {{ request('category') ? '' : 'active'}}" href="{{ route('asset.userIndex','region='.request('region'))}}">ALL</a>
-                                    @foreach($categories as $key => $category)
-                                    <a class="dropdown-item {{ $category->id==request('category') ? 'active' : ''}}" href="{{ route('asset.userIndex','region='.request('region').'&category='.$category->id) }}">{{ $category->name }}</a>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm">
-                            <a href="{{ route('asset.userIndex') }}" class="btn btn-outline-secondary btn-block rounded">Reset</a>
-                        </div>
-                        <div class="col-sm">
-                            <a href="javascript:window.print()" class="btn btn-outline-secondary btn-block rounded">Print</a>
-                        </div>
+            <div class="row">
+                <div class="col text-right">
+                    <a href="#form-filter" class="btn btn-outline-secondary rounded" data-toggle="collapse">Filter</a>
+                </div>
+            </div>
+            <form id="form-filter" class="collapse" action="{{route('asset.userIndex')}}" method="get">
+                <div class="form-row">
+                    <div class="form-group col-lg-4 col-12">
+                        <label>Region</label>
+                        <select name="region" class="form-control" onchange="document.getElementById('form-filter').submit()">
+                            <option value="">-- No Filter --</option>
+                            @foreach($regions as $item)
+                            <option value="{{$item->id}}" {{$item->id==request('region')?'selected':''}}>{{$item->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4 col-12">
+                        <label>Category</label>
+                        <select name="category" class="form-control" onchange="document.getElementById('form-filter').submit()">
+                            <option value="">-- No Filter --</option>
+                            @foreach($categories as $item)
+                            <option value="{{$item->id}}" {{$item->id==request('category')?'selected':''}}>{{$item->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4 col-12">
+                        <label>&nbsp</label>
+                        <a href="{{route('asset.userIndex')}}" class="btn btn-outline-secondary btn-block">Reset</a>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                      <table id="table-asset" class="table table-striped" width="100%">
-                        <thead>
-                          <tr>
-                            <th colspan="2" class="text-center" style="font-size:24px">List of Assets</th>
-                          </tr>
-                          <tr>
-                            <th width="1%">No</th>
-                            <th>Assets</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
+            </form>
+            <div class="row mt-4">
+                @if(count($listAsset) < 1)
+                    <div class="col">
+                        <h2 class="h2 text-center">Data Not Found</h2>
+                    </div>
+                @else
+                    @foreach($listAsset as $item)
+                        <div class="col-lg-4 col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">{{$item->asset}}</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td>Category</td>
+                                            <td>:</td>
+                                            <td>{{$item->category}}</td>
+                                        </tr><tr>
+                                            <td>Region</td>
+                                            <td>:</td>
+                                            <td>{{$item->region}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status</td>
+                                            <td>:</td>
+                                            <td>{{$item->status?'Availabe':'Not Available'}}</td>
+                                        </tr>
+                                    </table>
+                                    <a target="_blank" href="{{route('asset.userShow',$item->id)}}" class="btn btn-sm btn-show btn-secondary rounded">Show Detail</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="pull-right">
+                        {{$listAsset->appends(['region' => request('region'), 'category' => request('category')])->links()}}
                     </div>
                 </div>
             </div>
@@ -77,34 +91,7 @@
 @endsection
 
 @section('extraScript')
-    <script src="{{ asset('assets/js/lib/data-table/datatables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/buttons.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/jszip.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/data-table/datatables-init.js') }}"></script>
-
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('#table-asset').DataTable({
-                processing: true,
-                serverSide: true,
-                pageLength: 10,
-                ajax: "{!! $apiUrl !!}",
-                columns: [
-                    {data: 'DT_RowIndex', name: 'id'},
-                    {data: 'name', name: 'name'},
-                ],
-                order: [
-                    [1, 'asc'],
-                ],
-            });
-            $('#table-asset_wrapper .row:first, #table-asset_wrapper .row:last').addClass('d-print-none');
-        });
+
     </script>
 @endsection
