@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -24,7 +25,8 @@ class CategoryController extends Controller
 
     public function userIndex()
     {
-        $data = Category::all();
+        $data = Category::select(['categories.id as id', 'categories.name as name', DB::raw('COUNT(*) as total')])->join('assets', 'categories.id', 'assets.category_id')->groupBy('categories.id')->orderBy('categories.name', 'ASC')->get();
+
         return view('category.index',compact('data'));
     }    
 

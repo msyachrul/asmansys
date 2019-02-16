@@ -31,7 +31,7 @@
                                   <tr>
                                     <th width="1%">No</th>
                                     <th>Region Name</th>
-                                    <!-- <th width="10%">Action</th> -->
+                                    <th width="10%">Total</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -42,9 +42,7 @@
                                 	<tr>
                                 		<td>{{ $i++ }}</td>
                                 		<td><a href="{{ route('asset.userIndex','region='.$value->id)}}">{{ $value->name }}</a></td>
-                                        <!-- <td class="btn-group">
-                                            <a class="btn btn-secondary btn-detail" href="{{ route('region.userShow',$value->id) }}">Detail</a>
-                                		</td> -->
+                                        <td><a href="{{ route('asset.userIndex','region='.$value->id)}}">{{ $value->total }}</a></td>
                                 	</tr>
                                 	@endforeach
                                 </tbody>
