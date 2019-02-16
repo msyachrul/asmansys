@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Region;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class RegionController extends Controller
@@ -24,7 +25,8 @@ class RegionController extends Controller
 
     public function userIndex()
     {
-        $data = Region::all();
+        $data = Region::select(['regions.id as id', 'regions.name as name', DB::raw('COUNT(*) as total')])->join('assets', 'regions.id', 'assets.region_id')->groupBy('regions.id')->orderBy('regions.name', 'ASC')->get();
+
         return view('region.index',compact('data'));
     }
 
